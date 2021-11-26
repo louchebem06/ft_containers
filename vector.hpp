@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 08:30:06 by bledda            #+#    #+#             */
-/*   Updated: 2021/11/26 10:36:39 by bledda           ###   ########.fr       */
+/*   Updated: 2021/11/26 19:06:40 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,39 +17,104 @@
 
 namespace ft
 {
-	template <typename type>
+	template < class T, class Alloc = std::allocator<T> >
 	class vector
 	{
 		public:
-			vector()
+			/*
+			
+			_                        _       __ 
+			| |_ _   _ _ __   ___  __| | ___ / _|
+			| __| | | | '_ \ / _ \/ _` |/ _ \ |_ 
+			| |_| |_| | |_) |  __/ (_| |  __/  _|
+			\__|\__, | .__/ \___|\__,_|\___|_|  
+				|___/|_|                        
+			
+			*/
+			typedef T 											value_type;
+			typedef Alloc										allocator_type;
+			typedef typename allocator_type::reference 			reference;
+			typedef typename allocator_type::const_reference 	const_reference;
+			typedef typename allocator_type::pointer 			pointer;
+			typedef typename allocator_type::const_pointer 		const_pointer;
+			// typedef typename random_access_iterator<value_type> 		iterator;
+			// typedef typename random_access_iterator<const value_type>	const_iterator;
+			// typedef typename reverse_iterator<iterator>					reverse_iterator;
+			// typedef typename reverse_iterator<const iterator> 			const_reverse_iterator;
+			// typedef typename iterator_traits<iterator>::difference_type	difference_type;
+			typedef typename allocator_type::size_type 			size_type;
+			
+			/*
+			
+								_                   _             
+				___ ___  _ __  ___| |_ _ __ _   _  ___| |_ ___  _ __ 
+			/ __/ _ \| '_ \/ __| __| '__| | | |/ __| __/ _ \| '__|
+			| (_| (_) | | | \__ \ |_| |  | |_| | (__| || (_) | |   
+			\___\___/|_| |_|___/\__|_|   \__,_|\___|\__\___/|_|   
+																	
+			
+			*/
+			explicit vector(allocator_type const & alloc = allocator_type())
 			{
+				_alloc = alloc;
+				_ptr = _alloc.allocate(0);
 				_size = 0;
-				_ptr = _alloc.allocate(_size);
-			};
-			~vector()
+			};	
+			explicit vector(size_type n,
+							value_type const & val = value_type(),
+							allocator_type const & alloc = allocator_type())
 			{
-				_alloc.deallocate(_ptr, _size);
+
 			};
-			vector(vector const & src)
+			template <class InputIterator>
+         	vector(InputIterator first,
+			 		InputIterator last,
+					allocator_type const & alloc = allocator_type())
 			{
-				*this = src;
+
 			};
-			vector & operator=(vector const & rhs)
+			vector (vector const & x)
 			{
-				if (this != &rhs)
-				{
-					_alloc.deallocate(_ptr, _size);
-					_size	= rhs._size;
-					_ptr = _alloc.allocate(_size);
-					for (size_t i = 0; i < _size; i++)
-						_ptr[i] = rhs._ptr[i];
-				}
-				return (*this);
-			};
+				*this = x;
+			}
+			
+			/*
+			
+										_             
+				___  _ __   ___ _ __ __ _| |_ ___  _ __ 
+			/ _ \| '_ \ / _ \ '__/ _` | __/ _ \| '__|
+			| (_) | |_) |  __/ | | (_| | || (_) | |   
+			\___/| .__/ \___|_|  \__,_|\__\___/|_|   
+					|_|                                 
+			
+			*/
+			// vector & operator=(const vector& x)
+			// {
+			// 	if (this != &x)
+			// 	{
+			// 		_alloc = x._alloc;
+			// 		_ptr = x._ptr;
+			// 		_size = x._ptr;
+			// 	}
+			// 	return (*this);
+			// };
 
 			/*
 			
-					_                           _                                     
+				_           _                   _             
+				__| | ___  ___| |_ _ __ _   _  ___| |_ ___  _ __ 
+			/ _` |/ _ \/ __| __| '__| | | |/ __| __/ _ \| '__|
+			| (_| |  __/\__ \ |_| |  | |_| | (__| || (_) | |   
+			\__,_|\___||___/\__|_|   \__,_|\___|\__\___/|_|   
+																
+			
+			*/
+			~vector()
+			{
+				
+			};
+			/*
+								_                           _                                     
 				___| | ___ _ __ ___   ___ _ __ | |_ ___    __ _  ___ ___ ___  ___ ___ 
 			/ _ \ |/ _ \ '_ ` _ \ / _ \ '_ \| __/ __|  / _` |/ __/ __/ _ \/ __/ __|
 			|  __/ |  __/ | | | | |  __/ | | | |_\__ \ | (_| | (_| (_|  __/\__ \__ \
@@ -57,35 +122,35 @@ namespace ft
 																					
 			
 			*/
-			type	& at(size_t index)
+			reference	at(size_t n)
 			{
-				return (_ptr[index]);
+				return (_ptr[n]);
 			};
-			type	const & at(size_t index) const
+			const_reference	at(size_t n) const
 			{
-				return (_ptr[index]);
+				return (_ptr[n]);
 			};
-			type	& operator[](size_t index)
+			reference	operator[](size_t n)
 			{
-				return (_ptr[index]);
+				return (_ptr[n]);
 			};
-			type	const & operator[](size_t index) const
+			const_reference	operator[](size_t n) const
 			{
-				return (_ptr[index]);
+				return (_ptr[n]);
 			};
-			type 	& front()
-			{
-				return (_ptr[0]);
-			};
-			type	const & front() const
+			reference	front()
 			{
 				return (_ptr[0]);
 			};
-			type 	& back()
+			const_reference	front() const
+			{
+				return (_ptr[0]);
+			};
+			reference	back()
 			{
 				return (_ptr[_size - 1]);
 			};
-			type	const & back() const
+			const_reference	back() const
 			{
 				return (_ptr[_size - 1]);
 			};
@@ -100,7 +165,7 @@ namespace ft
 														
 			
 			*/
-			void	push_back(type const & value)
+			void	push_back(value_type const & value)
 			{
 				_size++;
 				_ptr = _alloc.allocate(_size);
@@ -127,58 +192,11 @@ namespace ft
 				if (_size)
 					return (true);
 				return (false);
-			}
-
-			/*
-			
-			_ _                 _             
-			(_) |_ ___ _ __ __ _| |_ ___  _ __ 
-			| | __/ _ \ '__/ _` | __/ _ \| '__|
-			| | ||  __/ | | (_| | || (_) | |   
-			|_|\__\___|_|  \__,_|\__\___/|_|   
-												
-			
-			*/
-			typedef typename type::iterator iterator;
-			typedef typename type::const_iterator const_iterator;
-			typedef typename type::reverse_iterator reverse_iterator;
-			typedef typename type::const_reverse_iterator const_reverse_iterator;
-			iterator begin()
-			{
-				return (_ptr);
-			};
-			const_iterator begin() const
-			{
-				return (_ptr);
-			};
-			iterator end()
-			{
-				return (_ptr + _size);
-			};
-			const_iterator end() const
-			{
-				return (_ptr + _size);
-			};
-			reverse_iterator rbegin()
-			{
-				return (_ptr + _size);
-			};
-			const_reverse_iterator rbegin() const
-			{
-				return (_ptr + _size);
-			};
-			reverse_iterator rend()
-			{
-				return (_ptr);
-			};
-			const_reverse_iterator rend() const
-			{
-				return (_ptr);
 			};
 		private:
-			std::allocator<type>	_alloc;
-			type					* _ptr;
-			size_t					_size;
+			allocator_type	_alloc;
+			value_type		*_ptr;
+			size_t			_size;
 	};
 }
 
