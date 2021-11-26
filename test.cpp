@@ -6,23 +6,23 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 08:30:03 by bledda            #+#    #+#             */
-/*   Updated: 2021/11/26 18:54:59 by bledda           ###   ########.fr       */
+/*   Updated: 2021/11/26 21:18:04 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.hpp"
 #include <string>
 #include <iostream>
-
-using namespace ft;
+#include <vector>
 
 int main(void)
 {
-	vector<std::string> test;
+	ft::vector<std::string> ft_test;
+	std::vector<std::string> std_test;
 
-	std::cout << test.size() << std::endl;
-	test.push_back("test");
-	std::cout << test.size() << " " << test[0] << std::endl;
-	test.push_back("test");
-	std::cout << test.size() << " " << test.at(1) << std::endl;
+	std::cout << ft_test.size() << std::endl;
+	std::cout << std_test.size() << std::endl;
+
+	std::cout << ft_test.empty() << std::endl;
+	std::cout << std_test.empty() << std::endl;
 }

@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 08:30:06 by bledda            #+#    #+#             */
-/*   Updated: 2021/11/26 19:06:40 by bledda           ###   ########.fr       */
+/*   Updated: 2021/11/26 22:00:57 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define VECTOR_HPP
 
 # include <memory>
+# include <iterator>
 
 namespace ft
 {
@@ -37,12 +38,12 @@ namespace ft
 			typedef typename allocator_type::const_reference 	const_reference;
 			typedef typename allocator_type::pointer 			pointer;
 			typedef typename allocator_type::const_pointer 		const_pointer;
-			// typedef typename random_access_iterator<value_type> 		iterator;
-			// typedef typename random_access_iterator<const value_type>	const_iterator;
-			// typedef typename reverse_iterator<iterator>					reverse_iterator;
-			// typedef typename reverse_iterator<const iterator> 			const_reverse_iterator;
-			// typedef typename iterator_traits<iterator>::difference_type	difference_type;
+			typedef typename allocator_type::difference_type	difference_type;
 			typedef typename allocator_type::size_type 			size_type;
+			// typedef typename 								iterator;
+			// typedef typename 								const_iterator;
+			// typedef typename 								reverse_iterator;
+			// typedef typename 								const_reverse_iterator;
 			
 			/*
 			
@@ -57,21 +58,29 @@ namespace ft
 			explicit vector(allocator_type const & alloc = allocator_type())
 			{
 				_alloc = alloc;
-				_ptr = _alloc.allocate(0);
 				_size = 0;
+				_ptr = _alloc.allocate(_size);
 			};	
 			explicit vector(size_type n,
 							value_type const & val = value_type(),
 							allocator_type const & alloc = allocator_type())
 			{
-
+				(void) n;
+				(void) val;
+				_alloc = alloc;
+				_ptr = _alloc.allocate(0);
+				_size = 0;
 			};
 			template <class InputIterator>
          	vector(InputIterator first,
 			 		InputIterator last,
 					allocator_type const & alloc = allocator_type())
 			{
-
+				(void) first;
+				(void) last;
+				_alloc = alloc;
+				_ptr = _alloc.allocate(0);
+				_size = 0;
 			};
 			vector (vector const & x)
 			{
@@ -88,16 +97,18 @@ namespace ft
 					|_|                                 
 			
 			*/
-			// vector & operator=(const vector& x)
-			// {
-			// 	if (this != &x)
-			// 	{
-			// 		_alloc = x._alloc;
-			// 		_ptr = x._ptr;
-			// 		_size = x._ptr;
-			// 	}
-			// 	return (*this);
-			// };
+			vector & operator=(vector const & x)
+			{
+				if (this != &x)
+				{
+					_alloc.deallocate(_ptr, _size);
+					_size = x._size;
+					_ptr = _alloc.allocate(_size);
+					for (size_t i = 0; i < _size; i++)
+						_ptr[i] = x._ptr[i];
+				}
+				return (*this);
+			};
 
 			/*
 			
@@ -111,8 +122,9 @@ namespace ft
 			*/
 			~vector()
 			{
-				
+				_alloc.deallocate(_ptr, _size);
 			};
+
 			/*
 								_                           _                                     
 				___| | ___ _ __ ___   ___ _ __ | |_ ___    __ _  ___ ___ ___  ___ ___ 
@@ -122,19 +134,19 @@ namespace ft
 																					
 			
 			*/
-			reference	at(size_t n)
+			reference	at(size_type n)
 			{
 				return (_ptr[n]);
 			};
-			const_reference	at(size_t n) const
+			const_reference	at(size_type n) const
 			{
 				return (_ptr[n]);
 			};
-			reference	operator[](size_t n)
+			reference	operator[](size_type n)
 			{
 				return (_ptr[n]);
 			};
-			const_reference	operator[](size_t n) const
+			const_reference	operator[](size_type n) const
 			{
 				return (_ptr[n]);
 			};
@@ -182,7 +194,7 @@ namespace ft
 						|_|                     |___/ 
 			
 			*/	
-			size_t	size() const
+			size_type	size() const
 			{
 				return (_size);
 			};
@@ -190,13 +202,13 @@ namespace ft
 			bool	empty() const
 			{
 				if (_size)
-					return (true);
-				return (false);
+					return (false);
+				return (true);
 			};
 		private:
 			allocator_type	_alloc;
 			value_type		*_ptr;
-			size_t			_size;
+			size_type		_size;
 	};
 }
 

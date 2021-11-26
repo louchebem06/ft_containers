@@ -1,0 +1,4 @@
+1c1
+< fct.sh: line 127: ./std.vector.hpp.out: Permission denied
+---
+> fct.sh: line 124: ./ft.vector.hpp.out: Permission denied
