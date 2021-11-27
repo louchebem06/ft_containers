@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 08:30:06 by bledda            #+#    #+#             */
-/*   Updated: 2021/11/26 22:00:57 by bledda           ###   ########.fr       */
+/*   Updated: 2021/11/27 11:07:36 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,7 +198,10 @@ namespace ft
 			{
 				return (_size);
 			};
-			
+			size_type max_size() const
+			{
+				return (size_type(-1) / sizeof(value_type)) / 2;
+			};
 			bool	empty() const
 			{
 				if (_size)

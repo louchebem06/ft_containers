@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 08:30:03 by bledda            #+#    #+#             */
-/*   Updated: 2021/11/26 21:18:04 by bledda           ###   ########.fr       */
+/*   Updated: 2021/11/27 11:10:26 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,7 @@ int main(void)
 
 	std::cout << ft_test.empty() << std::endl;
 	std::cout << std_test.empty() << std::endl;
+
+	std::cout << ft_test.max_size() << std::endl;
+	std::cout << std_test.max_size() << std::endl;
 }
