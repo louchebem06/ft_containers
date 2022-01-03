@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 12:36:12 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/03 14:45:07 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/03 21:27:47 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,26 +33,28 @@ namespace ft
 			// typedef typename 								reverse_iterator;
 			// typedef typename 								const_reverse_iterator;
 		private:
-			allocator_type	_ptr;
+			allocator_type	_alloc;
 			pointer			_start;
 			pointer 		_end;
 		public:	
 			explicit vector (const allocator_type& alloc = allocator_type())
 			{
-				this->_ptr = alloc;
+				this->_alloc = alloc;
 				this->_start = nullptr;
 				this->_end = nullptr;
 			};
 			explicit vector (size_type n, const value_type& val = value_type(),
 							const allocator_type& alloc = allocator_type())
 			{
-				this->_ptr = alloc;
+				this->_alloc = alloc;
+				this->_start = nullptr;
+				this->_end = nullptr;
 			};
 			template <class InputIterator>
 			vector (InputIterator first, InputIterator last,
 					const allocator_type& alloc = allocator_type())
 			{
-				this->_ptr = alloc;
+				this->_alloc = alloc;
 				this->_start = first;
 				this->_end = last;
 			};
@@ -104,7 +106,7 @@ namespace ft
 
 			size_type max_size() const
 			{
-				return (this->_ptr.max_size());
+				return (this->_alloc.max_size());
 			};
 
 			void resize (size_type n, value_type val = value_type());
