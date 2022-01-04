@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 12:36:12 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/04 20:31:11 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/04 20:36:27 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,13 +193,13 @@ namespace ft
 
 			reference at (size_type n)
 			{
-				if (this->size() < n)
+				if (n >= this->size())
 					throw (std::out_of_range(this->getErrorAT(n)));
 				return ((*this)[n]);
 			};
 			const_reference at (size_type n) const
 			{
-				if (this->size() < n)
+				if (n >= this->size())
 					throw (std::out_of_range(this->getErrorAT(n)));
 				return ((*this)[n]);
 			};
