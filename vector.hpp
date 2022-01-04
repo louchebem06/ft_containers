@@ -6,16 +6,18 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 12:36:12 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/04 20:36:27 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/05 00:09:47 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
 #include <memory>
-#include <sstream>
-#include <string>
 #include <iterator>
+#ifdef __linux__
+	# include <sstream>
+	# include <string>
+#endif
 
 namespace ft
 {
@@ -194,7 +196,11 @@ namespace ft
 			reference at (size_type n)
 			{
 				if (n >= this->size())
-					throw (std::out_of_range(this->getErrorAT(n)));
+					#ifdef __APPLE__
+						throw (std::out_of_range("vector"));
+					#elif __linux__
+						throw (std::out_of_range(this->getErrorAT(n)));
+					#endif
 				return ((*this)[n]);
 			};
 			const_reference at (size_type n) const
@@ -229,11 +235,12 @@ namespace ft
 			void push_back (const value_type& val)
 			{
 				size_type 		size = this->size();
-				allocator_type 	new_alloc;
-				pointer			new_pointer;
 
 				if (size + 1 > this->capacity())
 				{
+					allocator_type 	new_alloc;
+					pointer			new_pointer;
+				
 					updateCapacity(size + 1);
 					new_pointer = new_alloc.allocate(this->capacity());
 					for (size_type i = 0; i < size; i++)
@@ -277,14 +284,16 @@ namespace ft
 
 			// allocator_type get_allocator() const;
 		private:
-			std::string getErrorAT(size_type n)
-			{
-				std::stringstream error;
+			#ifdef __linux__
+				std::string getErrorAT(size_type n)
+				{
+					std::stringstream error;
 
-				error << "vector::_M_range_check: __n (which is " << n \
-						<< ") >= this->size() (which is " << this->size() << ")";
-				return (error.str());
-			}
+					error << "vector::_M_range_check: __n (which is " << n \
+							<< ") >= this->size() (which is " << this->size() << ")";
+					return (error.str());
+				}
+			#endif
 			void updateCapacity(size_type size)
 			{
 				if (size > this->capacity())
