@@ -6,13 +6,16 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 12:36:12 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/03 21:27:47 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/04 20:31:11 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
 #include <memory>
+#include <sstream>
+#include <string>
+#include <iterator>
 
 namespace ft
 {
@@ -20,35 +23,45 @@ namespace ft
 	class vector
 	{
 		public:
-			typedef T											value_type;
-			typedef Alloc										allocator_type;
-			typedef typename allocator_type::reference			reference;
-			typedef typename allocator_type::const_reference 	const_reference;
-			typedef typename allocator_type::pointer 			pointer;
-			typedef typename allocator_type::const_pointer 		const_pointer;
-			typedef typename allocator_type::difference_type	difference_type;
-			typedef typename allocator_type::size_type 			size_type;
-			// typedef typename 								iterator;
-			// typedef typename 								const_iterator;
-			// typedef typename 								reverse_iterator;
-			// typedef typename 								const_reverse_iterator;
+			typedef T												value_type;
+			typedef Alloc											allocator_type;
+			typedef typename allocator_type::reference				reference;
+			typedef typename allocator_type::const_reference 		const_reference;
+			typedef typename allocator_type::pointer 				pointer;
+			typedef typename allocator_type::const_pointer 			const_pointer;
+			typedef typename allocator_type::difference_type		difference_type;
+			typedef typename allocator_type::size_type 				size_type;
+			// typedef typename std::iterator_traits<value_type>		iterator;
+			// typedef typename std::iterator_traits<const value_type>	const_iterator;
+			// typedef typename std::reverse_iterator<iterator>		reverse_iterator;
+			// typedef typename std::reverse_iterator<const_iterator>	const_reverse_iterator;
 		private:
-			allocator_type	_alloc;
-			pointer			_start;
-			pointer 		_end;
-		public:	
+			allocator_type		_alloc;
+			pointer 			_ptr;
+			pointer				_start;
+			pointer 			_end;
+			size_type			_size;
+			size_type			_capacity;
+		public:
 			explicit vector (const allocator_type& alloc = allocator_type())
 			{
 				this->_alloc = alloc;
-				this->_start = nullptr;
-				this->_end = nullptr;
+				this->_size = 0;
+				this->_start = 0;
+				this->_end = 0;
+				this->_capacity = 0;
 			};
 			explicit vector (size_type n, const value_type& val = value_type(),
 							const allocator_type& alloc = allocator_type())
 			{
 				this->_alloc = alloc;
-				this->_start = nullptr;
-				this->_end = nullptr;
+				this->_size = n;
+				updateCapacity(n);
+				this->_ptr = this->_alloc.allocate(this->capacity());
+				for (size_type i = 0; i < n; i++)
+       				this->_alloc.construct(this->_ptr + i, val);
+				this->start = this->_ptr;
+				this->end = this->_ptr + n - 1;
 			};
 			template <class InputIterator>
 			vector (InputIterator first, InputIterator last,
@@ -63,45 +76,65 @@ namespace ft
 				*this = x;
 			};
 
-			~vector();
-
-			vector& operator=(const vector& x);
-
-			iterator begin()
+			~vector()
 			{
-				return (this->_start);
-			};
-			const_iterator begin() const
-			{
-				return (this->_start);
+				this->clear();
 			};
 
-			iterator end()
+			vector& operator=(const vector& x)
 			{
-				return (this->_end);
-			};
-			const_iterator end() const
-			{
-				return (this->_end);
+				if (*this != x)
+				{
+					this->clear();
+					this->_alloc = x._alloc;
+					this->_ptr = x._ptr;
+					this->start = x._start;
+					this->end = x._end;
+					this->_size = x._size;
+					this->_capacity = x._capacity;
+				}
+				return (*this);
 			};
 
-			reverse_iterator rbegin();
-			const_reverse_iterator rbegin() const;
+			// iterator begin()
+			// {
+			// 	return (iterator(this->_start));
+			// };
+			// const_iterator begin() const
+			// {
+			// 	return (const_iterator(this->_start));
+			// };
 
-			reverse_iterator rend();
-			const_reverse_iterator rend() const;
+			// iterator end()
+			// {
+			// 	return (iterator(this->_end));
+			// };
+			// const_iterator end() const
+			// {
+			// 	return (const_iterator(this->_end));
+			// };
+
+			// reverse_iterator rbegin()
+			// {
+			// 	return (reverse_iterator(this->_end));
+			// };
+			// const_reverse_iterator rbegin() const
+			// {
+			// 	return (const_reverse_iterator(this->_end));
+			// };
+
+			// reverse_iterator rend()
+			// {
+			// 	return (reverse_iterator(this->_start));
+			// };
+			// const_reverse_iterator rend() const
+			// {
+			// 	return (const_reverse_iterator(this->_start));
+			// };
 
 			size_type size() const
 			{
-				iterator 	tmp = this->_start;
-				size_type	size = 0;
-				
-				while(tmp != this->_end)
-				{
-					tmp++;
-					size++;
-				}
-				return (size);
+				return (this->_size);
 			};
 
 			size_type max_size() const
@@ -109,46 +142,157 @@ namespace ft
 				return (this->_alloc.max_size());
 			};
 
-			void resize (size_type n, value_type val = value_type());
+			// void resize (size_type n, value_type val = value_type());
 
-			size_type capacity() const;
+			size_type capacity() const
+			{
+				return (this->_capacity);
+			};
 
-			bool empty() const;
+			bool empty() const
+			{
+				if (this->_size == 0)
+					return (true);
+				return (false);
+			};
 
-			void reserve (size_type n);
+			void reserve (size_type n)
+			{
+				size_type 		capacity = this->_capacity;
 
-			reference operator[] (size_type n);
-			const_reference operator[] (size_type n) const;
+				if (n > capacity)
+				{
+					size_type 		size = this->size();
+					allocator_type 	new_alloc;
+					pointer			new_pointer;
+				
+					this->_capacity = n;
+					new_pointer = new_alloc.allocate(n);
+					if (!new_pointer)
+						throw std::bad_alloc();
+					for (size_type i = 0; i < size; i++)
+       					new_alloc.construct(new_pointer + i, (*this)[i]);
+					this->clear();
+					this->_ptr = new_pointer;
+					this->_alloc = new_alloc;
+					this->_start = this->_ptr;
+					this->_end = this->_ptr + size;
+				}
+				else if (n > this->max_size())
+					throw std::length_error("vector::reserve");
+			};
 
-			reference at (size_type n);
-			const_reference at (size_type n) const;
+			reference operator[] (size_type n)
+			{
+				return (*(this->_start + n));
+			};
+			const_reference operator[] (size_type n) const
+			{
+				return (*(this->_start + n));
+			};
 
-			reference front();
-			const_reference front() const;
+			reference at (size_type n)
+			{
+				if (this->size() < n)
+					throw (std::out_of_range(this->getErrorAT(n)));
+				return ((*this)[n]);
+			};
+			const_reference at (size_type n) const
+			{
+				if (this->size() < n)
+					throw (std::out_of_range(this->getErrorAT(n)));
+				return ((*this)[n]);
+			};
 
-			reference back();
-			const_reference back() const;
+			reference front()
+			{
+				return ((*this)[0]);
+			};
+			const_reference front() const
+			{
+				return ((*this)[0]);
+			};
 
-			template <class InputIterator>
-			void assign (InputIterator first, InputIterator last);
-			void assign (size_type n, const value_type& val);
+			reference back()
+			{
+				return ((*this)[this->size()-1]);
+			};
+			const_reference back() const
+			{
+				return ((*this)[this->size()-1]);
+			};
 
-			void push_back (const value_type& val);
+			// template <class InputIterator>
+			// void assign (InputIterator first, InputIterator last);
+			// void assign (size_type n, const value_type& val);
 
-			void pop_back();
+			void push_back (const value_type& val)
+			{
+				size_type 		size = this->size();
+				allocator_type 	new_alloc;
+				pointer			new_pointer;
 
-			iterator insert (iterator position, const value_type& val);
-			void insert (iterator position, size_type n, const value_type& val);
-			template <class InputIterator>
-			void insert (iterator position, InputIterator first, InputIterator last);
+				if (size + 1 > this->capacity())
+				{
+					updateCapacity(size + 1);
+					new_pointer = new_alloc.allocate(this->capacity());
+					for (size_type i = 0; i < size; i++)
+       					new_alloc.construct(new_pointer + i, (*this)[i]);
+					new_alloc.construct(new_pointer + size, val);
+					this->clear();
+					this->_ptr = new_pointer;
+					this->_alloc = new_alloc;
+					this->_start = this->_ptr;
+				}
+				else
+					this->_alloc.construct(this->_ptr + size, val);
+				this->_end = this->_ptr + size;
+				this->_size = size + 1;
+			}
 
-			iterator erase (iterator position);
-			iterator erase (iterator first, iterator last);
+			// void pop_back();
 
-			void swap (vector& x);
+			// iterator insert (iterator position, const value_type& val);
+			// void insert (iterator position, size_type n, const value_type& val);
+			// template <class InputIterator>
+			// void insert (iterator position, InputIterator first, InputIterator last);
 
-			void clear();
+			// iterator erase (iterator position);
+			// iterator erase (iterator first, iterator last);
 
-			allocator_type get_allocator() const;
+			// void swap (vector& x);
+
+			void clear()
+			{
+				size_type size = this->size();
+
+				if (this->empty())
+					return ;
+				for (size_type i = 0; i < size; i++)
+        			this->_alloc.destroy(this->_ptr + i);
+				this->_start = this->_ptr;
+				this->_end = this->_ptr;
+				this->_size = 0;
+			};
+
+			// allocator_type get_allocator() const;
+		private:
+			std::string getErrorAT(size_type n)
+			{
+				std::stringstream error;
+
+				error << "vector::_M_range_check: __n (which is " << n \
+						<< ") >= this->size() (which is " << this->size() << ")";
+				return (error.str());
+			}
+			void updateCapacity(size_type size)
+			{
+				if (size > this->capacity())
+				{
+					this->_capacity *= 2;
+					if (this->_capacity <= 0)
+						this->_capacity = 1;
+				}
+			}
 	};
 }

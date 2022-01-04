@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 21:35:44 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/04 14:38:26 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/04 15:45:11 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,81 +19,96 @@
 namespace ft
 {
 	// Base
-	template <class Category, class T, class Distance = ptrdiff_t,
+	template <class T, class Distance = ptrdiff_t,
           class Pointer = T*, class Reference = T& >
 	class iterator
 	{
-		protected:
-			typedef T         value_type;
-			typedef Distance  difference_type;
-			typedef Pointer   pointer;
-			typedef Reference reference;
-
-			virtual iterator(pointer ptr)
+		public:
+			typedef iterator<T, Distance, Pointer, Reference> Iterator;
+	
+			iterator(Pointer ptr)
 			{
-				pointer _ptr = ptr;
+				Pointer _ptr = ptr;
 			};
 
 			virtual ~iterator(){};
 
-			iterator operator=(iterator rhs)
+			iterator operator=(Iterator rhs)
 			{
 				this = rhs;
 				return (this);
 			}
 
-			iterator operator++()
+			Iterator operator++()
 			{
 				this->_ptr++;
 				return (this);
 			}
-			iterator operator++(T)
-			{
-				iterator tmp = this;
-				++this->_ptr;
-				return (tmp);
-			}
-			
-			pointer _ptr;	
+			// Iterator operator++(T)
+			// {
+			// 	Iterator tmp = this;
+			// 	++this->_ptr;
+			// 	return (tmp);
+			// }
+		protected:	
+			Pointer _ptr;	
 	};
 
 	// Input
-	template <class Category, class T, class Distance = ptrdiff_t,
+	template <class T, class Distance = ptrdiff_t,
           class Pointer = T*, class Reference = T& >
-	class input_iterator_tag : public iterator<input_iterator_tag, T,
+	class input_iterator_tag : public iterator<T,
 		Distance, Pointer, Reference>
 	{
 		public:
-			bool operator==(iterator rhs)
+			typedef iterator<T, Distance, Pointer, Reference> Iterator;
+			
+			input_iterator_tag(Pointer ptr)
+			{
+				Pointer _ptr = ptr;
+			};
+
+			virtual ~input_iterator_tag(){};
+			
+			bool operator==(Iterator rhs)
 			{
 				if (this == rhs)
 					return (true);
 				return (false);
 			};
-			bool operator!=(iterator rhs)
+			bool operator!=(Iterator rhs)
 			{
 				if (this != rhs)
 					return (true);
 				return (false);
 			};
-			reference operator*()
+			Reference operator*()
 			{
 				return (*this);
 			}
-			reference operator->()
+			Reference operator->()
 			{
 				return (*this);
 			}
 	};
 
 	// Output
-	template <class Category, class T, class Distance = ptrdiff_t,
+	template <class T, class Distance = ptrdiff_t,
           class Pointer = T*, class Reference = T& >
-	class output_iterator_tag : public iterator<output_iterator_tag, T,
+	class output_iterator_tag : public iterator<T,
 		Distance, Pointer, Reference>
 	{
 		public:
-			reference operator=(iterator const & rhs)
+			typedef iterator<T, Distance, Pointer, Reference> Iterator;
+			
+			output_iterator_tag(Pointer ptr)
+			{
+				Pointer _ptr = ptr;
+			};
+
+			virtual ~output_iterator_tag(){};
+			
+			Reference operator=(Iterator const & rhs)
 			{
 				if (*this != rhs)
 				{
@@ -101,111 +116,144 @@ namespace ft
 				}
 				return (*this);
 			};
-			reference operator++()
+			Reference operator++()
 			{
-				this->_ptr++:
+				this->_ptr++;
 				return (*this);
 			};
 	};
 
 	// Forward
-	template <class Category, class T, class Distance = ptrdiff_t,
+	template <class T, class Distance = ptrdiff_t,
           class Pointer = T*, class Reference = T& >
-	class forward_iterator_tag : virtual public input_iterator_tag,
-										virtual public output_iterator_tag
+	class forward_iterator_tag :
+			virtual public input_iterator_tag<T, Distance, Pointer, Reference>,
+			virtual public output_iterator_tag<T, Distance, Pointer, Reference>
 	{
 		public:
-			forward_iterator_tag(){};
+			forward_iterator_tag()
+			{
+				Pointer _ptr = nullptr;
+			};
+
+			forward_iterator_tag(Pointer ptr)
+			{
+				Pointer _ptr = ptr;
+			};
+
+			virtual ~forward_iterator_tag(){};
 	};
 
 	// Bidirectional
-	template <class Category, class T, class Distance = ptrdiff_t,
+	template <class T, class Distance = ptrdiff_t,
           class Pointer = T*, class Reference = T& >
-	class bidirectional_iterator_tag : public forward_iterator_tag
+	class bidirectional_iterator_tag :
+			public forward_iterator_tag<T, Distance, Pointer, Reference>
 	{
 		public:
-			iterator operator--()
+			typedef iterator<T, Distance, Pointer, Reference> Iterator;
+			
+			bidirectional_iterator_tag(Pointer ptr)
+			{
+				Pointer _ptr = ptr;
+			};
+
+			virtual ~bidirectional_iterator_tag(){};
+			
+			Iterator operator--()
 			{
 				this->_ptr--;
 				return (this);
 			}
-			iterator operator--(T)
+			Iterator operator--(T)
 			{
-				iterator tmp = this;
+				Iterator tmp = this;
 				--this->_ptr;
 				return (tmp);
 			}
-			reference operator--()
-			{
-				*this->_ptr--;
-				return (*this);
-			}
+			// Reference operator--()
+			// {
+			// 	*this->_ptr--;
+			// 	return (*this);
+			// }
 	};
 
 	// Random access
-	template <class Category, class T, class Distance = ptrdiff_t,
+	template <class T, class Distance = ptrdiff_t,
           class Pointer = T*, class Reference = T& >
-	class random_access_iterator_tag : public bidirectional_iterator_tag
+	class random_access_iterator_tag :
+			public bidirectional_iterator_tag<T, Distance, Pointer, Reference>
 	{
 		public:
-			iterator operator+(iterator rhs)
+			typedef iterator<T, Distance, Pointer, Reference> Iterator;
+			
+			random_access_iterator_tag(Pointer ptr)
+			{
+				Pointer _ptr = ptr;
+			};
+
+			virtual ~random_access_iterator_tag(){};
+			
+			Iterator operator+(Iterator rhs)
 			{
 				this->_ptr + rhs->_ptr;
 				return (this);
 			};
-			iterator operator+(iterator lhs, iterator rhs)
-			{
-				iterator tmp = lhs->_ptr + rhs->_ptr;
-				return (tmp);
-			};
-			iterator operator-(iterator rhs)
+			// Iterator operator+(Iterator lhs,
+			// 					Iterator rhs)
+			// {
+			// 	Iterator tmp = lhs->_ptr + rhs->_ptr;
+			// 	return (tmp);
+			// };
+			Iterator operator-(Iterator rhs)
 			{
 				this->_ptr - rhs->_ptr;
 				return (this);
 			};
-			iterator operator-(iterator lhs, iterator rhs)
-			{
-				iterator tmp = lhs->_ptr - rhs->_ptr;
-				return (tmp);
-			};
+			// Iterator operator-(Iterator lhs,
+			// 					Iterator rhs)
+			// {
+			// 	Iterator tmp = lhs->_ptr - rhs->_ptr;
+			// 	return (tmp);
+			// };
 
-			bool operator<(iterator rhs)
+			bool operator<(Iterator rhs)
 			{
 				if (this->_ptr < rhs->_ptr)
 					return (true);
 				return (false);
 			};
-			bool operator>(iterator rhs)
+			bool operator>(Iterator rhs)
 			{
 				if (this->_ptr > rhs->_ptr)
 					return (true);
 				return (false);
 			};
-			bool operator<=(iterator rhs)
+			bool operator<=(Iterator rhs)
 			{
 				if (this->_ptr <= rhs->_ptr)
 					return (true);
 				return (false);
 			};
-			bool operator>=(iterator rhs)
+			bool operator>=(Iterator rhs)
 			{
 				if (this->_ptr >= rhs->_ptr)
 					return (true);
 				return (false);
 			};
 
-			iterator operator+=(iterator rhs)
+			Iterator operator+=(Iterator rhs)
 			{
 				this->_ptr += rhs->_ptr;
 				return (this);
 			};
-			iterator operator-=(iterator rhs)
+			Iterator operator-=(Iterator rhs)
 			{
 				this->_ptr -= rhs->_ptr;
 				return (this);
 			};
 
-			pointer operator[](size_t i)
+			Pointer operator[](size_t i)
 			{
 				return (this->_ptr + i);
 			}
