@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 17:05:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/05 21:34:43 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/05 21:51:15 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,14 @@ int main(void)
 	// 	std::cerr << "error: " << error.what() << std::endl;
 	// }
 
-	fake.erase(fake.begin() + 2);
-	real.erase(real.begin() + 2);
+	fake.insert(fake.begin(), "coucou");
+	// real.insert(real.begin(), 10, "sadas");
 	
 	for (ft::vector<std::string>::iterator it = fake.begin(); it != fake.end(); it++)
 		std::cout << *it << std::endl;
 	
-	std::cout << std::endl;
+	// std::cout << std::endl;
 
-	for (std::vector<std::string>::iterator it = real.begin(); it != real.end(); it++)
-		std::cout << *it << std::endl;
+	// for (std::vector<std::string>::iterator it = real.begin(); it != real.end(); it++)
+	// 	std::cout << *it << std::endl;
 }

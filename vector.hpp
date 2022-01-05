@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 12:36:12 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/05 21:34:36 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/05 22:22:41 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,12 @@ namespace ft
 			{
 				this->_alloc = alloc;
 				this->_size = n;
-				updateCapacity(n);
-				this->_ptr = this->_alloc.allocate(this->capacity());
+				this->_capacity = n;
+				this->_ptr = this->_alloc.allocate(n);
 				for (size_type i = 0; i < n; i++)
        				this->_alloc.construct(this->_ptr + i, val);
-				this->start = this->_ptr;
-				this->end = this->_ptr + n - 1;
+				this->_start = this->_ptr;
+				this->_end = this->_ptr + n - 1;
 			};
 			template <class InputIterator>
 			vector (InputIterator first, InputIterator last,
@@ -89,7 +89,7 @@ namespace ft
 
 			vector& operator=(const vector& x)
 			{
-				if (*this != x)
+				if (this->_ptr != x._ptr)
 				{
 					//size_type capacity = this->capacity();
 
@@ -97,8 +97,8 @@ namespace ft
 					//this->_alloc.deallocate(this->_ptr, capacity);
 					this->_alloc = x._alloc;
 					this->_ptr = x._ptr;
-					this->start = x._start;
-					this->end = x._end;
+					this->_start = x._start;
+					this->_end = x._end;
 					this->_size = x._size;
 					this->_capacity = x._capacity;
 				}
@@ -359,7 +359,7 @@ namespace ft
 				this->_end = this->_ptr + this->size() - 1;
 			};
 
-			// iterator insert (iterator position, const value_type& val);
+			// iterator insert (iterator position, const value_type& val) {};
 			// void insert (iterator position, size_type n, const value_type& val);
 			// template <class InputIterator>
 			// void insert (iterator position, InputIterator first, InputIterator last);

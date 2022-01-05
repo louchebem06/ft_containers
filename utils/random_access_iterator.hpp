@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 15:20:50 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/05 21:17:24 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/05 22:04:41 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ namespace ft
 		public:			
 			random_access_iterator()
 			{
-				this->_ptr = nullptr;
+				this->_ptr = 0;
 			};
 			
 			random_access_iterator(pointer ptr)
