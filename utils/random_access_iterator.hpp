@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 15:20:50 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/05 22:04:41 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/06 17:18:51 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,17 @@ namespace ft
 			{
 				this->_ptr = 0;
 			};
+
+			// template <class _T>
+			// random_access_iterator(_T & x)
+			// {
+			// 	this->_ptr = x.getPointer();
+			// };
+			
+			pointer getPointer(void)
+			{
+				return (this->_ptr);
+			}
 			
 			random_access_iterator(pointer ptr)
 			{
@@ -99,9 +110,11 @@ namespace ft
 				return (tmp);
 			}
 
-			/*
-				Faut faire - et + avec le parametre a gauche
-			*/
+			template <class T_, bool reverse_>
+			friend random_access_iterator<T_, reverse_> operator+(size_t n, random_access_iterator<T_, reverse_> const & rhs);
+
+			template <class T_, bool reverse_>
+			friend random_access_iterator<T_, reverse_> operator-(size_t n, random_access_iterator<T_, reverse_> const & rhs);
 
 			bool operator==(const iterator & rhs)
 			{
@@ -168,4 +181,20 @@ namespace ft
 				return (*(this->_ptr + n));
 			}
 	};
+
+	template <class T_, bool reverse_>
+	random_access_iterator<T_, reverse_> operator+(
+		size_t n, random_access_iterator<T_, reverse_> const & rhs)
+	{
+		random_access_iterator<T_, reverse_> tmp = (!reverse_) ? n + rhs._ptr : n - rhs._ptr;
+		return (tmp);
+	}
+
+	template <class T_, bool reverse_>
+	random_access_iterator<T_, reverse_> operator-(
+		size_t n, random_access_iterator<T_, reverse_> const & rhs)
+	{
+		random_access_iterator<T_, reverse_> tmp = (!reverse_) ? n - rhs._ptr : n + rhs._ptr;
+		return (tmp);
+	}
 }

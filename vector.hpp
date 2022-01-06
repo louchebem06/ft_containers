@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 12:36:12 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/05 22:22:41 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/06 15:33:02 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,18 +89,23 @@ namespace ft
 
 			vector& operator=(const vector& x)
 			{
-				if (this->_ptr != x._ptr)
+				if (this != &x)
 				{
-					//size_type capacity = this->capacity();
+					allocator_type	new_alloc;
+					pointer 		new_pointer;
+					size_type		size = x.size();
+					size_type		capacity = x.capacity();
 
-					this->clear();
-					//this->_alloc.deallocate(this->_ptr, capacity);
-					this->_alloc = x._alloc;
-					this->_ptr = x._ptr;
-					this->_start = x._start;
-					this->_end = x._end;
-					this->_size = x._size;
-					this->_capacity = x._capacity;
+					new_pointer = new_alloc.allocate(capacity);
+					for (size_type i = 0; i < x.size(); i++)
+						new_alloc.construct(new_pointer + i, x[i]);
+					//this->clear();
+					this->_alloc = new_alloc;
+					this->_ptr = new_pointer;
+					this->_start = new_pointer;
+					this->_end = new_pointer + (size - 1);
+					this->_size = size;
+					this->_capacity = capacity;
 				}
 				return (*this);
 			};
@@ -257,7 +262,6 @@ namespace ft
 
 			reference front()
 			{
-				std::cout << &this->_start << std::endl;
 				return ((*this)[0]);
 			};
 			const_reference front() const
