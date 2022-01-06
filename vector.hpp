@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 12:36:12 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/06 15:33:02 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/06 21:15:46 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,6 @@
 #include <memory>
 #include <iostream>
 #include "utils/random_access_iterator.hpp"
-#ifdef __linux__
-	# include <sstream>
-	# include <string>
-#endif
 
 namespace ft
 {
@@ -242,21 +238,13 @@ namespace ft
 			reference at (size_type n)
 			{
 				if (n >= this->size())
-					#ifdef __APPLE__
-						throw (std::out_of_range("vector"));
-					#elif __linux__
-						throw (std::out_of_range(this->getErrorAT(n)));
-					#endif
+					throw (std::out_of_range("vector"));
 				return ((*this)[n]);
 			};
 			const_reference at (size_type n) const
 			{
 				if (n >= this->size())
-					#ifdef __APPLE__
-						throw (std::out_of_range("vector"));
-					#elif __linux__
-						throw (std::out_of_range(this->getErrorAT(n)));
-					#endif
+					throw (std::out_of_range("vector"));
 				return ((*this)[n]);
 			};
 
@@ -281,7 +269,7 @@ namespace ft
 			template <class InputIterator>
 			void assign (InputIterator first, InputIterator last)
 			{
-				size_type new_size = this->countIterator(first, last);
+				size_type new_size = last - first;
 				size_type capacity = this->capacity();
 				
 				this->clear();
@@ -453,16 +441,6 @@ namespace ft
 				return (this->_alloc);
 			};
 		private:
-			#ifdef __linux__
-				std::string getErrorAT(size_type n)
-				{
-					std::stringstream error;
-
-					error << "vector::_M_range_check: __n (which is " << n \
-							<< ") >= this->size() (which is " << this->size() << ")";
-					return (error.str());
-				}
-			#endif
 			void updateCapacity(size_type size)
 			{
 				if (size > this->capacity())
@@ -471,18 +449,6 @@ namespace ft
 					if (this->_capacity <= 0)
 						this->_capacity = 1;
 				}
-			}
-			template <class InputIterator>
-			size_type countIterator(InputIterator begin, InputIterator end)
-			{
-				size_type size = 0;
-
-				while (begin != end)
-				{
-					begin++;
-					size++;
-				}
-				return (size);
 			}
 	};
 }

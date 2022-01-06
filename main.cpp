@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 17:05:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/06 17:21:47 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/06 21:11:28 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ int		main(void)
 	for (unsigned long int i = 0; i < vct.size(); ++i)
 	{
 		vct.at(i) = (vct.size() - i) * 3;
-		std::cout << "vct.at(): " << vct.at(i) << " | ";
 		std::cout << "vct[]: " << vct[i] << std::endl;
 	}
 	printSize(vct);
@@ -59,8 +58,10 @@ int		main(void)
 	std::cout << "front(): " << vct.front() << " " << vct_c.front() << std::endl;
 	std::cout << "back(): " << vct.back() << " " <<  vct_c.back() << std::endl;
 
+	for (unsigned long int i = 0; i < vct_c.size(); ++i)
+		std::cout << "vct_c.at(): " << vct_c.at(i) << std::endl;
 	try {
-		vct.at(10) = 42;
+		std::cout << vct_c.at(10) << std::endl;
 	}
 	catch (std::out_of_range &e) {
 		std::cout << "Catch out_of_range exception!" << std::endl;
@@ -68,5 +69,6 @@ int		main(void)
 	catch (std::exception &e) {
 		std::cout << "Catch exception: " << e.what() << std::endl;
 	}
+	printSize(vct_c);
 	return (0);
 }
