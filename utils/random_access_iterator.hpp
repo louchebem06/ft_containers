@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 15:20:50 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/07 16:27:44 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/07 22:42:24 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,14 +129,14 @@ namespace ft
 			
 			bool operator!=(random_access_iterator<const T, reverse> & rhs)
 			{
-				if (this->getPointer() - 1 != rhs.getPointer())
+				if (this->getPointer() != rhs.getPointer())
 					return (true);
 				return (false);
 			};
 
 			bool operator!=(iterator const & rhs)
 			{
-				if (this->getPointer() - 1 != rhs._ptr)
+				if (this->getPointer() != rhs._ptr)
 					return (true);
 				return (false);
 			};

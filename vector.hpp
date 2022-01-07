@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 12:36:12 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/07 16:17:03 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/07 22:23:10 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ namespace ft
 			};
 			const_iterator end() const
 			{
-				return (const_iterator(this->_end));
+				return (const_iterator(this->_end + 1));
 			};
 
 			reverse_iterator rbegin()
@@ -271,9 +271,10 @@ namespace ft
 			};
 
 			template <class InputIterator>
-			void assign (InputIterator first, InputIterator last)
+			void assign (InputIterator first, InputIterator last,
+						typename enable_if<!is_integral<InputIterator>::value,bool>::type = false)
 			{
-				size_type new_size = last - first;
+				size_type new_size = last.getPointer() - first.getPointer();
 				size_type capacity = this->capacity();
 				
 				this->clear();
@@ -355,7 +356,7 @@ namespace ft
 				this->_end = this->_ptr + this->size() - 1;
 			};
 
-			// iterator insert (iterator position, const value_type& val) {};
+			// iterator insert (iterator position, const value_type& val);
 			// void insert (iterator position, size_type n, const value_type& val);
 			// template <class InputIterator>
 			// void insert (iterator position, InputIterator first, InputIterator last);
