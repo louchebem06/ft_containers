@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 17:05:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/06 21:11:28 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/07 15:30:20 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include "utils/type_traits.hpp"
 
 //#define TESTED_NAMESPACE std
-#define TESTED_TYPE std::string
+#define TESTED_TYPE int
 
 #define T_SIZE_TYPE typename TESTED_NAMESPACE::vector<T>::size_type
 
@@ -42,33 +43,43 @@ void	printSize(TESTED_NAMESPACE::vector<T> const &vct, bool print_content = true
 	std::cout << "###############################################" << std::endl;
 }
 
-int		main(void)
+void	is_empty(TESTED_NAMESPACE::vector<TESTED_TYPE> const &vct)
 {
-	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(7);
+	std::cout << "is_empty: " << vct.empty() << std::endl;
+}
 
-	for (unsigned long int i = 0; i < vct.size(); ++i)
-	{
-		vct.at(i) = (vct.size() - i) * 3;
-		std::cout << "vct[]: " << vct[i] << std::endl;
-	}
-	printSize(vct);
+int main ()
+{
+	TESTED_NAMESPACE::vector<TESTED_TYPE> foo(3, 15);
+	TESTED_NAMESPACE::vector<TESTED_TYPE> bar(5, 42);
+	
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator it_foo = foo.begin();
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator it_bar = bar.begin();
 
-	TESTED_NAMESPACE::vector<TESTED_TYPE> const vct_c(vct);
+	std::cout << "BEFORE SWAP" << std::endl;
 
-	std::cout << "front(): " << vct.front() << " " << vct_c.front() << std::endl;
-	std::cout << "back(): " << vct.back() << " " <<  vct_c.back() << std::endl;
+	std::cout << "foo contains:" << std::endl;
+	printSize(foo);
+	std::cout << "bar contains:" << std::endl;
+	printSize(bar);
 
-	for (unsigned long int i = 0; i < vct_c.size(); ++i)
-		std::cout << "vct_c.at(): " << vct_c.at(i) << std::endl;
-	try {
-		std::cout << vct_c.at(10) << std::endl;
-	}
-	catch (std::out_of_range &e) {
-		std::cout << "Catch out_of_range exception!" << std::endl;
-	}
-	catch (std::exception &e) {
-		std::cout << "Catch exception: " << e.what() << std::endl;
-	}
-	printSize(vct_c);
+	foo.swap(bar);
+
+	std::cout << "AFTER SWAP" << std::endl;
+
+	std::cout << "foo contains:" << std::endl;
+	printSize(foo);
+	std::cout << "bar contains:" << std::endl;
+	printSize(bar);
+
+	std::cout << "Iterator validity:" << std::endl;
+	std::cout << (it_foo == bar.begin()) << std::endl;
+	std::cout << (it_bar == foo.begin()) << std::endl;
+
+	swap(foo, bar);
+	std::cout << "foo contains:" << std::endl;
+	printSize(foo);
+	std::cout << "bar contains:" << std::endl;
+	printSize(bar);
 	return (0);
 }

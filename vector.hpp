@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 12:36:12 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/06 21:15:46 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/07 15:32:12 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <memory>
 #include <iostream>
 #include "utils/random_access_iterator.hpp"
+#include "utils/type_traits.hpp"
 
 namespace ft
 {
@@ -64,7 +65,8 @@ namespace ft
 			};
 			template <class InputIterator>
 			vector (InputIterator first, InputIterator last,
-					const allocator_type& alloc = allocator_type())
+					const allocator_type& alloc = allocator_type(),
+					typename enable_if<!is_integral<InputIterator>::value,bool>::type = false)
 			{
 				this->_alloc = alloc;
 				this->_start = first;
@@ -95,7 +97,7 @@ namespace ft
 					new_pointer = new_alloc.allocate(capacity);
 					for (size_type i = 0; i < x.size(); i++)
 						new_alloc.construct(new_pointer + i, x[i]);
-					//this->clear();
+					this->clear();
 					this->_alloc = new_alloc;
 					this->_ptr = new_pointer;
 					this->_start = new_pointer;
@@ -220,7 +222,9 @@ namespace ft
 					this->_ptr = new_pointer;
 					this->_alloc = new_alloc;
 					this->_start = this->_ptr;
-					this->_end = this->_ptr + size;
+					this->_end = this->_ptr + (size - 1);
+					this->_size = size;
+					this->_capacity = n;
 				}
 				else if (n > this->max_size())
 					throw std::length_error("vector::reserve");
@@ -326,7 +330,7 @@ namespace ft
 					allocator_type 	new_alloc;
 					pointer			new_pointer;
 				
-					updateCapacity(size + 1);
+					_updateCapacity(size + 1);
 					new_pointer = new_alloc.allocate(this->capacity());
 					for (size_type i = 0; i < size; i++)
        					new_alloc.construct(new_pointer + i, (*this)[i]);
@@ -404,21 +408,21 @@ namespace ft
 				tmp._alloc 		= x._alloc;
 				tmp._ptr 		= x._ptr;
 				tmp._start 		= x._start;
-				tmp._end 		= x._start;
+				tmp._end 		= x._end;
 				tmp._size	 	= x._size;
 				tmp._capacity 	= x._capacity;
 
 				x._alloc 		= this->_alloc;
 				x._ptr 			= this->_ptr;
 				x._start 		= this->_start;
-				x._end 			= this->_start;
+				x._end 			= this->_end;
 				x._size 		= this->_size;
 				x._capacity 	= this->_capacity;
 
 				this->_alloc 	= tmp._alloc;
 				this->_ptr 		= tmp._ptr;
 				this->_start 	= tmp._start;
-				this->_end 		= tmp._start;
+				this->_end 		= tmp._end;
 				this->_size 	= tmp._size;
 				this->_capacity = tmp._capacity;
 			};
@@ -440,8 +444,32 @@ namespace ft
 			{
 				return (this->_alloc);
 			};
+
+			// template <class T_, class Alloc_>
+			// friend bool operator==(
+			// 	const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+			
+			// template <class T_, class Alloc_>
+			// friend bool operator!=(
+			// 	const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+			
+			// template <class T_, class Alloc_>
+			// friend bool operator<(
+			// 	const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+
+			// template <class T_, class Alloc_>
+			// friend bool operator<=(
+			// 	const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+			
+			// template <class T_, class Alloc_>
+			// friend bool operator>(
+			// 	const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+			
+			// template <class T_, class Alloc_>
+			// friend bool operator>=(
+			// 	const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
 		private:
-			void updateCapacity(size_type size)
+			void _updateCapacity(size_type size)
 			{
 				if (size > this->capacity())
 				{
@@ -450,5 +478,11 @@ namespace ft
 						this->_capacity = 1;
 				}
 			}
+	};
+
+	template <class T_, class Alloc_>
+  	void swap (vector<T_,Alloc_>& x, vector<T_,Alloc_>& y)
+	{
+		x.swap(y);
 	};
 }

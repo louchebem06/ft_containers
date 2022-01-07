@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 15:20:50 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/06 21:21:30 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/07 15:21:48 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,13 @@ namespace ft
 					return (true);
 				return (false);
 			};
+
+			bool operator==(iterator const & rhs)
+			{
+				if (this->getPointer() == rhs._ptr)
+					return (true);
+				return (false);
+			};
 			
 			bool operator!=(random_access_iterator<const T, reverse> & rhs)
 			{
@@ -127,7 +134,23 @@ namespace ft
 				return (false);
 			};
 
+			bool operator!=(iterator const & rhs)
+			{
+				if (this->getPointer() - 1 != rhs._ptr)
+					return (true);
+				return (false);
+			};
+
 			bool operator<(random_access_iterator<const T, reverse> & rhs)
+			{
+				if (reverse)
+					return (this->getPointer() > rhs.getPointer());
+				else if (this->getPointer() < rhs.getPointer())
+					return (true);
+				return (false);
+			};
+
+			bool operator<(iterator const & rhs)
 			{
 				if (reverse)
 					return (this->getPointer() > rhs.getPointer());
@@ -145,7 +168,25 @@ namespace ft
 				return (false);
 			};
 
+			bool operator>(iterator const & rhs)
+			{
+				if (reverse)
+					return (this->getPointer() < rhs.getPointer());
+				else if (this->getPointer() > rhs.getPointer())
+					return (true);
+				return (false);
+			};
+
 			bool operator<=(random_access_iterator<const T, reverse> & rhs)
+			{
+				if (reverse)
+					return (this->getPointer() >= rhs.getPointer());
+				else if (this->getPointer() <= rhs.getPointer())
+					return (true);
+				return (false);
+			};
+
+			bool operator<=(iterator const & rhs)
 			{
 				if (reverse)
 					return (this->getPointer() >= rhs.getPointer());
@@ -155,6 +196,15 @@ namespace ft
 			};
 			
 			bool operator>=(random_access_iterator<const T, reverse> & rhs)
+			{
+				if (reverse)
+					return (this->getPointer() <= rhs.getPointer());
+				else if (this->getPointer() >= rhs.getPointer())
+					return (true);
+				return (false);
+			};
+
+			bool operator>=(iterator const & rhs)
 			{
 				if (reverse)
 					return (this->getPointer() <= rhs.getPointer());
@@ -189,7 +239,7 @@ namespace ft
 		size_t n, random_access_iterator<T_, reverse_> const & rhs)
 	{
 		random_access_iterator<T_, reverse_> tmp = 
-			(!reverse_) ? n + rhs._ptr : n - rhs._ptr;
+			(!reverse_) ? rhs._ptr + n : rhs._ptr - n;
 		return (tmp);
 	}
 
@@ -198,7 +248,7 @@ namespace ft
 		size_t n, random_access_iterator<T_, reverse_> const & rhs)
 	{
 		random_access_iterator<T_, reverse_> tmp =
-			(!reverse_) ? n - rhs._ptr : n + rhs._ptr;
+			(!reverse_) ? rhs._ptr - n : rhs._ptr + n;
 		return (tmp);
 	}
 }
