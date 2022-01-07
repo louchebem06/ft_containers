@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 15:20:50 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/07 15:21:48 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/07 16:27:44 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ namespace ft
 	class random_access_iterator
 	{
 		public:
-			typedef T						value_type;
-			typedef Pointer 				pointer;
-			typedef Reference 				reference;
-			typedef Distance 				distance;
-			typedef random_access_iterator	iterator;
+			typedef T							value_type;
+			typedef Pointer 					pointer;
+			typedef Reference 					reference;
+			typedef Distance 					distance;
+			typedef random_access_iterator		iterator;
 		private:	
 			pointer _ptr;
 		public:			
