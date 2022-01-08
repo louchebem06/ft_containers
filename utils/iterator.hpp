@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 22:52:54 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/08 07:22:44 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/08 07:31:58 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <cstddef>
 #include <iostream>
 
-// Iterator trais
+// Iterator tags
 namespace ft
 {
 	struct input_iterator_tag {};
@@ -23,7 +23,11 @@ namespace ft
 	struct forward_iterator_tag {};
 	struct bidirectional_iterator_tag {};
 	struct random_access_iterator_tag {};
-	
+}
+
+// Iterator traits
+namespace ft
+{
 	template <class Iterator>
 	class iterator_traits
 	{
@@ -53,7 +57,11 @@ namespace ft
         typedef const T&					reference;
         typedef random_access_iterator_tag	iterator_category;
 	};
+}
 
+// Iterator
+namespace ft
+{
 	template <class Category, class T, class Distance = ptrdiff_t,
 		class Pointer = T*, class Reference = T&>
 	class iterator
@@ -69,7 +77,7 @@ namespace ft
 	};
 }
 
-Reverse iterator
+// Reverse iterator
 namespace ft
 {
 	template <class Iterator>
