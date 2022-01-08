@@ -1,0 +1,4 @@
+In file included from srcs/map/insert2.cpp:1:
+srcs/map/common.hpp:1:10: fatal error: 'map.hpp' file not found
+#include "map.hpp"
+         ^~~~~~~~~
