@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 22:52:54 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/08 07:12:51 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/08 07:22:44 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <cstddef>
 #include <iostream>
 
+// Iterator trais
 namespace ft
 {
 	struct input_iterator_tag {};
@@ -66,7 +67,11 @@ namespace ft
 		protected:
 			pointer _ptr;
 	};
+}
 
+Reverse iterator
+namespace ft
+{
 	template <class Iterator>
 	class reverse_iterator
 	{
@@ -203,7 +208,11 @@ namespace ft
 			return (true);
 		return (false);
 	};
+}
 
+// Random access iterator
+namespace ft
+{
 	template <class T>
 	class random_access_iterator : public iterator<random_access_iterator_tag, T>
 	{
@@ -262,16 +271,6 @@ namespace ft
 			random_access_iterator operator-=(difference_type n) {
 				this->_ptr -= n;
 				return (*this);
-			};
-
-			random_access_iterator operator+(difference_type n) {
-				random_access_iterator tmp = this->_ptr + n;
-				return (tmp);
-			};
-
-			random_access_iterator operator-(difference_type n) {
-				random_access_iterator tmp = this->_ptr - n;
-				return (tmp);
 			};
 
 			bool operator==(random_access_iterator const & rhs) {
@@ -351,35 +350,6 @@ namespace ft
 			reference operator*() { return (*(this->_ptr)); };
 			reference operator->() { return (*(this->_ptr)); };
 			reference operator[](size_t n) { return (*(this->_ptr + n)); };
-
-			template <class T_>
-			friend typename random_access_iterator<T_>::difference_type operator- (
-				const random_access_iterator<T_>& lhs,
-				const random_access_iterator<T_>& rhs);
-
-			template <class T_>
-			friend bool operator== (const random_access_iterator<T_>& lhs,
-							const random_access_iterator<T_>& rhs);
-							
-			template <class T_>
-			friend bool operator!= (const random_access_iterator<T_>& lhs,
-							const random_access_iterator<T_>& rhs);
-							
-			template <class T_>
-			friend bool operator<  (const random_access_iterator<T_>& lhs,
-							const random_access_iterator<T_>& rhs);
-							
-			template <class T_>
-			friend bool operator<= (const random_access_iterator<T_>& lhs,
-							const random_access_iterator<T_>& rhs);
-							
-			template <class T_>
-			friend bool operator>  (const random_access_iterator<T_>& lhs,
-							const random_access_iterator<T_>& rhs);
-							
-			template <class T_>
-			friend bool operator>= (const random_access_iterator<T_>& lhs,
-							const random_access_iterator<T_>& rhs);
 	};
 
 	template <class T_>

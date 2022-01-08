@@ -6,12 +6,13 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 16:49:23 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/07 17:05:07 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/08 07:25:14 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
+// Lexicographical compare
 namespace ft
 {
 	// https://www.cplusplus.com/reference/algorithm/lexicographical_compare/
@@ -41,7 +42,11 @@ namespace ft
 		}
 		return (first2!=last2);
 	};
+}
 
+// Equal
+namespace ft
+{
 	// https://www.cplusplus.com/reference/algorithm/equal/
 	template <class InputIterator1, class InputIterator2>
 	bool equal ( InputIterator1 first1, InputIterator1 last1, InputIterator2 first2 )

@@ -6,14 +6,24 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 11:58:38 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/07 16:16:31 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/08 07:28:41 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
+// Enable if
 namespace ft
 {
+	// https://www.cplusplus.com/reference/type_traits/enable_if/
+	template<bool Cond, class T = void> struct enable_if {};
+	template<class T> struct enable_if<true, T> {typedef T type;};
+}
+
+// Integral constant
+namespace ft
+{
+	// https://www.cplusplus.com/reference/type_traits/integral_constant/
 	template <class T, bool v>
 	struct integral_constant
 	{
@@ -21,12 +31,14 @@ namespace ft
 		typedef 		T										value_type;
 		typedef 		integral_constant<value_type, value>	type;
 
-		operator value_type()
-		{
-			return (value);
-		}
+		operator value_type() { return (value); }
 	};
+}
 
+// Is integral
+namespace ft
+{
+	// https://www.cplusplus.com/reference/type_traits/is_integral/
 	template <class T>
 		struct is_integral :
 			public integral_constant<T, false>{};
@@ -76,7 +88,4 @@ namespace ft
 	template <>
 		struct is_integral<unsigned long long int> :
 			public integral_constant<unsigned long long int, true>{};
-
-	template<bool Cond, class T = void> struct enable_if {};
-	template<class T> struct enable_if<true, T> {typedef T type;};
 }
