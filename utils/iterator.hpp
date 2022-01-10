@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 22:52:54 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/08 07:31:58 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/10 12:58:55 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -376,13 +376,13 @@ namespace ft
 		random_access_iterator<T_> tmp = rhs._ptr - n;
 		return (tmp);
 	};
-	// template <class T_>
-	// typename random_access_iterator<T_>::difference_type operator- (
-	// 	const random_access_iterator<T_>& lhs,
-	// 	const random_access_iterator<T_>& rhs)
-	// {
-	// 	return (lhs._ptr - rhs._ptr);
-	// };
+	template <class T_>
+	typename random_access_iterator<T_>::difference_type operator- (
+		const random_access_iterator<T_>& lhs,
+		const random_access_iterator<T_>& rhs)
+	{
+		return (lhs.base() - rhs.base());
+	};
 	template <class T_>
 	bool operator== (const random_access_iterator<T_>& lhs,
 					const random_access_iterator<T_>& rhs)

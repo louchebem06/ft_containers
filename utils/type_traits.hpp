@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 11:58:38 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/08 07:28:41 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/10 12:55:22 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,12 @@ namespace ft
 	template <class T>
 		struct is_integral :
 			public integral_constant<T, false>{};
+	template <class T>
+		struct is_integral<const T> : is_integral<T>{};
 	
 	template <>
 		struct is_integral<bool> :
-			public integral_constant<char, true>{};
+			public integral_constant<bool, true>{};
 	template <>
 		struct is_integral<char> :
 			public integral_constant<char, true>{};
