@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 17:05:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/11 15:42:06 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/11 15:58:57 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,29 @@ std::ostream	&operator<<(std::ostream &o, foo<T> const &bar) {
 #define TESTED_TYPE foo<int>
 #define t_stack_ TESTED_NAMESPACE::stack<TESTED_TYPE>
 typedef t_stack_::container_type container_type;
+
+void	prepost_incdec(TESTED_NAMESPACE::vector<TESTED_TYPE> &vct)
+{
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it = vct.begin();
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it_tmp;
+
+	std::cout << "Pre inc" << std::endl;
+	it_tmp = ++it;
+	std::cout << *it_tmp << " | " << *it << std::endl;
+
+	std::cout << "Pre dec" << std::endl;
+	it_tmp = --it;
+	std::cout << *it_tmp << " | " << *it << std::endl;
+
+	std::cout << "Post inc" << std::endl;
+	it_tmp = it++;
+	std::cout << *it_tmp << " | " << *it << std::endl;
+
+	std::cout << "Post dec" << std::endl;
+	it_tmp = it--;
+	std::cout << *it_tmp << " | " << *it << std::endl;
+	std::cout << "###############################################" << std::endl;
+}
 
 int		main(void)
 {

@@ -1,0 +1,61 @@
+size: 10
+capacity: OK
+max_size: 768614336404564650
+
+Content is:
+- AAAAAAAAAA
+- BBBBBBBBB
+- CCCCCCCC
+- DDDDDDD
+- EEEEEE
+- FFFFF
+- GGGG
+- HHH
+- II
+- J
+###############################################
+[0] erase: 3
+size: 9
+capacity: OK
+max_size: 768614336404564650
+
+Content is:
+- AAAAAAAAAA
+- BBBBBBBBB
+- DDDDDDD
+- EEEEEE
+- FFFFF
+- GGGG
+- HHH
+- II
+- J
+###############################################
+[1] erase: 1
+size: 8
+capacity: OK
+max_size: 768614336404564650
+
+Content is:
+- BBBBBBBBB
+- DDDDDDD
+- EEEEEE
+- FFFFF
+- GGGG
+- HHH
+- II
+- J
+###############################################
+[2] erase: 8
+size: 7
+capacity: OK
+max_size: 768614336404564650
+
+Content is:
+- BBBBBBBBB
+- DDDDDDD
+- EEEEEE
+- FFFFF
+- GGGG
+- HHH
+- II
+###############################################
