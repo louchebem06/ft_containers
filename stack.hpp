@@ -6,9 +6,11 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 15:12:54 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/11 15:55:37 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/11 17:44:34 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#pragma once
 
 #include "vector.hpp"
 #include <vector>
