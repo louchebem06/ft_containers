@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 12:36:12 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/11 02:40:55 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/11 17:33:13 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,19 @@ namespace ft
 			template <class InputIterator>
 			vector (InputIterator first, InputIterator last,
 					const allocator_type& alloc = allocator_type(),
-					typename enable_if<!is_integral<InputIterator>::value,bool>::type = false)
+					typename enable_if<!is_integral<InputIterator>::value, bool>::type = false)
 			{
-				(void)first;
-				(void)last;
+				difference_type n = ft::distance<InputIterator>(first, last);
+				
 				this->_alloc = alloc;
-				// this->_start = first;
-				// this->_end = last;
+				this->_ptr = this->_alloc.allocate(n);
+				this->_size = n;
+				this->_capacity = n;
+				size_t i = 0;
+				while (first != last)
+       				this->_alloc.construct(this->_ptr + i++, *first++);
+				this->_start = this->_ptr;
+				this->_end = this->_ptr + (this->size() - 1);
 			};
 			vector (const vector& x)
 			{
@@ -100,7 +106,7 @@ namespace ft
 					new_pointer = new_alloc.allocate(capacity);
 					for (size_type i = 0; i < x.size(); i++)
 						new_alloc.construct(new_pointer + i, x[i]);
-					this->clear();
+					//this->clear();
 					this->_alloc = new_alloc;
 					this->_ptr = new_pointer;
 					this->_start = new_pointer;
@@ -277,12 +283,12 @@ namespace ft
 			void assign (InputIterator first, InputIterator last,
 						typename enable_if<!is_integral<InputIterator>::value,bool>::type = false)
 			{
-				difference_type new_size = last.base() - first.base();
+				difference_type new_size = ft::distance<InputIterator>(first, last);
 				size_type capacity = this->capacity();
 				
 				this->clear();
 				this->_size = new_size;
-				if (capacity < new_size)
+				if (static_cast<long long>(capacity) < static_cast<long long>(new_size))
 				{
 					this->_ptr = this->_alloc.allocate(new_size);
 					this->_capacity = new_size;
@@ -300,8 +306,7 @@ namespace ft
 				allocator_type 	new_alloc;
 				pointer			new_pointer;
 
-				for (size_type i = 0; i < size; i++)
-					this->_alloc.destroy(this->_ptr + i);
+				this->clear();
 				for (size_type i = 0; i < n; i++)
 				{
 					if (i == size)
@@ -406,18 +411,41 @@ namespace ft
 				this->_ptr = new_pointer;
 				this->_start = this->_ptr;
 				this->_end = this->_ptr + (this->size() - 1);
-				return (iterator(this->_ptr + save + 1));
+				return (iterator(this->_ptr + save));
 			};
 			iterator erase (iterator first, iterator last)
 			{
-				iterator tmp;
+				size_type		size = 0;
+				size_type		capacity = this->capacity();
+				allocator_type 	new_alloc;
+				pointer			new_pointer;
+				size_type		save = 0;
 
-				while (first != last)
+				new_pointer = new_alloc.allocate(capacity);
+				for (iterator begin = this->begin(); begin != this->end(); begin++)
 				{
-					tmp = this->erase(first);
-					first++;
+					if (begin == first)
+					{
+						save = size;
+						while (first != last)
+						{
+							first++;
+							begin++;
+						}
+					}
+					if (begin == this->end())
+						break;
+					new_alloc.construct(new_pointer + size, *begin);
+					size++;
 				}
-				return (tmp);
+				this->clear();
+				this->_size = size;
+				this->_capacity = capacity;
+				this->_alloc = new_alloc;
+				this->_ptr = new_pointer;
+				this->_start = this->_ptr;
+				this->_end = this->_ptr + (this->size() - 1);
+				return (iterator(this->_ptr + save));
 			};
 
 			void swap (vector& x)
@@ -547,15 +575,17 @@ namespace ft
 	bool operator>(
 		const vector<T_,Alloc_>& lhs, const vector<T_,Alloc_>& rhs)
 	{
-		lexicographical_compare<vector<T_>::iterator, vector<T_>::iterator>(
-				rhs.begin(), rhs.end(), lhs.begin(), lhs.end());
+		return(
+			lexicographical_compare<vector<T_>::iterator, vector<T_>::iterator>(
+				rhs.begin(), rhs.end(), lhs.begin(), lhs.end()));
 	};
 	
 	template <class T_, class Alloc_>
 	bool operator>=(
 		const vector<T_,Alloc_>& lhs, const vector<T_,Alloc_>& rhs)
 	{
+		return (
 		lexicographical_compare<vector<T_>::iterator, vector<T_>::iterator>(
-				rhs.begin(), rhs.end(), lhs.begin(), lhs.end());
+				rhs.begin(), rhs.end(), lhs.begin(), lhs.end()));
 	};
 }

@@ -1,6 +1,6 @@
 size: 10
 capacity: OK
-max_size: 4611686018427387903
+max_size: 2305843009213693951
 
 Content is:
 - 30
@@ -16,6 +16,6 @@ Content is:
 ###############################################
 size: 0
 capacity: OK
-max_size: 4611686018427387903
+max_size: 2305843009213693951
 
 Content is:

@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 22:52:54 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/11 02:33:06 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/11 16:34:27 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ namespace ft
 namespace ft
 {
 	template <class Iterator>
-	class iterator_traits
+	struct iterator_traits
 	{
         typedef typename Iterator::difference_type		difference_type;
         typedef typename Iterator::value_type			value_type;
@@ -74,6 +74,24 @@ namespace ft
 			typedef Category  iterator_category;
 		protected:
 			pointer _ptr;
+	};
+}
+
+// Distance
+namespace ft
+{
+	template<class InputIterator>
+	typename iterator_traits<InputIterator>::difference_type
+	distance (InputIterator first, InputIterator last)
+	{
+		typename iterator_traits<InputIterator>::difference_type size = 0;
+
+		while (first != last)
+		{
+			first++;
+			size++;
+		}
+		return (size);
 	};
 }
 
