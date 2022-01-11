@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 22:52:54 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/10 12:58:55 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/11 02:33:06 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,7 @@ namespace ft
 			typedef typename iterator::reference 			reference;
 			typedef typename iterator::pointer				pointer;
 		public:
-			pointer base() { return (this->_ptr); };
+			pointer base() const { return (this->_ptr); };
 		public:
 			random_access_iterator () { this->_ptr = 0; };
 			random_access_iterator (pointer ptr) { this->_ptr = ptr; };
@@ -346,6 +346,9 @@ namespace ft
 					return (true);
 				return (false);
 			};
+			
+			random_access_iterator	operator-(size_t n) { return (this->_ptr - n); };
+			random_access_iterator	operator+(size_t n) { return (this->_ptr + n); };
 			
 			template <class T_>
 			friend random_access_iterator<T_> operator+(

@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 12:36:12 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/10 12:45:39 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/11 02:40:55 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,22 +277,20 @@ namespace ft
 			void assign (InputIterator first, InputIterator last,
 						typename enable_if<!is_integral<InputIterator>::value,bool>::type = false)
 			{
-				(void) first;
-				(void) last;
-				// size_type new_size = last.base() - first.base();
-				// size_type capacity = this->capacity();
+				difference_type new_size = last.base() - first.base();
+				size_type capacity = this->capacity();
 				
-				// this->clear();
-				// this->_size = new_size;
-				// if (capacity < new_size)
-				// {
-				// 	this->_ptr = this->_alloc.allocate(new_size);
-				// 	this->_capacity = new_size;
-				// }
-				// for (size_type i = 0; first != last; first++, i++)
-				// 	this->_alloc.construct(this->_ptr + i, *first);
-				// this->_start = this->_ptr;
-				// this->_end = this->_ptr + (new_size - 1);
+				this->clear();
+				this->_size = new_size;
+				if (capacity < new_size)
+				{
+					this->_ptr = this->_alloc.allocate(new_size);
+					this->_capacity = new_size;
+				}
+				for (size_type i = 0; first != last; first++, i++)
+					this->_alloc.construct(this->_ptr + i, *first);
+				this->_start = this->_ptr;
+				this->_end = this->_ptr + (new_size - 1);
 			}
 
 			void assign (size_type n, const value_type& val)
