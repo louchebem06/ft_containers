@@ -37,7 +37,6 @@ capacity: OK
 max_size: 2305843009213693951
 
 Content is:
-- 42
 ###############################################
 size: 7
 capacity: OK
@@ -64,7 +63,6 @@ capacity: OK
 max_size: 2305843009213693951
 
 Content is:
-- 84
 ###############################################
 	### assign() on enough capacity and low size: ###
 size: 1
@@ -72,7 +70,6 @@ capacity: OK
 max_size: 2305843009213693951
 
 Content is:
-- 53
 ###############################################
 size: 3
 capacity: OK

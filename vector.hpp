@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 12:36:12 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/11 17:33:13 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/14 18:43:51 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -366,22 +366,61 @@ namespace ft
 
 			iterator insert (iterator position, const value_type& val)
 			{
-				(void) position;
-				(void) val;
-				return (iterator(this->_start));
+				difference_type pos = distance(this->begin(), position);
+
+				if (this->size() + 1 > this->capacity())
+				{
+					size_type 		size = this->size();
+					size_type 		capacity;
+					allocator_type 	new_alloc;
+					pointer			new_pointer;
+				
+					_updateCapacity(size + 1);
+					capacity = this->capacity();
+					new_pointer = new_alloc.allocate(this->capacity());
+					for (size_type i = 0; i < size; i++)
+       					new_alloc.construct(new_pointer + i, (*this)[i]);
+					new_alloc.construct(new_pointer + size, val);
+					this->clear();
+					this->_ptr = new_pointer;
+					this->_alloc = new_alloc;
+					this->_start = this->_ptr;
+					this->_end = this->_ptr + (size - 1);
+					this->_size = size;
+					this->_capacity = capacity;
+				}
+
+				this->_alloc.construct(this->_ptr + this->size(), val);
+				this->_size++;
+				
+				this->_end = this->_start + (this->size() - 1);
+				
+				for (iterator it = this->end() - 1; it != this->begin() + pos - 1; it--)
+					if (it - 1 != this->begin() - 1)
+					*it = *(it - 1);
+				*(this->begin() + pos) = val;
+			
+				return (iterator(this->_start + pos)); //fake return for test
 			};
 			void insert (iterator position, size_type n, const value_type& val)
 			{
-				(void) position;
-				(void) n;
-				(void) val;
+				for (size_type i = 0; i < n; i++)
+					position = this->insert(position, val);
 			};
 			template <class InputIterator>
-			void insert (iterator position, InputIterator first, InputIterator last)
+			void insert (iterator position, InputIterator first, InputIterator last,
+						typename enable_if<!is_integral<InputIterator>::value,bool>::type = false)
 			{
-				(void) position;
-				(void) first;
-				(void) last;
+				vector<value_type> tmp;
+
+				for (InputIterator it = first; it != last; it++)
+					tmp.push_back(*it);
+				
+				while (tmp.size() != 0)
+				{
+					position = this->insert(position, tmp[tmp.size() - 1]);
+					tmp.pop_back();
+				}
 			};
 
 			iterator erase (iterator position)
@@ -483,7 +522,7 @@ namespace ft
 				for (size_type i = 0; i < size; i++)
         			this->_alloc.destroy(this->_ptr + i);
 				this->_start = this->_ptr;
-				this->_end = this->_ptr;
+				this->_end = this->_ptr - 1;
 				this->_size = 0;
 			};
 
@@ -523,6 +562,8 @@ namespace ft
 					this->_capacity *= 2;
 					if (this->_capacity <= 0)
 						this->_capacity = 1;
+					while (size > this->capacity())
+						this->_capacity *= 2;
 				}
 			}
 	};
