@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 12:36:12 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/14 18:43:51 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/14 22:36:27 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -301,33 +301,26 @@ namespace ft
 
 			void assign (size_type n, const value_type& val)
 			{
-				size_type size 	= this->size();
-				bool update 	= false;
-				allocator_type 	new_alloc;
-				pointer			new_pointer;
-
 				this->clear();
+				if (n > this->capacity())
+				{
+					allocator_type 	new_alloc;
+					pointer			new_pointer;
+				
+					this->_capacity = n;
+					new_pointer = new_alloc.allocate(n);
+					if (!new_pointer)
+						throw std::bad_alloc();
+					this->_ptr = new_pointer;
+					this->_alloc = new_alloc;
+					this->_start = this->_ptr;
+				}
 				for (size_type i = 0; i < n; i++)
 				{
-					if (i == size)
-						update = true;
-					if (update)
-					{
-						this->_size++;
-						if (this->size() > this->capacity())
-						{
-							this->_capacity++;
-							new_pointer = new_alloc.allocate(this->capacity());
-							for (size_type i = 0; i < this->size(); i++)
-       							new_alloc.construct(new_pointer + i, val);
-							this->_ptr = new_pointer;
-							this->_alloc = new_alloc;
-							this->_start = this->_ptr;
-							this->_end = this->_ptr + size;
-						}
-					}
 					this->_alloc.construct(this->_ptr + i, val);
+					this->_size++;
 				}
+				this->_end = this->_start + (this->size() - 1);
 			};
 
 			void push_back (const value_type& val)
@@ -378,6 +371,8 @@ namespace ft
 					_updateCapacity(size + 1);
 					capacity = this->capacity();
 					new_pointer = new_alloc.allocate(this->capacity());
+					if (!new_pointer)
+						throw std::bad_alloc();
 					for (size_type i = 0; i < size; i++)
        					new_alloc.construct(new_pointer + i, (*this)[i]);
 					new_alloc.construct(new_pointer + size, val);
