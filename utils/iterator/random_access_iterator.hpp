@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 15:38:10 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/14 15:38:45 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/14 23:06:48 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,13 +154,13 @@ namespace ft
 				size_t n, random_access_iterator<T_> const & rhs);
 
 			reference operator*() { return (*(this->_ptr)); };
-			reference operator->() { return (*(this->_ptr)); };
+			pointer operator->() { return (this->_ptr); };
 			reference operator[](size_t n) { return (*(this->_ptr + n)); };
 	};
 
 	template <class T_>
 	random_access_iterator<T_> operator+(
-		typename iterator<random_access_iterator_tag, T_>::difference_type n,
+		size_t n,
 		random_access_iterator<T_> const & rhs)
 	{
 		random_access_iterator<T_> tmp = rhs._ptr + n;
@@ -168,7 +168,7 @@ namespace ft
 	};
 	template <class T_>
 	random_access_iterator<T_> operator-(
-		typename iterator<random_access_iterator_tag, T_>::difference_type n,
+		size_t n,
 		random_access_iterator<T_> const & rhs)
 	{
 		random_access_iterator<T_> tmp = rhs._ptr - n;
@@ -177,6 +177,13 @@ namespace ft
 	template <class T_>
 	typename random_access_iterator<T_>::difference_type operator- (
 		const random_access_iterator<T_>& lhs,
+		const random_access_iterator<T_>& rhs)
+	{
+		return (lhs.base() - rhs.base());
+	};
+	template <class T_>
+	typename random_access_iterator<T_>::difference_type operator- (
+		const random_access_iterator<const T_>& lhs,
 		const random_access_iterator<T_>& rhs)
 	{
 		return (lhs.base() - rhs.base());

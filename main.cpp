@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 17:05:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/14 22:26:01 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/14 23:00:33 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,44 +66,58 @@ std::ostream	&operator<<(std::ostream &o, foo const &bar) {
 	return o;
 }
 
-#define TESTED_TYPE int
+#define TESTED_TYPE foo
+
+template <typename Ite_1, typename Ite_2>
+void ft_eq_ope(const Ite_1 &first, const Ite_2 &second, const bool redo = 1)
+{
+	std::cout << (first < second) << std::endl;
+	std::cout << (first <= second) << std::endl;
+	std::cout << (first > second) << std::endl;
+	std::cout << (first >= second) << std::endl;
+	if (redo)
+		ft_eq_ope(second, first, 0);
+}
 
 int		main(void)
 {
-	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(7);
-	TESTED_NAMESPACE::vector<TESTED_TYPE> vct_two(4);
-	TESTED_NAMESPACE::vector<TESTED_TYPE> vct_three;
-	TESTED_NAMESPACE::vector<TESTED_TYPE> vct_four;
+	const int size = 5;
+	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(size);
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it_0(vct.begin());
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it_1(vct.end());
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it_mid;
 
-	for (unsigned long int i = 0; i < vct.size(); ++i)
-		vct[i] = (vct.size() - i) * 3;
-	for (unsigned long int i = 0; i < vct_two.size(); ++i)
-		vct_two[i] = (vct_two.size() - i) * 5;
-	printSize(vct);
-	printSize(vct_two);
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator cit_0 = vct.begin();
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator cit_1;
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator cit_mid;
 
-	vct_three.assign(vct.begin(), vct.end());
-	vct.assign(vct_two.begin(), vct_two.end());
-	vct_two.assign(2, 42);
-	vct_four.assign(4, 21);
+	for (int i = size; it_0 != it_1; --i)
+		*it_0++ = i;
+	printSize(vct, 1);
+	it_0 = vct.begin();
+	cit_1 = vct.end();
+	it_mid = it_0 + 3;
+	cit_mid = it_0 + 3; cit_mid = cit_0 + 3; cit_mid = it_mid;
 
-	std::cout << "\t### After assign(): ###" << std::endl;
+	std::cout << std::boolalpha;
+	std::cout << ((it_0 + 3 == cit_0 + 3) && (cit_0 + 3 == it_mid)) << std::endl;
 
-	printSize(vct);
-	printSize(vct_two);
-	printSize(vct_three);
-	printSize(vct_four);
-
-	vct_four.assign(6, 84);
-	printSize(vct_four);
-
-	std::cout << "\t### assign() on enough capacity and low size: ###" << std::endl;
-
-	vct.assign(5, 53);
-	vct_two.assign(vct_three.begin(), vct_three.begin() + 3);
-
-	printSize(vct);
-	printSize(vct_two);
+	std::cout << "\t\tft_eq_ope:" << std::endl;
+	// regular it
+	ft_eq_ope(it_0 + 3, it_mid);
+	ft_eq_ope(it_0, it_1);
+	ft_eq_ope(it_1 - 3, it_mid);
+	// const it
+	ft_eq_ope(cit_0 + 3, cit_mid);
+	ft_eq_ope(cit_0, cit_1);
+	ft_eq_ope(cit_1 - 3, cit_mid);
+	// both it
+	ft_eq_ope(it_0 + 3, cit_mid);
+	ft_eq_ope(it_mid, cit_0 + 3);
+	ft_eq_ope(it_0, cit_1);
+	ft_eq_ope(it_1, cit_0);
+	ft_eq_ope(it_1 - 3, cit_mid);
+	ft_eq_ope(it_mid, cit_1 - 3);
 
 	return (0);
 }
