@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 15:38:10 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/14 23:06:48 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/15 00:15:42 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 namespace ft
 {
 	template <class T>
-	class random_access_iterator : public iterator<random_access_iterator_tag, T>
+	class random_access_iterator :
+		public iterator<random_access_iterator_tag, T>
 	{
 		protected:
 			typedef iterator<random_access_iterator_tag, T>	iterator;
@@ -32,8 +33,12 @@ namespace ft
 		public:
 			random_access_iterator () { this->_ptr = 0; };
 			random_access_iterator (pointer ptr) { this->_ptr = ptr; };
-			random_access_iterator (random_access_iterator const & rhs) { *this = rhs; };
-			random_access_iterator & operator=(random_access_iterator const & rhs) {
+			random_access_iterator (random_access_iterator const & rhs) {
+				*this = rhs; };
+
+			random_access_iterator & operator=(
+				random_access_iterator const & rhs)
+			{
 				if (this != &rhs)
 					this->_ptr = rhs._ptr;
 				return (*this);
