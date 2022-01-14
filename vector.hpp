@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 12:36:12 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/14 22:36:27 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/14 23:28:41 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -574,9 +574,7 @@ namespace ft
 		const vector<T_,Alloc_>& lhs, const vector<T_,Alloc_>& rhs)
 	{
 		if (lhs.size() == rhs.size())
-			return (
-				equal<vector<T_>::iterator, vector<T_>::iterator>(
-					lhs.begin(), lhs.end(), rhs.begin()));
+			return (equal(lhs.begin(), lhs.end(), rhs.begin()));
 		return (false);
 	};
 	
@@ -584,17 +582,14 @@ namespace ft
 	bool operator!=(
 		const vector<T_,Alloc_>& lhs, const vector<T_,Alloc_>& rhs)
 	{
-		return (!
-				equal<vector<T_>::iterator, vector<T_>::iterator>(
-					lhs.begin(), lhs.end(), rhs.begin()));
+		return (!(lhs == rhs));
 	};
 	
 	template <class T_, class Alloc_>
 	bool operator<(
 		const vector<T_,Alloc_>& lhs, const vector<T_,Alloc_>& rhs)
 	{
-		return (
-			lexicographical_compare<vector<T_>::iterator, vector<T_>::iterator>(
+		return (lexicographical_compare(
 				lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 	};
 
@@ -602,26 +597,24 @@ namespace ft
 	bool operator<=(
 		const vector<T_,Alloc_>& lhs, const vector<T_,Alloc_>& rhs)
 	{
-		return (
-			lexicographical_compare<vector<T_>::iterator, vector<T_>::iterator>(
-				lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+		return (lhs < rhs || lhs == rhs);
 	};
 	
 	template <class T_, class Alloc_>
 	bool operator>(
 		const vector<T_,Alloc_>& lhs, const vector<T_,Alloc_>& rhs)
 	{
-		return(
-			lexicographical_compare<vector<T_>::iterator, vector<T_>::iterator>(
-				rhs.begin(), rhs.end(), lhs.begin(), lhs.end()));
+		if (lhs < rhs || lhs == rhs)
+			return (false);
+		return (true);
 	};
 	
 	template <class T_, class Alloc_>
 	bool operator>=(
 		const vector<T_,Alloc_>& lhs, const vector<T_,Alloc_>& rhs)
 	{
-		return (
-		lexicographical_compare<vector<T_>::iterator, vector<T_>::iterator>(
-				rhs.begin(), rhs.end(), lhs.begin(), lhs.end()));
+		if (lhs == rhs || lhs > rhs)
+			return (true);
+		return (false);
 	};
 }
