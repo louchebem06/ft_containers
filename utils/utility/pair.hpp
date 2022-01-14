@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   iterator.hpp                                       :+:      :+:    :+:   */
+/*   pair.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/07 22:52:54 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/14 15:40:47 by bledda           ###   ########.fr       */
+/*   Created: 2022/01/14 15:10:59 by bledda            #+#    #+#             */
+/*   Updated: 2022/01/14 15:11:49 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include <cstddef>
-#include <iostream>
+#include "pair.hpp"
 
-#include "iterator/iterator_tag.hpp"
-#include "iterator/distance.hpp"
-#include "iterator/iterator_traits.hpp"
-#include "iterator/iterator_class.hpp"
-#include "iterator/random_access_iterator.hpp"
-#include "iterator/reverse iterator.hpp"
+namespace ft
+{
+	// https://www.cplusplus.com/reference/utility/make_pair/
+	template <class T1,class T2>
+	pair<T1,T2> make_pair (T1 x, T2 y)
+	{
+		return ( pair<T1,T2>(x,y) );
+	}
+}

@@ -1,23 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   iterator.hpp                                       :+:      :+:    :+:   */
+/*   distance.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/07 22:52:54 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/14 15:40:47 by bledda           ###   ########.fr       */
+/*   Created: 2022/01/14 15:31:49 by bledda            #+#    #+#             */
+/*   Updated: 2022/01/14 15:41:53 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include <cstddef>
-#include <iostream>
+#include "iterator_traits.hpp"
 
-#include "iterator/iterator_tag.hpp"
-#include "iterator/distance.hpp"
-#include "iterator/iterator_traits.hpp"
-#include "iterator/iterator_class.hpp"
-#include "iterator/random_access_iterator.hpp"
-#include "iterator/reverse iterator.hpp"
+namespace ft
+{
+	template<class InputIterator>
+	typename iterator_traits<InputIterator>::difference_type
+	distance (InputIterator first, InputIterator last)
+	{
+		typename iterator_traits<InputIterator>::difference_type size = 0;
+
+		while (first != last)
+		{
+			first++;
+			size++;
+		}
+		return (size);
+	};
+}

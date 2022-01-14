@@ -1,23 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   iterator.hpp                                       :+:      :+:    :+:   */
+/*   Enable if.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/07 22:52:54 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/14 15:40:47 by bledda           ###   ########.fr       */
+/*   Created: 2022/01/07 11:58:38 by bledda            #+#    #+#             */
+/*   Updated: 2022/01/14 14:57:34 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include <cstddef>
-#include <iostream>
-
-#include "iterator/iterator_tag.hpp"
-#include "iterator/distance.hpp"
-#include "iterator/iterator_traits.hpp"
-#include "iterator/iterator_class.hpp"
-#include "iterator/random_access_iterator.hpp"
-#include "iterator/reverse iterator.hpp"
+namespace ft
+{
+	// https://www.cplusplus.com/reference/type_traits/enable_if/
+	template<bool Cond, class T = void> struct enable_if {};
+	template<class T> struct enable_if<true, T> {typedef T type;};
+}
