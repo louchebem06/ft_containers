@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 17:05:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/15 00:10:56 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/15 16:28:53 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,17 +107,17 @@ int		main(void)
 	ft_eq_ope(it_0 + 3, it_mid);
 	ft_eq_ope(it_0, it_1);
 	ft_eq_ope(it_1 - 3, it_mid);
-	// // const it
+	// const it
 	ft_eq_ope(cit_0 + 3, cit_mid);
 	ft_eq_ope(cit_0, cit_1);
 	ft_eq_ope(cit_1 - 3, cit_mid);
-	// // both it
-	// ft_eq_ope(it_0 + 3, cit_mid);
-	// ft_eq_ope(it_mid, cit_0 + 3);
-	// ft_eq_ope(it_0, cit_1);
-	// ft_eq_ope(it_1, cit_0);
-	// ft_eq_ope(it_1 - 3, cit_mid);
-	// ft_eq_ope(it_mid, cit_1 - 3);
+	// both it
+	ft_eq_ope(it_0 + 3, cit_mid);
+	ft_eq_ope(it_mid, cit_0 + 3);
+	ft_eq_ope(it_0, cit_1);
+	ft_eq_ope(it_1, cit_0);
+	ft_eq_ope(it_1 - 3, cit_mid);
+	ft_eq_ope(it_mid, cit_1 - 3);
 
 	return (0);
 }

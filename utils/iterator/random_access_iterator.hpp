@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 15:38:10 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/15 00:15:42 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/15 16:28:43 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,20 +165,18 @@ namespace ft
 
 	template <class T_>
 	random_access_iterator<T_> operator+(
-		size_t n,
-		random_access_iterator<T_> const & rhs)
+		size_t n, random_access_iterator<T_> const & rhs)
 	{
-		random_access_iterator<T_> tmp = rhs._ptr + n;
-		return (tmp);
+		return (rhs._ptr + n);
 	};
 	template <class T_>
 	random_access_iterator<T_> operator-(
-		size_t n,
-		random_access_iterator<T_> const & rhs)
+		size_t n, random_access_iterator<T_> const & rhs)
 	{
 		random_access_iterator<T_> tmp = rhs._ptr - n;
 		return (tmp);
 	};
+	
 	template <class T_>
 	typename random_access_iterator<T_>::difference_type operator- (
 		const random_access_iterator<T_>& lhs,
@@ -200,7 +198,17 @@ namespace ft
 		if (lhs.base() == rhs.base())
 			return (true);
 		return (false);
-	};					
+	};
+	
+	template <class T_>
+	bool operator== (const random_access_iterator<T_>& lhs,
+					const random_access_iterator<const T_>& rhs)
+	{
+		if (lhs.base() == rhs.base())
+			return (true);
+		return (false);
+	};
+	
 	template <class T_>
 	bool operator!= (const random_access_iterator<T_>& lhs,
 					const random_access_iterator<T_>& rhs)
@@ -208,7 +216,8 @@ namespace ft
 		if (lhs.base() != rhs.base())
 			return (true);
 		return (false);
-	};					
+	};
+				
 	template <class T_>
 	bool operator<  (const random_access_iterator<T_>& lhs,
 					const random_access_iterator<T_>& rhs)
@@ -216,7 +225,26 @@ namespace ft
 		if (lhs.base() < rhs.base())
 			return (true);
 		return (false);
-	};					
+	};
+
+	template <class T_>
+	bool operator<  (const random_access_iterator<T_>& lhs,
+					const random_access_iterator<const T_>& rhs)
+	{
+		if (lhs.base() < rhs.base())
+			return (true);
+		return (false);
+	};
+
+	template <class T_>
+	bool operator<  (const random_access_iterator<const T_>& lhs,
+					const random_access_iterator<T_>& rhs)
+	{
+		if (lhs.base() < rhs.base())
+			return (true);
+		return (false);
+	};
+	
 	template <class T_>
 	bool operator<= (const random_access_iterator<T_>& lhs,
 					const random_access_iterator<T_>& rhs)
@@ -224,7 +252,26 @@ namespace ft
 		if (lhs.base() <= rhs.base())
 			return (true);
 		return (false);
-	};					
+	};
+
+	template <class T_>
+	bool operator<= (const random_access_iterator<T_>& lhs,
+					const random_access_iterator<const T_>& rhs)
+	{
+		if (lhs.base() <= rhs.base())
+			return (true);
+		return (false);
+	};
+
+	template <class T_>
+	bool operator<= (const random_access_iterator<const T_>& lhs,
+					const random_access_iterator<T_>& rhs)
+	{
+		if (lhs.base() <= rhs.base())
+			return (true);
+		return (false);
+	};
+	
 	template <class T_>
 	bool operator>  (const random_access_iterator<T_>& lhs,
 					const random_access_iterator<T_>& rhs)
@@ -232,9 +279,46 @@ namespace ft
 		if (lhs.base() > rhs.base())
 			return (true);
 		return (false);
-	};					
+	};
+
+	template <class T_>
+	bool operator>  (const random_access_iterator<T_>& lhs,
+					const random_access_iterator<const T_>& rhs)
+	{
+		if (lhs.base() > rhs.base())
+			return (true);
+		return (false);
+	};
+
+	template <class T_>
+	bool operator>  (const random_access_iterator<const T_>& lhs,
+					const random_access_iterator<T_>& rhs)
+	{
+		if (lhs.base() > rhs.base())
+			return (true);
+		return (false);
+	};
+	
 	template <class T_>
 	bool operator>= (const random_access_iterator<T_>& lhs,
+					const random_access_iterator<T_>& rhs)
+	{
+		if (lhs.base() >= rhs.base())
+			return (true);
+		return (false);
+	};
+
+	template <class T_>
+	bool operator>= (const random_access_iterator<T_>& lhs,
+					const random_access_iterator<const T_>& rhs)
+	{
+		if (lhs.base() >= rhs.base())
+			return (true);
+		return (false);
+	};
+
+	template <class T_>
+	bool operator>= (const random_access_iterator<const T_>& lhs,
 					const random_access_iterator<T_>& rhs)
 	{
 		if (lhs.base() >= rhs.base())

@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 12:36:12 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/14 23:37:46 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/15 15:17:06 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,8 @@ namespace ft
 
 			~vector()
 			{
-				// size_type capacity = this->capacity();
-
 				this->clear();
-				// this->_alloc.deallocate(this->_ptr, capacity);
+				//this->_alloc.deallocate(this->_ptr, this->capacity());
 			};
 
 			vector& operator=(const vector& x)
@@ -484,28 +482,12 @@ namespace ft
 
 			void swap (vector& x)
 			{
-				vector tmp;
-
-				tmp._alloc 		= x._alloc;
-				tmp._ptr 		= x._ptr;
-				tmp._start 		= x._start;
-				tmp._end 		= x._end;
-				tmp._size	 	= x._size;
-				tmp._capacity 	= x._capacity;
-
-				x._alloc 		= this->_alloc;
-				x._ptr 			= this->_ptr;
-				x._start 		= this->_start;
-				x._end 			= this->_end;
-				x._size 		= this->_size;
-				x._capacity 	= this->_capacity;
-
-				this->_alloc 	= tmp._alloc;
-				this->_ptr 		= tmp._ptr;
-				this->_start 	= tmp._start;
-				this->_end 		= tmp._end;
-				this->_size 	= tmp._size;
-				this->_capacity = tmp._capacity;
+				this->_switch(x._alloc, this->_alloc);
+				this->_switch(x._ptr, this->_ptr);
+				this->_switch(x._start, this->_start);
+				this->_switch(x._end, this->_end);
+				this->_switch(x._size, this->_size);
+				this->_switch(x._capacity, this->_capacity);
 			};
 
 			void clear()
@@ -525,30 +507,6 @@ namespace ft
 			{
 				return (this->_alloc);
 			};
-
-			template <class T_, class Alloc_>
-			friend bool operator==(
-				const vector<T,Alloc_>& lhs, const vector<T,Alloc_>& rhs);
-			
-			template <class T_, class Alloc_>
-			friend bool operator!=(
-				const vector<T,Alloc_>& lhs, const vector<T,Alloc>& rhs);
-			
-			template <class T_, class Alloc_>
-			friend bool operator<(
-				const vector<T,Alloc_>& lhs, const vector<T,Alloc>& rhs);
-
-			template <class T_, class Alloc_>
-			friend bool operator<=(
-				const vector<T,Alloc_>& lhs, const vector<T,Alloc_>& rhs);
-			
-			template <class T_, class Alloc_>
-			friend bool operator>(
-				const vector<T,Alloc_>& lhs, const vector<T,Alloc_>& rhs);
-			
-			template <class T_, class Alloc_>
-			friend bool operator>=(
-				const vector<T,Alloc_>& lhs, const vector<T,Alloc_>& rhs);
 		private:
 			void _updateCapacity(size_type size)
 			{
@@ -560,7 +518,13 @@ namespace ft
 					while (size > this->capacity())
 						this->_capacity *= 2;
 				}
-			}
+			};
+			template <typename V>
+			void _switch(V & first, V & second) {
+				V tmp = first;
+				first = second;
+				second = tmp;
+			};
 	};
 
 	template <class T_, class Alloc_>
