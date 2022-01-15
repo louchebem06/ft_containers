@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 12:36:12 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/15 17:49:20 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/15 22:07:56 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ namespace ft
 			typedef random_access_iterator<T>					iterator;
 			typedef random_access_iterator<const T>				const_iterator;
 			typedef reverse_iterator<iterator>					reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 		private:
 			allocator_type		_alloc;
 			pointer 			_ptr;
@@ -135,20 +135,20 @@ namespace ft
 
 			reverse_iterator rbegin()
 			{
-				return (reverse_iterator(this->_end));
+				return (reverse_iterator(this->end() - 1));
 			};
 			const_reverse_iterator rbegin() const
 			{
-				return (const_reverse_iterator(this->_end));
+				return (const_reverse_iterator(this->end() - 1));
 			};
 
 			reverse_iterator rend()
 			{
-				return (reverse_iterator(this->_start - 1));
+				return (reverse_iterator(this->begin()));
 			};
 			const_reverse_iterator rend() const
 			{
-				return (const_reverse_iterator(this->_start - 1));
+				return (const_reverse_iterator(this->begin()));
 			};
 
 			size_type size() const

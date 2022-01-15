@@ -1,0 +1,31 @@
+size: 5
+capacity: OK
+max_size: 2305843009213693951
+
+Content is:
+- 28
+- 21
+- 14
+- 7
+- 2
+###############################################
+7
+14
+21
+28
+foo::m called [2]
+foo::m const called [28]
+7
+14
+21
+28
+21
+14
+7
+2
+foo::m called [28]
+foo::m const called [2]
+21
+14
+7
+2
