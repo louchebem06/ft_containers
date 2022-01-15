@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 17:05:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/15 16:28:53 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/15 18:42:20 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,58 +66,44 @@ std::ostream	&operator<<(std::ostream &o, foo const &bar) {
 	return o;
 }
 
-#define TESTED_TYPE foo
-
-template <typename Ite_1, typename Ite_2>
-void ft_eq_ope(const Ite_1 &first, const Ite_2 &second, const bool redo = 1)
-{
-	std::cout << (first < second) << std::endl;
-	std::cout << (first <= second) << std::endl;
-	std::cout << (first > second) << std::endl;
-	std::cout << (first >= second) << std::endl;
-	if (redo)
-		ft_eq_ope(second, first, 0);
-}
+#define TESTED_TYPE int
 
 int		main(void)
 {
 	const int size = 5;
 	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(size);
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it_0(vct.begin());
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it_1(vct.end());
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it_mid;
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it_ = vct.begin();
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator it(it_);
 
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator cit_0 = vct.begin();
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator cit_1;
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator cit_mid;
+	for (int i = 0; i < size; ++i)
+		vct[i] = (i + 1) * 5;
+	printSize(vct);
 
-	for (int i = size; it_0 != it_1; --i)
-		*it_0++ = i;
-	printSize(vct, 1);
-	it_0 = vct.begin();
-	cit_1 = vct.end();
-	it_mid = it_0 + 3;
-	cit_mid = it_0 + 3; cit_mid = cit_0 + 3; cit_mid = it_mid;
+	std::cout << (it_ == it.base()) << std::endl;
+	std::cout << (it_ == (it + 3).base()) << std::endl;
 
-	std::cout << std::boolalpha;
-	std::cout << ((it_0 + 3 == cit_0 + 3) && (cit_0 + 3 == it_mid)) << std::endl;
+	std::cout << *(it.base() + 1) << std::endl;
+	std::cout << *(it - 3) << std::endl;
+	std::cout << *(it - 3).base() << std::endl;
+	it -= 3;
+	std::cout << *it.base() << std::endl;
 
-	std::cout << "\t\tft_eq_ope:" << std::endl;
-	// regular it
-	ft_eq_ope(it_0 + 3, it_mid);
-	ft_eq_ope(it_0, it_1);
-	ft_eq_ope(it_1 - 3, it_mid);
-	// const it
-	ft_eq_ope(cit_0 + 3, cit_mid);
-	ft_eq_ope(cit_0, cit_1);
-	ft_eq_ope(cit_1 - 3, cit_mid);
-	// both it
-	ft_eq_ope(it_0 + 3, cit_mid);
-	ft_eq_ope(it_mid, cit_0 + 3);
-	ft_eq_ope(it_0, cit_1);
-	ft_eq_ope(it_1, cit_0);
-	ft_eq_ope(it_1 - 3, cit_mid);
-	ft_eq_ope(it_mid, cit_1 - 3);
+	std::cout << "TEST OFFSET" << std::endl;
+	std::cout << *(it) << std::endl;
+	std::cout << *(it).base() << std::endl;
+	std::cout << *(it - 0) << std::endl;
+	std::cout << *(it - 0).base() << std::endl;
+	std::cout << *(it - 1).base() << std::endl;
 
 	return (0);
 }
+
+// int main()
+// {
+// 	ft::vector<int> test;
+
+// 	ft::vector<int>::iterator it;
+// 	ft::vector<int>::reverse_iterator rit;
+
+// 	rit = test.rbegin() + 1;
+// }
