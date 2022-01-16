@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 15:39:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/15 22:05:07 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/16 01:19:14 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,18 @@ namespace ft
 			iterator_type _iterator;
 		public:
 			reverse_iterator() : _iterator() {};
-			explicit reverse_iterator (iterator_type it) : _iterator(it) {};
+			explicit reverse_iterator (iterator_type it) : _iterator(it - 1) {};
 			template <class Iter>
 			reverse_iterator (const reverse_iterator<Iter>& rev_it) :
 				_iterator(rev_it.base()) {};
 
-			iterator_type base() const { return (_iterator); };
+			iterator_type base() const { return (_iterator + 1); };
 
-			reference operator*() const { return (*_iterator); };
+			reference operator*() const { return (*(_iterator)); };
 
 			reverse_iterator operator+ (difference_type n) const {
-				return (reverse_iterator(_iterator - n)); };
+				return (reverse_iterator(_iterator - n));
+			};
 
 			reverse_iterator& operator++() {
 				_iterator--;

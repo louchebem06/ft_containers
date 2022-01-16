@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 12:36:12 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/15 22:07:56 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/16 02:17:00 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,12 +89,12 @@ namespace ft
 			~vector()
 			{
 				this->clear();
-				//this->_alloc.deallocate(this->_ptr, this->capacity());
+				this->_alloc.deallocate(this->_ptr, this->capacity());
 			};
 
 			vector& operator=(const vector& x)
 			{
-				if (this != &x)
+				if (this->_ptr != x._ptr)
 				{
 					allocator_type	new_alloc;
 					pointer 		new_pointer;
@@ -102,9 +102,10 @@ namespace ft
 					size_type		capacity = x.capacity();
 
 					new_pointer = new_alloc.allocate(capacity);
+					if (!new_pointer)
+						throw std::bad_alloc();
 					for (size_type i = 0; i < x.size(); i++)
 						new_alloc.construct(new_pointer + i, x[i]);
-					//this->clear();
 					this->_alloc = new_alloc;
 					this->_ptr = new_pointer;
 					this->_start = new_pointer;
@@ -285,6 +286,7 @@ namespace ft
 				size_type capacity = this->capacity();
 				
 				this->clear();
+				
 				this->_size = new_size;
 				if (static_cast<long long>(capacity) < static_cast<long long>(new_size))
 				{
@@ -304,7 +306,7 @@ namespace ft
 				{
 					allocator_type 	new_alloc;
 					pointer			new_pointer;
-				
+
 					this->_capacity = n;
 					new_pointer = new_alloc.allocate(n);
 					if (!new_pointer)
@@ -390,7 +392,7 @@ namespace ft
 				
 				for (iterator it = this->end() - 1; it != this->begin() + pos - 1; it--)
 					if (it - 1 != this->begin() - 1)
-					*it = *(it - 1);
+						*it = *(it - 1);
 				*(this->begin() + pos) = val;
 			
 				return (iterator(this->_start + pos)); //fake return for test
@@ -418,66 +420,19 @@ namespace ft
 
 			iterator erase (iterator position)
 			{
-				iterator		begin = this->begin();
-				size_type		size = this->size();
-				size_type		capacity = this->capacity();
-				size_type		i = 0;
-				allocator_type 	new_alloc;
-				pointer			new_pointer;
-				size_type		save;
-				
-				new_pointer = new_alloc.allocate(capacity);
-				while (begin != position)
-				{
-					new_alloc.construct(new_pointer + i, (*this)[i]);
-					begin++;
-					i++;
-				}
-				save = i;
-				for (size_type i = save + 1; i < this->size(); i++)
-					new_alloc.construct(new_pointer + i - 1, (*this)[i]);
-				this->clear();
-				this->_size = size - 1;
-				this->_capacity = capacity;
-				this->_alloc = new_alloc;
-				this->_ptr = new_pointer;
-				this->_start = this->_ptr;
-				this->_end = this->_ptr + (this->size() - 1);
-				return (iterator(this->_ptr + save));
+				for (iterator it = this->begin(); it != this->end(); it++)
+					if (it > position)
+						*(it - 1)= *it;
+				this->_size--;
+				this->_alloc.destroy(this->_ptr + this->size());
+				this->_end = this->_start + (this->size() - 1);
+				return (position);
 			};
 			iterator erase (iterator first, iterator last)
 			{
-				size_type		size = 0;
-				size_type		capacity = this->capacity();
-				allocator_type 	new_alloc;
-				pointer			new_pointer;
-				size_type		save = 0;
-
-				new_pointer = new_alloc.allocate(capacity);
-				for (iterator begin = this->begin(); begin != this->end(); begin++)
-				{
-					if (begin == first)
-					{
-						save = size;
-						while (first != last)
-						{
-							first++;
-							begin++;
-						}
-					}
-					if (begin == this->end())
-						break;
-					new_alloc.construct(new_pointer + size, *begin);
-					size++;
-				}
-				this->clear();
-				this->_size = size;
-				this->_capacity = capacity;
-				this->_alloc = new_alloc;
-				this->_ptr = new_pointer;
-				this->_start = this->_ptr;
-				this->_end = this->_ptr + (this->size() - 1);
-				return (iterator(this->_ptr + save));
+				for (iterator it = first; it != last; it++)
+					this->erase(first);
+				return (first);
 			};
 
 			void swap (vector& x)
