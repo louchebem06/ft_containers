@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 12:36:12 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/16 02:17:00 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/16 03:01:01 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ namespace ft
 			~vector()
 			{
 				this->clear();
-				this->_alloc.deallocate(this->_ptr, this->capacity());
+				//this->_alloc.deallocate(this->_ptr, this->capacity());
 			};
 
 			vector& operator=(const vector& x)
@@ -178,6 +178,7 @@ namespace ft
 					for (size_type i = 0; i < size; i++)
        					new_alloc.construct(new_pointer + i, (*this)[i]);
 					this->clear();
+					//this->_alloc.deallocate(this->_ptr, this->capacity());
 					this->_size = n;
 					this->_capacity = n;
 					this->_ptr = new_pointer;
@@ -227,6 +228,7 @@ namespace ft
 					for (size_type i = 0; i < size; i++)
        					new_alloc.construct(new_pointer + i, (*this)[i]);
 					this->clear();
+					this->_alloc.deallocate(this->_ptr, this->capacity());
 					this->_ptr = new_pointer;
 					this->_alloc = new_alloc;
 					this->_start = this->_ptr;
@@ -338,6 +340,7 @@ namespace ft
        					new_alloc.construct(new_pointer + i, (*this)[i]);
 					new_alloc.construct(new_pointer + size, val);
 					this->clear();
+					// this->_alloc.deallocate(this->_ptr, this->capacity());
 					this->_ptr = new_pointer;
 					this->_alloc = new_alloc;
 					this->_start = this->_ptr;
@@ -377,6 +380,7 @@ namespace ft
        					new_alloc.construct(new_pointer + i, (*this)[i]);
 					new_alloc.construct(new_pointer + size, val);
 					this->clear();
+					this->_alloc.deallocate(this->_ptr, this->capacity());
 					this->_ptr = new_pointer;
 					this->_alloc = new_alloc;
 					this->_start = this->_ptr;

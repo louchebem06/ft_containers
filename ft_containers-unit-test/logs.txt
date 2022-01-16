@@ -1,0 +1,167 @@
+In file included from ../utilities_tests/iterator_traits.cpp:1:
+In file included from ../utilities_tests/../system/system_methods.ipp:2:
+In file included from ../utilities_tests/../system/lib.hpp:24:
+../utilities_tests/../system/Alloc.hpp:55:27: warning: variadic templates are a C++11 extension [-Wc++11-extensions]
+template <class _Up, class... _Args>
+                          ^
+../utilities_tests/../system/Alloc.hpp:58:34: warning: rvalue references are a C++11 extension [-Wc++11-extensions]
+        construct(_Up* __p, _Args&&... __args)
+                                 ^
+../utilities_tests/../system/Alloc.hpp:164:27: warning: variadic templates are a C++11 extension [-Wc++11-extensions]
+template <class _Up, class... _Args>
+                          ^
+../utilities_tests/../system/Alloc.hpp:167:34: warning: rvalue references are a C++11 extension [-Wc++11-extensions]
+        construct(_Up* __p, _Args&&... __args)
+                                 ^
+../utilities_tests/iterator_traits.cpp:25:48: error: no member named 'iterator_type' in 'ft::random_access_iterator<int>'
+        res2.push_back(typeid(_vector<int>::iterator::iterator_type).name());
+                              ~~~~~~~~~~~~~~~~~~~~~~~~^
+4 warnings and 1 error generated.
+:30:30: note: expanded from macro '_lexicographical'
+#define _lexicographical        ft::lexicographical_compare
+                                ~~~~^
+4 warnings and 1 error generated.
+ons/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/type_traits:538:63: note: 'enable_if' declared here
+template <bool, class _Tp = void> struct _LIBCPP_TEMPLATE_VIS enable_if {};
+                                                              ^
+../utilities_tests/enable_if.cpp:9:29: error: no template named 'enable_if' in namespace 'ft'; did you mean simply 'enable_if'?
+template <class T> typename _enable_if< std::is_signed<T>::value >::type
+                            ^~~~~~~~~~
+                            enable_if
+../utilities_tests/../system/../../config.hpp:27:23: note: expanded from macro '_enable_if'
+#define _enable_if                      ft::enable_if
+                                        ^~~~
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/type_traits:538:63: note: 'enable_if' declared here
+template <bool, class _Tp = void> struct _LIBCPP_TEMPLATE_VIS enable_if {};
+                                                              ^
+4 warnings and 2 errors generated.
+d::is_integral<bool>()) ? 0 : res = 0;
+         ^~~~~~~~~~~~
+         is_integral
+../utilities_tests/../system/../../config.hpp:26:24: note: expanded from macro '_is_integral'
+#define _is_integral            ft::is_integral
+                                ^~~~
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/type_traits:833:29: note: 'is_integral' declared here
+struct _LIBCPP_TEMPLATE_VIS is_integral : _BoolConstant<__is_integral(_Tp)> { };
+                            ^
+../utilities_tests/is_integral.cpp:11:3: error: no template named 'is_integral' in namespace 'ft'; did you mean simply 'is_integral'?
+        (_is_integral<char>() == std::is_integral<char>()) ? 0 : res = 0;
+         ^~~~~~~~~~~~
+         is_integral
+../utilities_tests/../system/../../config.hpp:26:24: note: expanded from macro '_is_integral'
+#define _is_integral            ft::is_integral
+                                ^~~~
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/type_traits:833:29: note: 'is_integral' declared here
+struct _LIBCPP_TEMPLATE_VIS is_integral : _BoolConstant<__is_integral(_Tp)> { };
+                            ^
+../utilities_tests/is_integral.cpp:12:3: error: no template named 'is_integral' in namespace 'ft'; did you mean simply 'is_integral'?
+        (_is_integral<signed char>() == std::is_integral<signed char>()) ? 0 : res = 0;
+         ^~~~~~~~~~~~
+         is_integral
+../utilities_tests/../system/../../config.hpp:26:24: note: expanded from macro '_is_integral'
+#define _is_integral            ft::is_integral
+                                ^~~~
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/type_traits:833:29: note: 'is_integral' declared here
+struct _LIBCPP_TEMPLATE_VIS is_integral : _BoolConstant<__is_integral(_Tp)> { };
+                            ^
+../utilities_tests/is_integral.cpp:13:3: error: no template named 'is_integral' in namespace 'ft'; did you mean simply 'is_integral'?
+        (_is_integral<unsigned char>() == std::is_integral<unsigned char>()) ? 0 : res = 0;
+         ^~~~~~~~~~~~
+         is_integral
+../utilities_tests/../system/../../config.hpp:26:24: note: expanded from macro '_is_integral'
+#define _is_integral            ft::is_integral
+                                ^~~~
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/type_traits:833:29: note: 'is_integral' declared here
+struct _LIBCPP_TEMPLATE_VIS is_integral : _BoolConstant<__is_integral(_Tp)> { };
+                            ^
+../utilities_tests/is_integral.cpp:14:3: error: no template named 'is_integral' in namespace 'ft'; did you mean simply 'is_integral'?
+        (_is_integral<wchar_t>() == std::is_integral<wchar_t>()) ? 0 : res = 0;
+         ^~~~~~~~~~~~
+         is_integral
+../utilities_tests/../system/../../config.hpp:26:24: note: expanded from macro '_is_integral'
+#define _is_integral            ft::is_integral
+                                ^~~~
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/type_traits:833:29: note: 'is_integral' declared here
+struct _LIBCPP_TEMPLATE_VIS is_integral : _BoolConstant<__is_integral(_Tp)> { };
+                            ^
+../utilities_tests/is_integral.cpp:15:3: error: no template named 'is_integral' in namespace 'ft'; did you mean simply 'is_integral'?
+        (_is_integral<char16_t>() == std::is_integral<char16_t>()) ? 0 : res = 0;
+         ^~~~~~~~~~~~
+         is_integral
+../utilities_tests/../system/../../config.hpp:26:24: note: expanded from macro '_is_integral'
+#define _is_integral            ft::is_integral
+                                ^~~~
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/type_traits:833:29: note: 'is_integral' declared here
+struct _LIBCPP_TEMPLATE_VIS is_integral : _BoolConstant<__is_integral(_Tp)> { };
+                            ^
+../utilities_tests/is_integral.cpp:16:3: error: no template named 'is_integral' in namespace 'ft'; did you mean simply 'is_integral'?
+        (_is_integral<short>() == std::is_integral<short>()) ? 0 : res = 0;
+         ^~~~~~~~~~~~
+         is_integral
+../utilities_tests/../system/../../config.hpp:26:24: note: expanded from macro '_is_integral'
+#define _is_integral            ft::is_integral
+                                ^~~~
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/type_traits:833:29: note: 'is_integral' declared here
+struct _LIBCPP_TEMPLATE_VIS is_integral : _BoolConstant<__is_integral(_Tp)> { };
+                            ^
+../utilities_tests/is_integral.cpp:17:3: error: no template named 'is_integral' in namespace 'ft'; did you mean simply 'is_integral'?
+        (_is_integral<unsigned short>() == std::is_integral<unsigned short>()) ? 0 : res = 0;
+         ^~~~~~~~~~~~
+         is_integral
+../utilities_tests/../system/../../config.hpp:26:24: note: expanded from macro '_is_integral'
+#define _is_integral            ft::is_integral
+                                ^~~~
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/type_traits:833:29: note: 'is_integral' declared here
+struct _LIBCPP_TEMPLATE_VIS is_integral : _BoolConstant<__is_integral(_Tp)> { };
+                            ^
+../utilities_tests/is_integral.cpp:18:3: error: no template named 'is_integral' in namespace 'ft'; did you mean simply 'is_integral'?
+        (_is_integral<unsigned int>() == std::is_integral<unsigned int>()) ? 0 : res = 0;
+         ^~~~~~~~~~~~
+         is_integral
+../utilities_tests/../system/../../config.hpp:26:24: note: expanded from macro '_is_integral'
+#define _is_integral            ft::is_integral
+                                ^~~~
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/type_traits:833:29: note: 'is_integral' declared here
+struct _LIBCPP_TEMPLATE_VIS is_integral : _BoolConstant<__is_integral(_Tp)> { };
+                            ^
+../utilities_tests/is_integral.cpp:19:3: error: no template named 'is_integral' in namespace 'ft'; did you mean simply 'is_integral'?
+        (_is_integral<long>() == std::is_integral<long>()) ? 0 : res = 0;
+         ^~~~~~~~~~~~
+         is_integral
+../utilities_tests/../system/../../config.hpp:26:24: note: expanded from macro '_is_integral'
+#define _is_integral            ft::is_integral
+                                ^~~~
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/type_traits:833:29: note: 'is_integral' declared here
+struct _LIBCPP_TEMPLATE_VIS is_integral : _BoolConstant<__is_integral(_Tp)> { };
+                            ^
+../utilities_tests/is_integral.cpp:20:3: error: no template named 'is_integral' in namespace 'ft'; did you mean simply 'is_integral'?
+        (_is_integral<unsigned long>() == std::is_integral<unsigned long>()) ? 0 : res = 0;
+         ^~~~~~~~~~~~
+         is_integral
+../utilities_tests/../system/../../config.hpp:26:24: note: expanded from macro '_is_integral'
+#define _is_integral            ft::is_integral
+                                ^~~~
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/type_traits:833:29: note: 'is_integral' declared here
+struct _LIBCPP_TEMPLATE_VIS is_integral : _BoolConstant<__is_integral(_Tp)> { };
+                            ^
+../utilities_tests/is_integral.cpp:21:3: error: no template named 'is_integral' in namespace 'ft'; did you mean simply 'is_integral'?
+        (_is_integral<long long>() == std::is_integral<long long>()) ? 0 : res = 0;
+         ^~~~~~~~~~~~
+         is_integral
+../utilities_tests/../system/../../config.hpp:26:24: note: expanded from macro '_is_integral'
+#define _is_integral            ft::is_integral
+                                ^~~~
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/type_traits:833:29: note: 'is_integral' declared here
+struct _LIBCPP_TEMPLATE_VIS is_integral : _BoolConstant<__is_integral(_Tp)> { };
+                            ^
+../utilities_tests/is_integral.cpp:22:3: error: no template named 'is_integral' in namespace 'ft'; did you mean simply 'is_integral'?
+        (_is_integral<unsigned long long>() == std::is_integral<unsigned long long>()) ? 0 : res = 0;
+         ^~~~~~~~~~~~
+         is_integral
+../utilities_tests/../system/../../config.hpp:26:24: note: expanded from macro '_is_integral'
+#define _is_integral            ft::is_integral
+                                ^~~~
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/type_traits:833:29: note: 'is_integral' declared here
+struct _LIBCPP_TEMPLATE_VIS is_integral : _BoolConstant<__is_integral(_Tp)> { };
+                            ^
+4 warnings and 15 errors generated.
