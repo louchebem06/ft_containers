@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 18:04:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/17 19:01:34 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/17 19:09:55 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ namespace ft
 			// Official <map> and docs cplusplus.com
 			class value_compare : public ft::binary_function<value_type, value_type, bool>
 			{
-				friend class multimap;
+				friend class map;
 				protected:
 					key_compare comp;
 					value_compare(key_compare c) : comp(c) {};
