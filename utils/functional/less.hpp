@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   iterator.hpp                                       :+:      :+:    :+:   */
+/*   less.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/07 22:52:54 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/17 18:01:16 by bledda           ###   ########.fr       */
+/*   Created: 2022/01/17 18:08:24 by bledda            #+#    #+#             */
+/*   Updated: 2022/01/17 18:54:46 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include <cstddef>
-#include <iostream>
+#include "binary_function.hpp"
 
-#include "iterator/iterator_tag.hpp"
-#include "iterator/distance.hpp"
-#include "iterator/iterator_traits.hpp"
-#include "iterator/iterator_class.hpp"
-#include "iterator/random_access_iterator.hpp"
-#include "iterator/bidirectional_iterator.hpp"
-#include "iterator/reverse iterator.hpp"
+namespace ft
+{
+	// http://cplusplus.com/reference/functional/less/?kw=less
+	template <class T>
+	struct less : ft::binary_function <T, T, bool> {
+		bool operator() (const T& x, const T& y) const {return x<y;}
+	};
+}

@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   iterator.hpp                                       :+:      :+:    :+:   */
+/*   binary_function.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/07 22:52:54 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/17 18:01:16 by bledda           ###   ########.fr       */
+/*   Created: 2022/01/17 18:11:02 by bledda            #+#    #+#             */
+/*   Updated: 2022/01/17 18:12:03 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include <cstddef>
-#include <iostream>
-
-#include "iterator/iterator_tag.hpp"
-#include "iterator/distance.hpp"
-#include "iterator/iterator_traits.hpp"
-#include "iterator/iterator_class.hpp"
-#include "iterator/random_access_iterator.hpp"
-#include "iterator/bidirectional_iterator.hpp"
-#include "iterator/reverse iterator.hpp"
+namespace ft
+{
+	// http://cplusplus.com/reference/functional/binary_function/?kw=binary_function
+	template <class Arg1, class Arg2, class Result>
+	struct binary_function {
+		typedef Arg1 first_argument_type;
+		typedef Arg2 second_argument_type;
+		typedef Result result_type;
+	};
+};
