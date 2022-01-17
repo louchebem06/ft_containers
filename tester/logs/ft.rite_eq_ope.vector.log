@@ -1,15 +1,15 @@
 size: 5
 capacity: OK
-max_size: 4611686018427387903
+max_size: 2305843009213693951
 
 Content is:
+- 2
+- 3
 - 4
 - 5
-- 0
-- 0
-- 0
+- 2
 ###############################################
-false
+true
 		ft_eq_ope:
 false
 true
@@ -60,21 +60,21 @@ false
 true
 true
 false
-false
-true
-true
-true
 true
 false
-false
-false
-false
-true
-true
-true
 true
 false
+true
 false
+true
+false
+true
+false
+true
+false
+true
+false
+true
 true
 true
 false

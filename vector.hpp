@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 12:36:12 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/16 03:01:01 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/17 11:53:21 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,11 +145,11 @@ namespace ft
 
 			reverse_iterator rend()
 			{
-				return (reverse_iterator(this->begin()));
+				return (reverse_iterator(this->begin() - 1));
 			};
 			const_reverse_iterator rend() const
 			{
-				return (const_reverse_iterator(this->begin()));
+				return (const_reverse_iterator(this->begin() - 1));
 			};
 
 			size_type size() const
@@ -380,7 +380,7 @@ namespace ft
        					new_alloc.construct(new_pointer + i, (*this)[i]);
 					new_alloc.construct(new_pointer + size, val);
 					this->clear();
-					this->_alloc.deallocate(this->_ptr, this->capacity());
+					//this->_alloc.deallocate(this->_ptr, this->capacity());
 					this->_ptr = new_pointer;
 					this->_alloc = new_alloc;
 					this->_start = this->_ptr;

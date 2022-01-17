@@ -1,32 +1,4 @@
-6,8d5
+6d5
 < - 1
-< - 2
-< - 3
-10a8,10
-> - 0
-> - 0
-> - 0
-12c12
-< true
----
-> false
-63d62
-< true
-66d64
-< false
-68d65
-< false
-70d66
-< false
-73d68
-< true
-75d69
-< true
-76a71,73
-> false
-> true
-> true
-78a76,78
-> false
-> false
-> true
+10a10
+> - 2

@@ -1,41 +1,38 @@
-6,8d5
+6d5
 < - 35
-< - 28
-< - 21
-10a8,10
-> - 0
-> - 0
-> - 0
-11a12,13
-> 0
+10a10
+> - 2
+12c12
+< 14
+---
 > 7
-14,18c16,18
-< 21
+15,18c15,18
 < 35
 < foo::m called [7]
 < foo::m const called [35]
 < 14
 ---
-> foo::m called [0]
-> foo::m const called [14]
-> 0
-21,23c21,27
+> 28
+> foo::m called [2]
+> foo::m const called [28]
+> 7
+21,22d20
 < 35
 < 28
-< 28
----
+23a22
 > 21
-> 7
-> 7
-> 0
-> 0
-> foo::m called [21]
-> foo::m const called [0]
-26,30d29
+25,29c24,27
+< 14
 < foo::m called [35]
 < foo::m const called [7]
 < 28
 < 28
-< 21
+---
+> 7
+> 2
+> foo::m called [28]
+> foo::m const called [2]
+30a29
+> 14
 31a31
-> 0
+> 2
