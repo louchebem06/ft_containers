@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 12:36:12 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/17 18:24:01 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/17 23:29:17 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ namespace ft
 				this->_start = 0;
 				this->_end = 0;
 				this->_capacity = 0;
+				this->_ptr = 0;
 			};
 			explicit vector (size_type n, const value_type& val = value_type(),
 							const allocator_type& alloc = allocator_type())
@@ -89,7 +90,7 @@ namespace ft
 			~vector()
 			{
 				this->clear();
-				//this->_alloc.deallocate(this->_ptr, this->capacity());
+				this->_alloc.deallocate(this->_ptr, this->capacity());
 			};
 
 			vector& operator=(const vector& x)
@@ -106,7 +107,6 @@ namespace ft
 						throw std::bad_alloc();
 					for (size_type i = 0; i < x.size(); i++)
 						new_alloc.construct(new_pointer + i, x[i]);
-					this->_alloc = new_alloc;
 					this->_ptr = new_pointer;
 					this->_start = new_pointer;
 					this->_end = new_pointer + (size - 1);
@@ -178,11 +178,10 @@ namespace ft
 					for (size_type i = 0; i < size; i++)
        					new_alloc.construct(new_pointer + i, (*this)[i]);
 					this->clear();
-					//this->_alloc.deallocate(this->_ptr, this->capacity());
+					this->_alloc.deallocate(this->_ptr, this->capacity());
 					this->_size = n;
 					this->_capacity = n;
 					this->_ptr = new_pointer;
-					this->_alloc = new_alloc;
 					this->_start = this->_ptr;
 					this->_end = this->_ptr + (n - 1);
 				}
@@ -230,7 +229,6 @@ namespace ft
 					this->clear();
 					this->_alloc.deallocate(this->_ptr, this->capacity());
 					this->_ptr = new_pointer;
-					this->_alloc = new_alloc;
 					this->_start = this->_ptr;
 					this->_end = this->_ptr + (size - 1);
 					this->_size = size;
@@ -340,9 +338,8 @@ namespace ft
        					new_alloc.construct(new_pointer + i, (*this)[i]);
 					new_alloc.construct(new_pointer + size, val);
 					this->clear();
-					// this->_alloc.deallocate(this->_ptr, this->capacity());
+					this->_alloc.deallocate(this->_ptr, this->capacity());
 					this->_ptr = new_pointer;
-					this->_alloc = new_alloc;
 					this->_start = this->_ptr;
 				}
 				else
@@ -380,9 +377,8 @@ namespace ft
        					new_alloc.construct(new_pointer + i, (*this)[i]);
 					new_alloc.construct(new_pointer + size, val);
 					this->clear();
-					//this->_alloc.deallocate(this->_ptr, this->capacity());
+					this->_alloc.deallocate(this->_ptr, this->capacity());
 					this->_ptr = new_pointer;
-					this->_alloc = new_alloc;
 					this->_start = this->_ptr;
 					this->_end = this->_ptr + (size - 1);
 					this->_size = size;
@@ -399,7 +395,7 @@ namespace ft
 						*it = *(it - 1);
 				*(this->begin() + pos) = val;
 			
-				return (iterator(this->_start + pos)); //fake return for test
+				return (iterator(this->_start + pos));
 			};
 			void insert (iterator position, size_type n, const value_type& val)
 			{

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   make_pair.hpp                                      :+:      :+:    :+:   */
+/*   pair.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 15:10:59 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/14 15:11:56 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/17 22:06:28 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,9 @@ namespace ft
 		pair(){};
 
 		template<class U, class V>
-		pair (const pair<U,V> & pr)
-		{
-			this->first = static_cast<U>(pr.first);
-			this->second = static_cast<V>(pr.second);
-		};
+		pair (const pair<U,V> & pr) : first(pr.first), second(pr.second) {};
 		
-		pair (const first_type& a, const second_type& b)
-		{
-			this->first = a;
-			this->second = b;
-		};
+		pair (const first_type& a, const second_type& b) : first(a), second(b) {};
 
 		pair & operator= (const pair & pr)
 		{

@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 18:04:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/17 19:09:55 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/18 00:00:10 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,23 @@ namespace ft
 						return comp(x.first, y.first);
 					};
 			};
+		private:
+			allocator_type		_alloc;
+			pointer 			_ptr;
+			pointer				_start;
+			pointer 			_end;
+			size_type			_size;
+			key_compare			_key_compare;
 		public:
 			explicit map (const key_compare& comp = key_compare(),
 				const allocator_type& alloc = allocator_type())
 			{
-				(void)comp;
-				(void)alloc;
+				this->_key_compare = comp;
+				this->_alloc = alloc;
+				this->_size = 0;
+				this->_start = 0;
+				this->_end = 0;
+				this->_ptr = 0;
 			};
 
 			template <class InputIterator>
@@ -71,44 +82,126 @@ namespace ft
 				const key_compare& comp = key_compare(),
 				const allocator_type& alloc = allocator_type())
 			{
-				(void)first;
-				(void)last;
-				(void) comp;
-				(void) alloc;
+				difference_type diff = distance(first, last);
+
+				this->_size = diff;
+				this->_alloc = alloc;
+				this->_key_compare = comp;
+				this->_ptr = this->_alloc.allocate(this->_size);
+				if (!this->_ptr)
+					throw std::bad_alloc();
+				while (first != last)
+       				this->_alloc.construct(this->_ptr + i++, *first++);
+				this->_start = this->_ptr;
+				this->_end = this->_ptr + (this->_size - 1);
 			};
-			map (const map& x) { (void)x; };
+			map (const map& x) {
+				*this = x;
+			};
 
 			~map() {};
 
-			map& operator= (const map& x) { (void)x; };
+			map& operator= (const map& x) {
+				if (this->_ptr != x._ptr)
+				{
+					allocator_type	new_alloc;
+					pointer 		new_pointer;
+					size_type		i = 0;
 
-			iterator begin() {};
-			const_iterator begin() const {};
+					new_pointer = new_alloc.allocate(x.size());
+					if (!new_pointer)
+						throw std::bad_alloc();
+					for (iterator it = this->begin(); it != this->end(); it++)
+						new_alloc.construct(new_pointer + i++, *it);
+					this->_alloc = new_alloc;
+					this->_ptr = new_pointer;
+					this->_start = new_pointer;
+					this->_end = new_pointer + (x.size() - 1);
+					this->_size = x._size;
+					this->_key_compare = x._key_compare;
+				}
+				return (*this);
+			};
 
-			iterator end() {};
-			const_iterator end() const {};
+			iterator begin() {
+				return (iterator(this->_start));
+			};
+			const_iterator begin() const {
+				return (const_iterator(this->_start));
+			};
 
-			reverse_iterator rbegin() {};
-			const_reverse_iterator rbegin() const {};
+			iterator end() {
+				return (iterator(this->_end + 1));
+			};
+			const_iterator end() const {
+				return (const_iterator(this->_end + 1));
+			};
 
-			reverse_iterator rend() {};
-			const_reverse_iterator rend() const {};
+			reverse_iterator rbegin() {
+				return (reverse_iterator(this->end()));
+			};
+			const_reverse_iterator rbegin() const {
+				return (const_reverse_iterator(this->end()));
+			};
 
-			bool empty() const {};
+			reverse_iterator rend() {
+				return (reverse_iterator(this->begin()));
+			};
+			const_reverse_iterator rend() const {
+				return (const_reverse_iterator(this->begin()));
+			};
 
-			size_type size() const {};
+			bool empty() const {
+				if (this->size() == 0)
+					return (true);
+				return (false);
+			};
 
-			size_type max_size() const {};
+			size_type size() const {
+				return (this->_size);
+			};
 
-			mapped_type& operator[] (const key_type& k) { (void)k; };
+			size_type max_size() const {
+				return (this->_alloc.max_size())
+			};
+
+			mapped_type& operator[] (const key_type& k) {
+				iterator it = this->find(k);
+
+				if (it != this->end())
+				{
+					allocator_type	new_alloc;
+					pointer 		new_pointer;
+					size_type		i = 0;
+
+					new_pointer = new_alloc.allocate(this->size() + 1);
+					if (!new_pointer)
+						throw std::bad_alloc();
+					for (iterator it = this->begin(); it != this->end(); it++)
+						new_alloc.construct(new_pointer + i++, *it);
+					new_alloc.construct(new_pointer + i++, value_type(k, mapped_type));
+					this->_ptr = new_pointer;
+					this->_start = new_pointer;
+					this->_end = new_pointer + (this->size());
+					this->_size = this->size() + 1;
+					this->sort();
+				}
+				return *(this);
+			};
 
 			ft::pair<iterator, bool> insert (const value_type& val) {
-				(void)val;
+				iterator it = this->find(val.first);
+
+				if (it == this->end())
+					(*this)[val.first];
+				it = this->find(val.first);
+				*it = val;
 			};
 			
 			iterator insert (iterator position, const value_type& val) {
 				(void)position;
-				(void)val;
+				this->insert(val);
+				return (position);
 			};
 			
 			template <class InputIterator>
@@ -139,37 +232,71 @@ namespace ft
 			value_compare value_comp() const {};
 
 			iterator find (const key_type& k) {
-				(void)k;
+				for (iterator it = this->begin(); it != this->end(); it++)
+				{
+					if (*it.first == k)
+						return (it);
+				}
+				return (this->end());
 			};
 			const_iterator find (const key_type& k) const {
-				(void)k;
+				return (this->find(k));
 			};
 
 			size_type count (const key_type& k) const {
-				(void)k;
+				iterator it = this->find(k);
+
+				if (it != this->end())
+					return (1);
+				return (0);
 			};
 
 			iterator lower_bound (const key_type& k) {
 				(void)k;
 			};
 			const_iterator lower_bound (const key_type& k) const {
-				(void)k;
+				return (this->lower_bound(k));
 			};
 
 			iterator upper_bound (const key_type& k) {
 				(void)k;
 			};
 			const_iterator upper_bound (const key_type& k) const {
-				(void)k;
+				return (this->upper_bound(k));
 			};
 
-			pair<const_iterator,const_iterator> equal_range (const key_type& k) const {
-				(void)k;
-			};
 			pair<iterator,iterator> equal_range (const key_type& k) {
 				(void)k;
 			};
+			pair<const_iterator,const_iterator> equal_range (const key_type& k) const {
+				return (equal_range(k));
+			};
 
-			allocator_type get_allocator() const {};
+			allocator_type get_allocator() const {
+				return (this->_alloc);
+			};
+		private:
+			void	sort()
+			{
+				iterator tmp = this->begin();
+				for (iterator it = this->begin(); tmp != this->end(); it++)
+				{
+					tmp++;
+					if (*it > *tmp)
+					{
+						this->swapping(it, tmp);
+						it = this->begin();
+					}
+					tmp = it;
+				}
+			}
+			void	swapping(iterator first, iterator second)
+			{
+				iterator	tmp;
+				
+				*tmp = *first;
+				first = second;
+				second = tmp;
+			}
 	};
 }

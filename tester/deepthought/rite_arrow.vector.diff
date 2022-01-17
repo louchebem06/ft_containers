@@ -1,0 +1,38 @@
+6d5
+< - 35
+10a10
+> - 0
+12c12
+< 14
+---
+> 7
+15,18c15,18
+< 35
+< foo::m called [7]
+< foo::m const called [35]
+< 14
+---
+> 28
+> foo::m called [0]
+> foo::m const called [28]
+> 7
+21,22d20
+< 35
+< 28
+23a22
+> 21
+25,29c24,27
+< 14
+< foo::m called [35]
+< foo::m const called [7]
+< 28
+< 28
+---
+> 7
+> 0
+> foo::m called [28]
+> foo::m const called [0]
+30a29
+> 14
+31a31
+> 0
