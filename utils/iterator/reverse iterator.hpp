@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 15:39:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/18 14:53:07 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/18 15:12:04 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,9 @@ namespace ft
 				return (*this);
 			};
 			reverse_iterator  operator++(int) {
-				return (reverse_iterator(--_ptr));
+				pointer tmp = _ptr + 1;
+				--_ptr;
+				return (reverse_iterator(tmp));
 			};
 
 			reverse_iterator& operator+= (difference_type n) {
@@ -69,7 +71,9 @@ namespace ft
 				return (*this);
 			};
 			reverse_iterator  operator--(int) {
-				return (reverse_iterator(++_ptr));
+				pointer tmp = _ptr + 1;
+				++_ptr;
+				return (reverse_iterator(tmp));
 			};
 
 			reverse_iterator& operator-= (difference_type n) {

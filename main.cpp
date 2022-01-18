@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 17:05:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/18 14:55:23 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/18 15:11:37 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,35 +83,35 @@ int		main(void)
 		*it++ = i;
 	printSize(vct, 1);
 
-	// it = vct.rbegin();
-	// ite = vct.rbegin();
+	it = vct.rbegin();
+	ite = vct.rbegin();
 
-	// std::cout << *(++ite) << std::endl;
-	// std::cout << *(ite++) << std::endl;
-	// std::cout << *ite++ << std::endl;
-	// std::cout << *++ite << std::endl;
+	std::cout << *(++ite) << std::endl;
+	std::cout << *(ite++) << std::endl;
+	std::cout << *ite++ << std::endl;
+	std::cout << *++ite << std::endl;
 
-	// it->m();
-	// ite->m();
+	it->m();
+	ite->m();
 
-	// std::cout << *(++it) << std::endl;
-	// std::cout << *(it++) << std::endl;
-	// std::cout << *it++ << std::endl;
-	// std::cout << *++it << std::endl;
+	std::cout << *(++it) << std::endl;
+	std::cout << *(it++) << std::endl;
+	std::cout << *it++ << std::endl;
+	std::cout << *++it << std::endl;
 
-	// std::cout << *(--ite) << std::endl;
-	// std::cout << *(ite--) << std::endl;
-	// std::cout << *--ite << std::endl;
-	// std::cout << *ite-- << std::endl;
+	std::cout << *(--ite) << std::endl;
+	std::cout << *(ite--) << std::endl;
+	std::cout << *--ite << std::endl;
+	std::cout << *ite-- << std::endl;
 
-	// (*it).m();
-	// (*ite).m();
+	(*it).m();
+	(*ite).m();
 
-	// std::cout << *(--it) << std::endl;
-	// std::cout << *(it--) << std::endl;
-	// std::cout << *it-- << std::endl;
-	// std::cout << *--it << std::endl;
+	std::cout << *(--it) << std::endl;
+	std::cout << *(it--) << std::endl;
+	std::cout << *it-- << std::endl;
+	std::cout << *--it << std::endl;
 
-	// return (0);
+	return (0);
 }
 
