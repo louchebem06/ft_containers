@@ -1,31 +1,32 @@
 size: 5
 capacity: OK
-max_size: 4611686018427387903
+max_size: 2305843009213693951
 
 Content is:
-- 28
 - 21
 - 14
 - 7
-- 0
+- 2
+- 2
 ###############################################
-7
+2
 14
 21
-28
-foo::m called [0]
-foo::m const called [28]
-7
+21
+foo::m called [2]
+foo::m const called [21]
+2
 14
 21
-28
 21
 14
-7
-0
-foo::m called [28]
-foo::m const called [0]
-21
+14
+2
+2
+foo::m called [21]
+foo::m const called [2]
+14
 14
 7
-0
+2
+munmap_chunk(): invalid pointer

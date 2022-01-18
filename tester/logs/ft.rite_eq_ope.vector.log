@@ -1,13 +1,13 @@
 size: 5
 capacity: OK
-max_size: 4611686018427387903
+max_size: 2305843009213693951
 
 Content is:
-- 2
 - 3
 - 4
 - 5
-- 0
+- 2
+- 2
 ###############################################
 true
 		ft_eq_ope:
@@ -107,3 +107,4 @@ true
 true
 false
 false
+double free or corruption (out)

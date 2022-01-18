@@ -1,4 +1,8 @@
-6d5
+6,7d5
 < - 1
-10a10
-> - 0
+< - 2
+10a9,10
+> - 2
+> - 2
+109a110
+> double free or corruption (out)
