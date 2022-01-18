@@ -2,10 +2,10 @@
 
 #define TESTED_TYPE int
 
-int		main(void)
+void insert2(void)
 {
-	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(5);
-	TESTED_NAMESPACE::vector<TESTED_TYPE> vct2;
+	TESTED_NAMESPACE::vector<int> vct(5);
+	TESTED_NAMESPACE::vector<int> vct2;
 	const int cut = 3;
 
 	for (unsigned long int i = 0; i < vct.size(); ++i)
@@ -26,5 +26,4 @@ int		main(void)
 	std::cout << "----------------------------------------" << std::endl;
 
 	printSize(vct2);
-	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 12:36:12 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/18 14:45:54 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/18 15:19:47 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -307,10 +307,12 @@ namespace ft
 					allocator_type 	new_alloc;
 					pointer			new_pointer;
 
-					this->_capacity = n;
 					new_pointer = new_alloc.allocate(n);
 					if (!new_pointer)
 						throw std::bad_alloc();
+					this->clear();
+					this->_alloc.deallocate(this->_ptr, this->capacity());
+					this->_capacity = n;
 					this->_ptr = new_pointer;
 					this->_alloc = new_alloc;
 					this->_start = this->_ptr;
@@ -331,6 +333,7 @@ namespace ft
 				{
 					allocator_type 	new_alloc;
 					pointer			new_pointer;
+					size_type		capacity = this->capacity();
 				
 					_updateCapacity(size + 1);
 					new_pointer = new_alloc.allocate(this->capacity());
@@ -338,7 +341,7 @@ namespace ft
        					new_alloc.construct(new_pointer + i, (*this)[i]);
 					new_alloc.construct(new_pointer + size, val);
 					this->clear();
-					this->_alloc.deallocate(this->_ptr, this->capacity());
+					this->_alloc.deallocate(this->_ptr, capacity);
 					this->_ptr = new_pointer;
 					this->_start = this->_ptr;
 				}
