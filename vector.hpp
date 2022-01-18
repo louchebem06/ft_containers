@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 12:36:12 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/18 15:19:47 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/18 16:21:10 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,9 @@ namespace ft
 						throw std::bad_alloc();
 					for (size_type i = 0; i < x.size(); i++)
 						new_alloc.construct(new_pointer + i, x[i]);
+					/*
+						Leaks here
+					*/
 					this->_ptr = new_pointer;
 					this->_start = new_pointer;
 					this->_end = new_pointer + (size - 1);
