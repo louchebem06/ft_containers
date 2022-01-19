@@ -14,10 +14,10 @@ range (3)
 
 #define TESTED_TYPE int
 
-void insert(void)
+int		main(void)
 {
-	TESTED_NAMESPACE::vector<int> vct(10);
-	TESTED_NAMESPACE::vector<int> vct2;
+	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(10);
+	TESTED_NAMESPACE::vector<TESTED_TYPE> vct2;
 
 	for (unsigned long int i = 0; i < vct.size(); ++i)
 		vct[i] = (vct.size() - i) * 3;
@@ -41,4 +41,5 @@ void insert(void)
 	printSize(vct2);
 
 	printSize(vct);
+	return (0);
 }

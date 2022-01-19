@@ -1,20 +1,20 @@
 #include "common.hpp"
 
-#define foo foo
+#define TESTED_TYPE foo
 
-void rite_arrow(void)
+int		main(void)
 {
 	const int size = 5;
-	TESTED_NAMESPACE::vector<foo> vct(size);
-	TESTED_NAMESPACE::vector<foo>::reverse_iterator it(vct.rbegin());
-	TESTED_NAMESPACE::vector<foo>::const_reverse_iterator ite(vct.rend());
+	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(size);
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it(vct.begin());
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator ite(vct.end());
 
 	for (int i = 1; it != ite; ++i)
-		*it++ = (i * 7);
+		*it++ = i;
 	printSize(vct, 1);
 
-	it = vct.rbegin();
-	ite = vct.rbegin();
+	it = vct.begin();
+	ite = vct.begin();
 
 	std::cout << *(++ite) << std::endl;
 	std::cout << *(ite++) << std::endl;
@@ -41,4 +41,6 @@ void rite_arrow(void)
 	std::cout << *(it--) << std::endl;
 	std::cout << *it-- << std::endl;
 	std::cout << *--it << std::endl;
+
+	return (0);
 }
