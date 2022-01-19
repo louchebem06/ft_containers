@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 12:36:12 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/18 16:21:10 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/19 01:22:44 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ namespace ft
 				this->_size = n;
 				this->_capacity = n;
 				this->_ptr = this->_alloc.allocate(n);
+				if (!this->_ptr)
+					throw std::bad_alloc();
 				for (size_type i = 0; i < n; i++)
        				this->_alloc.construct(this->_ptr + i, val);
 				this->_start = this->_ptr;
@@ -74,6 +76,8 @@ namespace ft
 				
 				this->_alloc = alloc;
 				this->_ptr = this->_alloc.allocate(n);
+				if (!this->_ptr)
+					throw std::bad_alloc();
 				this->_size = n;
 				this->_capacity = n;
 				size_t i = 0;
@@ -84,6 +88,12 @@ namespace ft
 			};
 			vector (const vector& x)
 			{
+				this->_alloc = x._alloc;
+				this->_size = 0;
+				this->_start = 0;
+				this->_end = 0;
+				this->_capacity = 0;
+				this->_ptr = 0;
 				*this = x;
 			};
 
@@ -95,26 +105,21 @@ namespace ft
 
 			vector& operator=(const vector& x)
 			{
-				if (this->_ptr != x._ptr)
+				if (this != &x)
 				{
-					allocator_type	new_alloc;
-					pointer 		new_pointer;
-					size_type		size = x.size();
-					size_type		capacity = x.capacity();
+					this->clear();
+					this->_alloc.deallocate(this->_ptr, this->capacity());
+					size_type		i = 0;
 
-					new_pointer = new_alloc.allocate(capacity);
-					if (!new_pointer)
+					this->_ptr = this->_alloc.allocate(x.capacity());
+					if (!this->_ptr)
 						throw std::bad_alloc();
-					for (size_type i = 0; i < x.size(); i++)
-						new_alloc.construct(new_pointer + i, x[i]);
-					/*
-						Leaks here
-					*/
-					this->_ptr = new_pointer;
-					this->_start = new_pointer;
-					this->_end = new_pointer + (size - 1);
-					this->_size = size;
-					this->_capacity = capacity;
+					for (const_iterator it = x.begin(); it != x.end(); it++)
+						this->_alloc.construct(this->_ptr + i++, *it);
+					this->_start = this->_ptr;
+					this->_size = x.size();
+					this->_capacity = x.capacity();
+					this->_end = this->_ptr + (this->size() - 1);
 				}
 				return (*this);
 			};
@@ -223,7 +228,6 @@ namespace ft
 					allocator_type 	new_alloc;
 					pointer			new_pointer;
 				
-					this->_capacity = n;
 					new_pointer = new_alloc.allocate(n);
 					if (!new_pointer)
 						throw std::bad_alloc();
@@ -231,6 +235,7 @@ namespace ft
        					new_alloc.construct(new_pointer + i, (*this)[i]);
 					this->clear();
 					this->_alloc.deallocate(this->_ptr, this->capacity());
+					this->_capacity = n;
 					this->_ptr = new_pointer;
 					this->_start = this->_ptr;
 					this->_end = this->_ptr + (size - 1);
@@ -373,9 +378,9 @@ namespace ft
 					size_type 		capacity;
 					allocator_type 	new_alloc;
 					pointer			new_pointer;
-				
-					_updateCapacity(size + 1);
+					
 					capacity = this->capacity();
+					_updateCapacity(size + 1);
 					new_pointer = new_alloc.allocate(this->capacity());
 					if (!new_pointer)
 						throw std::bad_alloc();
@@ -383,12 +388,11 @@ namespace ft
        					new_alloc.construct(new_pointer + i, (*this)[i]);
 					new_alloc.construct(new_pointer + size, val);
 					this->clear();
-					this->_alloc.deallocate(this->_ptr, this->capacity());
+					this->_alloc.deallocate(this->_ptr, capacity);
 					this->_ptr = new_pointer;
 					this->_start = this->_ptr;
 					this->_end = this->_ptr + (size - 1);
 					this->_size = size;
-					this->_capacity = capacity;
 				}
 
 				this->_alloc.construct(this->_ptr + this->size(), val);
