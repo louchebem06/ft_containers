@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 15:12:54 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/19 01:55:18 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/20 13:30:19 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ namespace ft
 			container_type _container;
 		public:
 			explicit stack (const container_type& ctnr = container_type()) {
-				if (!(ctnr.empty())
+				if (!ctnr.empty())
 					this->_container = ctnr;
 			};
 			

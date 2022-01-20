@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 18:04:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/18 00:00:10 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/20 13:32:29 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ namespace ft
 				const allocator_type& alloc = allocator_type())
 			{
 				difference_type diff = distance(first, last);
+				size_type		i = 0;
 
 				this->_size = diff;
 				this->_alloc = alloc;
@@ -162,7 +163,7 @@ namespace ft
 			};
 
 			size_type max_size() const {
-				return (this->_alloc.max_size())
+				return (this->_alloc.max_size());
 			};
 
 			mapped_type& operator[] (const key_type& k) {
@@ -173,13 +174,14 @@ namespace ft
 					allocator_type	new_alloc;
 					pointer 		new_pointer;
 					size_type		i = 0;
+					mapped_type		tmp;
 
 					new_pointer = new_alloc.allocate(this->size() + 1);
 					if (!new_pointer)
 						throw std::bad_alloc();
 					for (iterator it = this->begin(); it != this->end(); it++)
 						new_alloc.construct(new_pointer + i++, *it);
-					new_alloc.construct(new_pointer + i++, value_type(k, mapped_type));
+					new_alloc.construct(new_pointer + i++, value_type(k, tmp));
 					this->_ptr = new_pointer;
 					this->_start = new_pointer;
 					this->_end = new_pointer + (this->size());
