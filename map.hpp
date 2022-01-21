@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 18:04:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/20 13:32:29 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/20 13:45:05 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ namespace ft
 			typedef typename allocator_type::const_reference			const_reference;
 			typedef typename allocator_type::pointer					pointer;
 			typedef typename allocator_type::const_pointer				const_pointer;
-			typedef ft::bidirectional_iterator<T>						iterator;
-			typedef ft::bidirectional_iterator<const T>					const_iterator;
+			typedef ft::bidirectional_iterator<value_type>				iterator;
+			typedef ft::bidirectional_iterator<const value_type>		const_iterator;
 			typedef ft::reverse_iterator<iterator>						reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 			typedef typename iterator_traits<iterator>::difference_type	difference_type;
@@ -82,7 +82,7 @@ namespace ft
 				const key_compare& comp = key_compare(),
 				const allocator_type& alloc = allocator_type())
 			{
-				difference_type diff = distance(first, last);
+				difference_type diff = ft::distance(first, last);
 				size_type		i = 0;
 
 				this->_size = diff;
@@ -97,6 +97,12 @@ namespace ft
 				this->_end = this->_ptr + (this->_size - 1);
 			};
 			map (const map& x) {
+				_alloc = x._alloc;
+				_ptr = 0;
+				_start = 0;
+				_end = 0;
+				_size = 0;
+				_key_compare = x._key_compare;
 				*this = x;
 			};
 
@@ -167,9 +173,10 @@ namespace ft
 			};
 
 			mapped_type& operator[] (const key_type& k) {
-				iterator it = this->find(k);
+				if (this->size() > 0)
+					iterator it = this->find(k);
 
-				if (it != this->end())
+				if (this->size() == 0)
 				{
 					allocator_type	new_alloc;
 					pointer 		new_pointer;
@@ -186,9 +193,34 @@ namespace ft
 					this->_start = new_pointer;
 					this->_end = new_pointer + (this->size());
 					this->_size = this->size() + 1;
-					this->sort();
+					//this->sort();
 				}
-				return *(this);
+				std::cout << "Here" << std::endl;
+				return (*(this->begin()).second);
+			};
+
+			iterator find (const key_type& k) {
+				std::cout << "find" << std::endl;
+				(void)k;
+				for (iterator it = this->begin(); it != this->end(); it++)
+				{
+					std::cout << "start it" << std::endl;
+					if ((*it).first == k)
+					{
+						std::cout << "return it" << std::endl;
+						return (it);
+					}
+					std::cout << "next it" << std::endl;
+				}
+				return (this->end());
+			};
+			const_iterator find (const key_type& k) const {
+				for (const_iterator it = this->begin(); it != this->end(); it++)
+				{
+					if (*it.first == k)
+						return (it);
+				}
+				return (this->end());
 			};
 
 			ft::pair<iterator, bool> insert (const value_type& val) {
@@ -233,18 +265,6 @@ namespace ft
 
 			value_compare value_comp() const {};
 
-			iterator find (const key_type& k) {
-				for (iterator it = this->begin(); it != this->end(); it++)
-				{
-					if (*it.first == k)
-						return (it);
-				}
-				return (this->end());
-			};
-			const_iterator find (const key_type& k) const {
-				return (this->find(k));
-			};
-
 			size_type count (const key_type& k) const {
 				iterator it = this->find(k);
 
@@ -277,28 +297,5 @@ namespace ft
 			allocator_type get_allocator() const {
 				return (this->_alloc);
 			};
-		private:
-			void	sort()
-			{
-				iterator tmp = this->begin();
-				for (iterator it = this->begin(); tmp != this->end(); it++)
-				{
-					tmp++;
-					if (*it > *tmp)
-					{
-						this->swapping(it, tmp);
-						it = this->begin();
-					}
-					tmp = it;
-				}
-			}
-			void	swapping(iterator first, iterator second)
-			{
-				iterator	tmp;
-				
-				*tmp = *first;
-				first = second;
-				second = tmp;
-			}
 	};
 }
