@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 17:05:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/20 13:43:38 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/26 17:43:20 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,9 @@
 #include <map>
 #include <iostream>
 #include <string>
+#include "utils/node.hpp"
 
 int main()
 {
-	ft::map<std::string, std::string> fake;
-
-	fake["1"];
+	ft::B_tree<int, int> binary;
 }

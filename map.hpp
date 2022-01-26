@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 18:04:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/20 13:45:05 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/26 09:57:08 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,7 @@ namespace ft
 
 				if (this->size() == 0)
 				{
+					std::cout << "Here" << std::endl;
 					allocator_type	new_alloc;
 					pointer 		new_pointer;
 					size_type		i = 0;
@@ -186,8 +187,12 @@ namespace ft
 					new_pointer = new_alloc.allocate(this->size() + 1);
 					if (!new_pointer)
 						throw std::bad_alloc();
+					std::cout << "ok malloc" << std::endl;
+					//iterator it = this->begin();
+					std::cout << "ok iterator first" << std::endl;
 					for (iterator it = this->begin(); it != this->end(); it++)
-						new_alloc.construct(new_pointer + i++, *it);
+						new_alloc.construct(new_pointer + i++, value_type(k, tmp));
+					std::cout << "ok it" << std::endl;
 					new_alloc.construct(new_pointer + i++, value_type(k, tmp));
 					this->_ptr = new_pointer;
 					this->_start = new_pointer;
@@ -196,7 +201,7 @@ namespace ft
 					//this->sort();
 				}
 				std::cout << "Here" << std::endl;
-				return (*(this->begin()).second);
+				return ((*this->begin()).second);
 			};
 
 			iterator find (const key_type& k) {
