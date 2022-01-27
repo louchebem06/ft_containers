@@ -6,13 +6,14 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 17:13:50 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/26 18:20:52 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/27 11:07:57 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
 #include "utility.hpp"
+#include <iostream>
 
 namespace ft
 {
@@ -43,10 +44,31 @@ namespace ft
 			void	insert(value_type val)
 			{
 				NodePtr ptr = new Node<Keys, T>;
-				ptr->data(val);
+				ptr->data = val;
 				ptr->leftChild = 0;
 				ptr->rightChild = 0;
-				_where(&ptr);
+				_where(ptr);
+			}
+			NodePtr first() { return (this->_ptr->parent); }
+			void log(NodePtr root, std::string indent = "", bool right = false)
+			{
+				if (root == 0)
+					return ;
+
+				std::cout << indent;
+				if (right)
+				{
+					std::cout << "R----";
+					indent += "   ";
+				}
+				else
+				{
+					std::cout << "L----";
+					indent += "|  ";
+				}
+				std::cout << root->data.first << std::endl;
+				log(root->leftChild, indent, false);
+				log(root->rightChild, indent, true);
 			}
 		private:
 			void _where(NodePtr ptr)
@@ -57,32 +79,41 @@ namespace ft
 					_ptr->parent = ptr;
 					return ;
 				}
-				
+
 				NodePtr current = _ptr->parent;
+				NodePtr prev = _ptr->parent;
 				while (true)
 				{
-					if (current->data.first == ptr->data.first)
+					if (current && current->data.first == ptr->data.first)
 						return ;
-					else if (current->data.first < ptr->data.first)
+					else if (current && ptr->data.first < current->data.first)
 					{
-						if (_ptr->leftChild == 0)
-						{
-							current->leftChild = ptr;
-							return ;
-						}
-						current = _ptr->leftChild;
+						prev = current;
+						current = current->leftChild;
 					}
-					else if (current->data.first > ptr->data.first)
+					else if (current && ptr->data.first > current->data.first)
 					{
-						if (_ptr->rightChild == 0)
+						prev = current;
+						current = current->rightChild;
+					}
+					else if (current == 0)
+					{
+						if (ptr->data < prev->data && prev->leftChild == 0)
 						{
-							current->rightChild = ptr;
-							return ;
+							prev->parent = _ptr->parent;
+							prev->leftChild = ptr;
 						}
-						current = _ptr->rightChild;
+						else if (ptr->data > prev->data && prev->rightChild == 0)
+						{
+							prev->parent = _ptr->parent;
+							prev->rightChild = ptr;
+						}
+						else if (ptr->data < prev->data)
+							current = prev->leftChild;
+						else if (ptr->data > prev->data)
+							current = prev->rightChild;
 					}
 				}
-				
 			}
 	};
 }
