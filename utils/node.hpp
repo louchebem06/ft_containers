@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 15:27:48 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/28 17:09:30 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/28 18:05:16 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,8 +139,6 @@ namespace ft
 						return ;
 				}
 			}
-			//  / \
-			// /\ /\
 			NodePtr begin()
 			{
 				NodePtr current = _ptr;
