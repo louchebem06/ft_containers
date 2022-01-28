@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 17:05:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/27 11:06:55 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/28 16:26:50 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,27 @@
 #include "utils/node.hpp"
 #include "utils/utility.hpp"
 
+#define INT_TEST 7
+
 int main()
 {
 	ft::B_tree<int, int> binary;
-	ft::pair<int, int> ok[100];
+	ft::pair<int, int> ok[10];
 	
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 10; i++)
 		ok[i] = ft::pair<int, int>(i, 11);
-	
-	std::cout << "pair setup" << std::endl;
-	for (int i = 0; i < 100; i++)
-		binary.insert(ok[rand() % 100]);
-	std::cout << "end insert" << std::endl;
 
-	binary.log(binary.first());
+	for (int i = 0; i < 10; i++)
+		binary.insert(ok[rand() % 10]);
+
+	binary.log(binary.master());
+	
+	std::cout << std::endl;
+
+	std::cout << binary.begin()->data.first << std::endl;
+	std::cout << binary.end()->data.first << std::endl;
+
+	std::cout << std::endl;
+
+	binary.testos();
 }

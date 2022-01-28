@@ -15,15 +15,15 @@ int		main(void)
 	TESTED_NAMESPACE::map<T1, T2> mp(lst.begin(), lst.end());
 	TESTED_NAMESPACE::map<T1, T2>::iterator it = mp.begin(), ite = mp.end();
 
-	std::cerr << "HERE" << std::endl;
 	TESTED_NAMESPACE::map<T1, T2> mp_range(it, --(--ite));
-	std::cerr << "HERE2" << std::endl;
 	for (int i = 0; it != ite; ++it)
 		it->second = ++i * 5;
+
 	it = mp.begin(); ite = --(--mp.end());
 	TESTED_NAMESPACE::map<T1, T2> mp_copy(mp);
 	for (int i = 0; it != ite; ++it)
 		it->second = ++i * 7;
+
 	std::cout << "\t-- PART ONE --" << std::endl;
 	printSize(mp);
 	printSize(mp_range);

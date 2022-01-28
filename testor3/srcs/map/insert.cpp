@@ -7,21 +7,6 @@ typedef TESTED_NAMESPACE::map<T1, T2>::iterator iterator;
 
 static int iter = 0;
 
-template <class node>
-void    btree_display(node *root, int space)
-{
-	int    i = 5;
-
-	if (root == NULL)
-		return ;
-	space += 5;
-	btree_display(root->right, space);
-	while (i++ < space)
-		printf(" ");
-	std::cout << root->value.first << " - " <<  root->value.second << std::endl;
-	btree_display(root->left, space);
-}
-
 template <typename MAP, typename U>
 void	ft_insert(MAP &mp, U param)
 {

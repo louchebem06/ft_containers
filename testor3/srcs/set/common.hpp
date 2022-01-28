@@ -18,13 +18,14 @@ std::string	printPair(const T &iterator, bool nl = true, std::ostream &o = std::
 	return ("");
 }
 
-template <typename TT_SET>
-void	printSize(TT_SET const &st, bool print_content = 1)
+template <typename T_SET>
+void	printSize(T_SET const &st, bool print_content = 1)
 {
 	std::cout << "size: " << st.size() << std::endl;
+	std::cout << "max_size: " << st.max_size() << std::endl;
 	if (print_content)
 	{
-		typename TT_SET::const_iterator it = st.begin(), ite = st.end();
+		typename T_SET::const_iterator it = st.begin(), ite = st.end();
 		std::cout << std::endl << "Content is:" << std::endl;
 		for (; it != ite; ++it)
 			std::cout << "- " << printPair(it, false) << std::endl;

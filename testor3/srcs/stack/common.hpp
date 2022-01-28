@@ -7,8 +7,8 @@
 # define TESTED_NAMESPACE ft
 #endif
 
-template <typename TT_STACK>
-void	printSize(TT_STACK &stck, bool print_content = 1)
+template <typename T_STACK>
+void	printSize(T_STACK &stck, bool print_content = 1)
 {
 	std::cout << "size: " << stck.size() << std::endl;
 	if (print_content)

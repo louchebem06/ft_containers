@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/26 17:13:50 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/27 11:07:57 by bledda           ###   ########.fr       */
+/*   Created: 2022/01/28 15:27:48 by bledda            #+#    #+#             */
+/*   Updated: 2022/01/28 17:09:30 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,16 @@ namespace ft
 		Node 		*parent;
 		value_type 	data;
 	};
-	
+}
+
+namespace ft
+{
 	template <class Keys, class T>
 	class B_tree
 	{
 		private:
 			typedef Node<Keys, T>						*NodePtr;
+			typedef	B_tree<Keys, T>						*pointer;
 			typedef typename Node<Keys, T>::value_type	value_type;
 		private:
 			NodePtr _ptr;
@@ -43,13 +47,18 @@ namespace ft
 			~B_tree() {};
 			void	insert(value_type val)
 			{
+				if (find(val.first))
+					return ;
 				NodePtr ptr = new Node<Keys, T>;
 				ptr->data = val;
 				ptr->leftChild = 0;
 				ptr->rightChild = 0;
 				_where(ptr);
 			}
-			NodePtr first() { return (this->_ptr->parent); }
+			NodePtr master()
+			{
+				return (_ptr);
+			}
 			void log(NodePtr root, std::string indent = "", bool right = false)
 			{
 				if (root == 0)
@@ -70,48 +79,166 @@ namespace ft
 				log(root->leftChild, indent, false);
 				log(root->rightChild, indent, true);
 			}
+			NodePtr find(Keys k)
+			{
+				if (_ptr == 0)
+					return (0);
+
+				NodePtr current = _ptr;
+
+				while (true)
+				{
+					if (k == current->data.first)
+						return (current);
+					else if (current->leftChild && k <= current->data.first)
+						current = current->leftChild;
+					else if (current->rightChild && k >= current->data.first)
+						current = current->rightChild;
+					else
+						return (0);
+				}
+			}
+			void remove(Keys k)
+			{
+				if (_ptr == 0)
+					return ;
+
+				NodePtr current = _ptr;
+				while (current->parent)
+					current = current->parent;
+
+				if (current->data.first == k)
+				{
+					NodePtr left, right;
+
+					left = current->leftChild;
+					right = current->rightChild;
+					delete _ptr;
+					_ptr = 0;
+					if (left)
+					{
+						_ptr = left;
+						_ptr->parent = 0;
+						_where(right);
+					}
+					else if (right)
+					{
+						_ptr = right;
+						_ptr->parent = 0;
+						_where(left);
+					}
+					return ;	
+				}
+				while (true)
+				{
+					if (k < current->data.first && !_del(current, k))
+						current = current->leftChild;
+					else if (k > current->data.first && !_del(current, k))
+						current = current->rightChild;
+					else
+						return ;
+				}
+			}
+			//  / \
+			// /\ /\
+			NodePtr begin()
+			{
+				NodePtr current = _ptr;
+				
+				while (current->leftChild)
+					current = current->leftChild;
+				return (current);
+			}
+			NodePtr end()
+			{
+				NodePtr current = _ptr;
+				
+				while (current->rightChild)
+					current = current->rightChild;
+				return (current);
+			}
+			value_type getData()
+			{
+				return (_ptr->data);
+			}
+			void testos()
+			{
+				NodePtr current = begin();
+
+				while (current)
+				{
+					std::cout << current->data.first << std::endl;
+					current = current->rightChild;
+				}
+				current = begin();
+				while (current)
+				{
+					std::cout << current->data.first << std::endl;
+					current = current->rightChild;
+				}
+			}
 		private:
+			bool _del(NodePtr ptr, Keys k)
+			{
+				bool ok = false ;
+				NodePtr left, right;
+				
+				left = right = 0;
+				if (ptr->leftChild && ptr->leftChild->data.first == k)
+				{
+					ok = true;
+					left = ptr->leftChild->leftChild;
+					right = ptr->leftChild->rightChild;
+					delete ptr->leftChild;
+					ptr->leftChild = 0;
+				}
+				else if (ptr->rightChild && ptr->rightChild->data.first == k)
+				{
+					ok = true;
+					left = ptr->rightChild->leftChild;
+					right = ptr->rightChild->rightChild;
+					delete ptr->rightChild;
+					ptr->rightChild = 0;
+				}
+				_where(left);
+				_where(right);
+				return (ok);
+			}
 			void _where(NodePtr ptr)
 			{
+				if (ptr == 0)
+					return ;
 				if (_ptr == 0)
 				{
 					_ptr = ptr;
-					_ptr->parent = ptr;
+					_ptr->parent = 0;
 					return ;
 				}
-
-				NodePtr current = _ptr->parent;
-				NodePtr prev = _ptr->parent;
+				
+				NodePtr current = _ptr;
 				while (true)
 				{
-					if (current && current->data.first == ptr->data.first)
+					if (current->data.first == ptr->data.first)
 						return ;
-					else if (current && ptr->data.first < current->data.first)
-					{
-						prev = current;
+					else if (current->leftChild
+						&& ptr->data.first < current->data.first)
 						current = current->leftChild;
-					}
-					else if (current && ptr->data.first > current->data.first)
-					{
-						prev = current;
+					else if (current->rightChild
+						&& ptr->data.first > current->data.first)
 						current = current->rightChild;
-					}
-					else if (current == 0)
+					else if (!current->leftChild
+						&& ptr->data.first < current->data.first)
 					{
-						if (ptr->data < prev->data && prev->leftChild == 0)
-						{
-							prev->parent = _ptr->parent;
-							prev->leftChild = ptr;
-						}
-						else if (ptr->data > prev->data && prev->rightChild == 0)
-						{
-							prev->parent = _ptr->parent;
-							prev->rightChild = ptr;
-						}
-						else if (ptr->data < prev->data)
-							current = prev->leftChild;
-						else if (ptr->data > prev->data)
-							current = prev->rightChild;
+						ptr->parent = current;
+						current->leftChild = ptr;
+						return ;
+					}
+					else if (!current->rightChild
+						&& ptr->data.first > current->data.first)
+					{
+						ptr->parent = current;
+						current->rightChild = ptr;
+						return ;
 					}
 				}
 			}
