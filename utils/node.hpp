@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 15:27:48 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/28 18:05:16 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/31 13:00:42 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,14 @@ namespace ft
 				_ptr = 0;
 			};
 			~B_tree() {};
+			B_tree(NodePtr ptr) {
+				_ptr = ptr;
+			};
+			B_tree & operator=(NodePtr ptr)
+			{
+				_ptr = ptr;
+				return (*this);
+			}
 			void	insert(value_type val)
 			{
 				if (find(val.first))
@@ -142,7 +150,7 @@ namespace ft
 			NodePtr begin()
 			{
 				NodePtr current = _ptr;
-				
+
 				while (current->leftChild)
 					current = current->leftChild;
 				return (current);
@@ -155,25 +163,118 @@ namespace ft
 					current = current->rightChild;
 				return (current);
 			}
-			value_type getData()
-			{
-				return (_ptr->data);
-			}
-			void testos()
+			
+			void printASC()
 			{
 				NodePtr current = begin();
 
-				while (current)
+				while (1)
 				{
-					std::cout << current->data.first << std::endl;
-					current = current->rightChild;
+					Keys tmp = current->data.first;
+					std::cout << tmp << std::endl;
+					if (end()->data.first == tmp)
+						break ;
+					if (current->rightChild)
+					{
+						current = current->rightChild;
+						while(current->leftChild && current->leftChild->data.first >= tmp)
+							current = current->leftChild;
+					}
+					else
+					{
+						while (current->data.first <= tmp)
+							current = current->parent;
+					}
 				}
-				current = begin();
-				while (current)
+			}
+
+			void printDSC()
+			{
+				NodePtr current = end();
+
+				while (1)
 				{
-					std::cout << current->data.first << std::endl;
-					current = current->rightChild;
+					Keys tmp = current->data.first;
+					std::cout << tmp << std::endl;
+					if (begin()->data.first == tmp)
+						break ;
+					if (current->leftChild)
+					{
+						current = current->leftChild;
+						while(current->rightChild && current->rightChild->data.first <= tmp)
+							current = current->rightChild;
+					}
+					else
+					{
+						while (current->data.first >= tmp)
+							current = current->parent;
+					}
 				}
+			}
+
+			B_tree & operator++() {
+				Keys tmp = this->_ptr->data.first;
+				if (this->_ptr->rightChild)
+				{
+					this->_ptr = this->_ptr->rightChild;
+					while(this->_ptr->leftChild && this->_ptr->leftChild->data.first >= tmp)
+						this->_ptr = this->_ptr->leftChild;
+				}
+				else
+				{
+					while (this->_ptr->data.first <= tmp)
+					{
+						if (this->_ptr->parent == 0)
+						{
+							this->_ptr = end() ;
+							break ;
+						}
+						else
+							this->_ptr = this->_ptr->parent;
+					}
+				}
+				return (*this);
+			};
+
+			B_tree operator++(int) {
+				B_tree tmp(_ptr);
+				++(*this);
+				return (tmp);
+			};
+
+			B_tree & operator--() {
+				Keys tmp = this->_ptr->data.first;
+				if (this->_ptr->leftChild)
+				{
+					this->_ptr = this->_ptr->leftChild;
+					while(this->_ptr->rightChild && this->_ptr->rightChild->data.first <= tmp)
+						this->_ptr = this->_ptr->rightChild;
+				}
+				else
+				{
+					while (this->_ptr->data.first >= tmp)
+					{
+						if (this->_ptr->parent == 0)
+						{
+							this->_ptr = begin() ;
+							break ;
+						}
+						else
+							this->_ptr = this->_ptr->parent;
+					}
+				}
+				return (*this);
+			};
+
+			B_tree operator--(int) {
+				B_tree tmp(_ptr);
+				--(*this);
+				return (tmp);
+			};
+
+			value_type data()
+			{
+				return (this->_ptr->data);
 			}
 		private:
 			bool _del(NodePtr ptr, Keys k)

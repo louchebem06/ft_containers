@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 12:36:12 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/19 01:55:01 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/31 13:14:41 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -503,7 +503,7 @@ namespace ft
 		const vector<T_,Alloc_>& lhs, const vector<T_,Alloc_>& rhs)
 	{
 		if (lhs.size() == rhs.size())
-			return (equal(lhs.begin(), lhs.end(), rhs.begin()));
+			return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 		return (false);
 	};
 	

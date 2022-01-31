@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 18:04:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/26 09:57:08 by bledda           ###   ########.fr       */
+/*   Updated: 2022/01/31 13:10:36 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,12 @@
 #include "utils/iterator.hpp"
 #include "utils/functional.hpp"
 #include "utils/utility.hpp"
+#include "utils/node.hpp"
 
 namespace ft
 {
 	template <class Key, class T, class Compare = ft::less<Key>,
-		class Alloc = std::allocator<ft::pair<const Key, T> > >
+		class Alloc = std::allocator<ft::B_tree<const Key, T> > >
 	class map
 	{
 		public:
@@ -35,8 +36,8 @@ namespace ft
 			typedef typename allocator_type::const_reference			const_reference;
 			typedef typename allocator_type::pointer					pointer;
 			typedef typename allocator_type::const_pointer				const_pointer;
-			typedef ft::bidirectional_iterator<value_type>				iterator;
-			typedef ft::bidirectional_iterator<const value_type>		const_iterator;
+			typedef ft::bidirectional_iterator<ft::B_tree<const Key, T> >		iterator;
+			typedef ft::bidirectional_iterator<const ft::B_tree<const Key, T> >	const_iterator;
 			typedef ft::reverse_iterator<iterator>						reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 			typedef typename iterator_traits<iterator>::difference_type	difference_type;
