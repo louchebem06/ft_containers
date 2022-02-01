@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/03 12:36:12 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/31 13:14:41 by bledda           ###   ########.fr       */
+/*   Updated: 2022/02/01 10:33:23 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,16 +110,26 @@ namespace ft
 					this->clear();
 					this->_alloc.deallocate(this->_ptr, this->capacity());
 					size_type		i = 0;
-
+					
 					this->_ptr = this->_alloc.allocate(x.capacity());
 					if (!this->_ptr)
-						throw std::bad_alloc();
-					for (const_iterator it = x.begin(); it != x.end(); it++)
-						this->_alloc.construct(this->_ptr + i++, *it);
-					this->_start = this->_ptr;
-					this->_size = x.size();
+							throw std::bad_alloc();
 					this->_capacity = x.capacity();
-					this->_end = this->_ptr + (this->size() - 1);
+					if (x._ptr != 0)
+					{
+						for (const_iterator it = x.begin(); it != x.end(); it++)
+							this->_alloc.construct(this->_ptr + i++, *it);
+						this->_start = this->_ptr;
+						this->_size = x.size();
+						this->_end = this->_ptr + (this->size() - 1);
+					}
+					else
+					{
+						this->_size = 0;
+						this->_start = 0;
+						this->_end = 0;
+						this->_ptr = 0;
+					}
 				}
 				return (*this);
 			};
@@ -202,8 +212,11 @@ namespace ft
 					this->_end = this->_ptr + (this->size() - 1);
 				}
 				else if (n > size)
-					while (size < this->size())
+				{
+					while (size < n)
 						this->_alloc.construct(this->_ptr + size++, val);
+					this->_size = n;
+				}
 			};
 
 			size_type capacity() const

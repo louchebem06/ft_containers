@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test_vector_insert_erase.cpp                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmacquet <kmacquet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 09:50:19 by bvalette          #+#    #+#             */
-/*   Updated: 2021/09/28 20:32:34 by kmacquet         ###   ########.fr       */
+/*   Updated: 2022/02/01 10:44:32 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

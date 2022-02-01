@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 15:27:48 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/31 13:00:42 by bledda           ###   ########.fr       */
+/*   Updated: 2022/02/01 13:42:21 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,6 +275,11 @@ namespace ft
 			value_type data()
 			{
 				return (this->_ptr->data);
+			}
+
+			NodePtr getPtr()
+			{
+				return (this->_ptr);
 			}
 		private:
 			bool _del(NodePtr ptr, Keys k)

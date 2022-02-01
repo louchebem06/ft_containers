@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 18:04:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/31 13:10:36 by bledda           ###   ########.fr       */
+/*   Updated: 2022/02/01 13:45:19 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ namespace ft
 			pointer 			_end;
 			size_type			_size;
 			key_compare			_key_compare;
+			ft::B_tree<Key, T>	test;
 		public:
 			explicit map (const key_compare& comp = key_compare(),
 				const allocator_type& alloc = allocator_type())
@@ -173,36 +174,14 @@ namespace ft
 				return (this->_alloc.max_size());
 			};
 
-			mapped_type& operator[] (const key_type& k) {
-				if (this->size() > 0)
-					iterator it = this->find(k);
+			mapped_type& operator[] (const key_type& k)
+			{
+				B_tree<Key, T> t(test.find(k));
+				mapped_type tmp;
 
-				if (this->size() == 0)
-				{
-					std::cout << "Here" << std::endl;
-					allocator_type	new_alloc;
-					pointer 		new_pointer;
-					size_type		i = 0;
-					mapped_type		tmp;
-
-					new_pointer = new_alloc.allocate(this->size() + 1);
-					if (!new_pointer)
-						throw std::bad_alloc();
-					std::cout << "ok malloc" << std::endl;
-					//iterator it = this->begin();
-					std::cout << "ok iterator first" << std::endl;
-					for (iterator it = this->begin(); it != this->end(); it++)
-						new_alloc.construct(new_pointer + i++, value_type(k, tmp));
-					std::cout << "ok it" << std::endl;
-					new_alloc.construct(new_pointer + i++, value_type(k, tmp));
-					this->_ptr = new_pointer;
-					this->_start = new_pointer;
-					this->_end = new_pointer + (this->size());
-					this->_size = this->size() + 1;
-					//this->sort();
-				}
-				std::cout << "Here" << std::endl;
-				return ((*this->begin()).second);
+				if (t.getPtr() == 0)
+					test.insert(value_type(k, tmp));
+				return (test.find(k)->data.second);
 			};
 
 			iterator find (const key_type& k) {
@@ -229,13 +208,9 @@ namespace ft
 				return (this->end());
 			};
 
-			ft::pair<iterator, bool> insert (const value_type& val) {
-				iterator it = this->find(val.first);
-
-				if (it == this->end())
-					(*this)[val.first];
-				it = this->find(val.first);
-				*it = val;
+			ft::pair<iterator, bool> insert (const value_type& val)
+			{
+				test.insert(val);
 			};
 			
 			iterator insert (iterator position, const value_type& val) {
