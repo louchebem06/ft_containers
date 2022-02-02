@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 18:04:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/02/01 13:45:19 by bledda           ###   ########.fr       */
+/*   Updated: 2022/02/02 13:34:48 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ namespace ft
 			typedef typename allocator_type::const_reference			const_reference;
 			typedef typename allocator_type::pointer					pointer;
 			typedef typename allocator_type::const_pointer				const_pointer;
-			typedef ft::bidirectional_iterator<ft::B_tree<const Key, T> >		iterator;
-			typedef ft::bidirectional_iterator<const ft::B_tree<const Key, T> >	const_iterator;
+			typedef typename ft::B_tree<const Key, T>::NodePtr			iterator;
+			typedef const iterator										const_iterator;
 			typedef ft::reverse_iterator<iterator>						reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
-			typedef typename iterator_traits<iterator>::difference_type	difference_type;
+			// typedef typename iterator_traits<iterator>::difference_type	difference_type;
 			typedef typename allocator_type::size_type 					size_type;
 		public:
 			// Official <map> and docs cplusplus.com
@@ -60,23 +60,14 @@ namespace ft
 					};
 			};
 		private:
-			allocator_type		_alloc;
-			pointer 			_ptr;
-			pointer				_start;
-			pointer 			_end;
-			size_type			_size;
-			key_compare			_key_compare;
 			ft::B_tree<Key, T>	test;
 		public:
 			explicit map (const key_compare& comp = key_compare(),
 				const allocator_type& alloc = allocator_type())
 			{
-				this->_key_compare = comp;
-				this->_alloc = alloc;
-				this->_size = 0;
-				this->_start = 0;
-				this->_end = 0;
-				this->_ptr = 0;
+				(void) comp;
+				(void) alloc;
+				test = 0;
 			};
 
 			template <class InputIterator>
@@ -84,95 +75,58 @@ namespace ft
 				const key_compare& comp = key_compare(),
 				const allocator_type& alloc = allocator_type())
 			{
-				difference_type diff = ft::distance(first, last);
-				size_type		i = 0;
-
-				this->_size = diff;
-				this->_alloc = alloc;
-				this->_key_compare = comp;
-				this->_ptr = this->_alloc.allocate(this->_size);
-				if (!this->_ptr)
-					throw std::bad_alloc();
-				while (first != last)
-       				this->_alloc.construct(this->_ptr + i++, *first++);
-				this->_start = this->_ptr;
-				this->_end = this->_ptr + (this->_size - 1);
+				(void) comp;
+				(void) alloc;
+				test = 0;
 			};
 			map (const map& x) {
-				_alloc = x._alloc;
-				_ptr = 0;
-				_start = 0;
-				_end = 0;
-				_size = 0;
-				_key_compare = x._key_compare;
+				test = 0;
 				*this = x;
 			};
 
 			~map() {};
 
 			map& operator= (const map& x) {
-				if (this->_ptr != x._ptr)
+				if (this->test->getRoot() != x.test->getRoot())
 				{
-					allocator_type	new_alloc;
-					pointer 		new_pointer;
-					size_type		i = 0;
-
-					new_pointer = new_alloc.allocate(x.size());
-					if (!new_pointer)
-						throw std::bad_alloc();
-					for (iterator it = this->begin(); it != this->end(); it++)
-						new_alloc.construct(new_pointer + i++, *it);
-					this->_alloc = new_alloc;
-					this->_ptr = new_pointer;
-					this->_start = new_pointer;
-					this->_end = new_pointer + (x.size() - 1);
-					this->_size = x._size;
-					this->_key_compare = x._key_compare;
+					test = x.test;
 				}
 				return (*this);
 			};
 
 			iterator begin() {
-				return (iterator(this->_start));
+				return (this->test.begin());
 			};
 			const_iterator begin() const {
-				return (const_iterator(this->_start));
+				return (this->test.begin());
 			};
 
 			iterator end() {
-				return (iterator(this->_end + 1));
+				return (this->test.end());
 			};
 			const_iterator end() const {
-				return (const_iterator(this->_end + 1));
+				return (this->test.end());
 			};
 
 			reverse_iterator rbegin() {
-				return (reverse_iterator(this->end()));
+				return (reverse_iterator(this->test->end()));
 			};
 			const_reverse_iterator rbegin() const {
-				return (const_reverse_iterator(this->end()));
+				return (const_reverse_iterator(this->test->end()));
 			};
 
 			reverse_iterator rend() {
-				return (reverse_iterator(this->begin()));
+				return (reverse_iterator(this->test->begin()));
 			};
 			const_reverse_iterator rend() const {
-				return (const_reverse_iterator(this->begin()));
+				return (const_reverse_iterator(this->test->begin()));
 			};
 
-			bool empty() const {
-				if (this->size() == 0)
-					return (true);
-				return (false);
-			};
+			bool empty() const {};
 
-			size_type size() const {
-				return (this->_size);
-			};
+			size_type size() const {};
 
-			size_type max_size() const {
-				return (this->_alloc.max_size());
-			};
+			size_type max_size() const {};
 
 			mapped_type& operator[] (const key_type& k)
 			{
@@ -184,33 +138,13 @@ namespace ft
 				return (test.find(k)->data.second);
 			};
 
-			iterator find (const key_type& k) {
-				std::cout << "find" << std::endl;
-				(void)k;
-				for (iterator it = this->begin(); it != this->end(); it++)
-				{
-					std::cout << "start it" << std::endl;
-					if ((*it).first == k)
-					{
-						std::cout << "return it" << std::endl;
-						return (it);
-					}
-					std::cout << "next it" << std::endl;
-				}
-				return (this->end());
-			};
-			const_iterator find (const key_type& k) const {
-				for (const_iterator it = this->begin(); it != this->end(); it++)
-				{
-					if (*it.first == k)
-						return (it);
-				}
-				return (this->end());
-			};
+			iterator find (const key_type& k) {test.find(k);};
+			const_iterator find (const key_type& k) const {test.find(k);};
 
 			ft::pair<iterator, bool> insert (const value_type& val)
 			{
 				test.insert(val);
+				return (ft::pair<iterator, bool>(0, false));
 			};
 			
 			iterator insert (iterator position, const value_type& val) {

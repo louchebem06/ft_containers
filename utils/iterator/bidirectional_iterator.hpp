@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 15:38:10 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/17 18:03:44 by bledda           ###   ########.fr       */
+/*   Updated: 2022/02/02 13:16:24 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ namespace ft
 			typedef typename iterator::value_type			value_type;
 			typedef typename iterator::difference_type		difference_type;
 			typedef typename iterator::iterator_category	iterator_category;
-			typedef typename iterator::reference 			reference;
 			typedef typename iterator::pointer				pointer;
+			typedef typename iterator::reference 			reference;
 		public:
 			pointer base() const { return (this->_ptr); };
 		public:

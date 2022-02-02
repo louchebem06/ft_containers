@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 15:27:48 by bledda            #+#    #+#             */
-/*   Updated: 2022/02/01 13:42:21 by bledda           ###   ########.fr       */
+/*   Updated: 2022/02/02 13:38:22 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ namespace ft
 	template <class Keys, class T>
 	class B_tree
 	{
-		private:
+		public:
 			typedef Node<Keys, T>						*NodePtr;
 			typedef	B_tree<Keys, T>						*pointer;
 			typedef typename Node<Keys, T>::value_type	value_type;
@@ -63,9 +63,13 @@ namespace ft
 				ptr->rightChild = 0;
 				_where(ptr);
 			}
-			NodePtr master()
+			NodePtr getRoot()
 			{
-				return (_ptr);
+				NodePtr root = _ptr;
+
+				while (root && root->parent != 0)
+					root = root->parent;
+				return (root);
 			}
 			void log(NodePtr root, std::string indent = "", bool right = false)
 			{
@@ -92,7 +96,7 @@ namespace ft
 				if (_ptr == 0)
 					return (0);
 
-				NodePtr current = _ptr;
+				NodePtr current = getRoot();
 
 				while (true)
 				{
@@ -111,7 +115,7 @@ namespace ft
 				if (_ptr == 0)
 					return ;
 
-				NodePtr current = _ptr;
+				NodePtr current = getRoot();
 				while (current->parent)
 					current = current->parent;
 
@@ -149,7 +153,7 @@ namespace ft
 			}
 			NodePtr begin()
 			{
-				NodePtr current = _ptr;
+				NodePtr current = getRoot();
 
 				while (current->leftChild)
 					current = current->leftChild;
@@ -157,59 +161,11 @@ namespace ft
 			}
 			NodePtr end()
 			{
-				NodePtr current = _ptr;
+				NodePtr current = getRoot();
 				
 				while (current->rightChild)
 					current = current->rightChild;
 				return (current);
-			}
-			
-			void printASC()
-			{
-				NodePtr current = begin();
-
-				while (1)
-				{
-					Keys tmp = current->data.first;
-					std::cout << tmp << std::endl;
-					if (end()->data.first == tmp)
-						break ;
-					if (current->rightChild)
-					{
-						current = current->rightChild;
-						while(current->leftChild && current->leftChild->data.first >= tmp)
-							current = current->leftChild;
-					}
-					else
-					{
-						while (current->data.first <= tmp)
-							current = current->parent;
-					}
-				}
-			}
-
-			void printDSC()
-			{
-				NodePtr current = end();
-
-				while (1)
-				{
-					Keys tmp = current->data.first;
-					std::cout << tmp << std::endl;
-					if (begin()->data.first == tmp)
-						break ;
-					if (current->leftChild)
-					{
-						current = current->leftChild;
-						while(current->rightChild && current->rightChild->data.first <= tmp)
-							current = current->rightChild;
-					}
-					else
-					{
-						while (current->data.first >= tmp)
-							current = current->parent;
-					}
-				}
 			}
 
 			B_tree & operator++() {
@@ -281,6 +237,17 @@ namespace ft
 			{
 				return (this->_ptr);
 			}
+			value_type & operator*() const
+			{
+				return (data());
+			};
+
+			bool operator!=(B_tree const & rhs) const {
+				if (this->data() != rhs.data())
+					return (true);
+				return (false);
+			};
+			
 		private:
 			bool _del(NodePtr ptr, Keys k)
 			{
@@ -312,14 +279,14 @@ namespace ft
 			{
 				if (ptr == 0)
 					return ;
-				if (_ptr == 0)
+				if (getRoot() == 0)
 				{
 					_ptr = ptr;
 					_ptr->parent = 0;
 					return ;
 				}
 				
-				NodePtr current = _ptr;
+				NodePtr current = getRoot();
 				while (true)
 				{
 					if (current->data.first == ptr->data.first)
