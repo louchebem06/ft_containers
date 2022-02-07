@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 15:27:48 by bledda            #+#    #+#             */
-/*   Updated: 2022/02/02 13:38:22 by bledda           ###   ########.fr       */
+/*   Updated: 2022/02/07 14:15:12 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,31 @@ namespace ft
 		public:
 			typedef Node<Keys, T>						*NodePtr;
 			typedef	B_tree<Keys, T>						*pointer;
-			typedef typename Node<Keys, T>::value_type	value_type;
+			// typedef typename Node<Keys, T>::value_type	value_type;
+			typedef	typename ft::pair<Keys, T>			value_type;
+			typedef value_type *						pairPtr;
+			typedef value_type &						reference;
 		private:
 			NodePtr _ptr;
 		public:
+			pairPtr operator->() const
+			{
+				//std::cout << "Fleche" << std::endl;
+				pairPtr tmp = (pairPtr)&_ptr->data;
+				return (tmp);
+			};
+			
+			value_type operator*() const
+			{
+				//std::cout << "Coucou" << std::endl;
+				return (*(this->operator->()));
+			};
+
+			reference data() const
+			{
+				return (this->_ptr->data);
+			}
+			
 			B_tree() {
 				_ptr = 0;
 			};
@@ -63,7 +84,7 @@ namespace ft
 				ptr->rightChild = 0;
 				_where(ptr);
 			}
-			NodePtr getRoot()
+			NodePtr getRoot() const
 			{
 				NodePtr root = _ptr;
 
@@ -151,18 +172,32 @@ namespace ft
 						return ;
 				}
 			}
-			NodePtr begin()
+			// NodePtr  begin()
+			// {
+			// 	NodePtr current = getRoot();
+
+			// 	while (current->leftChild)
+			// 		current = current->leftChild;
+			// 	return (current);
+			// }
+
+			NodePtr  begin() const
 			{
 				NodePtr current = getRoot();
 
+				if (current == 0)
+					return (0);
 				while (current->leftChild)
 					current = current->leftChild;
 				return (current);
 			}
-			NodePtr end()
+			
+			NodePtr end() const
 			{
 				NodePtr current = getRoot();
 				
+				if (current == 0)
+					return (0);
 				while (current->rightChild)
 					current = current->rightChild;
 				return (current);
@@ -228,25 +263,20 @@ namespace ft
 				return (tmp);
 			};
 
-			value_type data()
-			{
-				return (this->_ptr->data);
-			}
-
 			NodePtr getPtr()
 			{
 				return (this->_ptr);
 			}
-			value_type & operator*() const
-			{
-				return (data());
-			};
 
 			bool operator!=(B_tree const & rhs) const {
+				if (_ptr == 0 || rhs._ptr == 0)
+					return (true);
 				if (this->data() != rhs.data())
 					return (true);
 				return (false);
 			};
+
+			
 			
 		private:
 			bool _del(NodePtr ptr, Keys k)

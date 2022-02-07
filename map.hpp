@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 18:04:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/02/02 13:34:48 by bledda           ###   ########.fr       */
+/*   Updated: 2022/02/07 13:55:59 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ namespace ft
 			typedef typename allocator_type::const_reference			const_reference;
 			typedef typename allocator_type::pointer					pointer;
 			typedef typename allocator_type::const_pointer				const_pointer;
-			typedef typename ft::B_tree<const Key, T>::NodePtr			iterator;
-			typedef const iterator										const_iterator;
+			typedef typename ft::B_tree<Key, T>			iterator;
+			typedef typename ft::B_tree<Key, T>											const_iterator;
 			typedef ft::reverse_iterator<iterator>						reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 			// typedef typename iterator_traits<iterator>::difference_type	difference_type;
@@ -77,6 +77,8 @@ namespace ft
 			{
 				(void) comp;
 				(void) alloc;
+				(void) first;
+				(void) last;
 				test = 0;
 			};
 			map (const map& x) {
@@ -86,8 +88,9 @@ namespace ft
 
 			~map() {};
 
-			map& operator= (const map& x) {
-				if (this->test->getRoot() != x.test->getRoot())
+			map& operator= (const map& x)
+			{
+				if (this->test.getRoot() != x.test.getRoot())
 				{
 					test = x.test;
 				}
@@ -122,11 +125,17 @@ namespace ft
 				return (const_reverse_iterator(this->test->begin()));
 			};
 
-			bool empty() const {};
+			bool empty() const {
+				return (true);
+			};
 
-			size_type size() const {};
+			size_type size() const {
+				return (0);
+			};
 
-			size_type max_size() const {};
+			size_type max_size() const {
+				return (0);
+			};
 
 			mapped_type& operator[] (const key_type& k)
 			{
