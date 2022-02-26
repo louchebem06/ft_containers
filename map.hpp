@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 18:04:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/02/26 03:55:25 by bledda           ###   ########.fr       */
+/*   Updated: 2022/02/26 15:34:45 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ namespace ft
 			};
 
 			size_type max_size() const {
-				return (0);
+				return (this->_alloc.max_size());
 			};
 
 			mapped_type& operator[] (const key_type& k)
@@ -211,27 +211,49 @@ namespace ft
 				map::iterator it = this->begin();
 				for (;it != this->end(); it++)
 				{
-					if (*it->first >= k)
+					if ((*it).first >= k)
 						return (it);
 				}
 				return (this->end());
 			};
-			const_iterator lower_bound (const key_type& k) const {
-				return (lower_bound(k));
+			const_iterator lower_bound (const key_type& k) const
+			{
+				map::iterator it = this->begin();
+				for (;it != this->end(); it++)
+				{
+					if ((*it).first >= k)
+						return (it);
+				}
+				return (this->end());
 			};
 
-			iterator upper_bound (const key_type& k) {
-				return (_node.find(k));
+			iterator upper_bound(const key_type& k)
+			{
+				map::iterator it = this->begin();
+				for (;it != this->end(); it++)
+				{
+					if ((*it).first > k)
+						return (it);
+				}
+				return (this->end());
 			};
-			const_iterator upper_bound (const key_type& k) const {
-				return (this->upper_bound(k));
+			const_iterator upper_bound (const key_type& k) const
+			{
+				map::iterator it = this->begin();
+				for (;it != this->end(); it++)
+				{
+					if ((*it).first > k)
+						return (it);
+				}
+				return (this->end());
 			};
 
-			pair<iterator, iterator> equal_range (const key_type& k) {
-				return (ft::make_pair(_node.find(k),_node.find(k)));
+			pair<iterator, iterator> equal_range(const key_type& k)
+			{
+				return (ft::make_pair(lower_bound(k), upper_bound(k)));
 			};
 			pair<const_iterator, const_iterator> equal_range (const key_type& k) const {
-				return (equal_range(k));
+				return (ft::make_pair(lower_bound(k), upper_bound(k)));
 			};
 
 			allocator_type get_allocator() const {

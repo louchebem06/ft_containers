@@ -6,13 +6,14 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 15:27:48 by bledda            #+#    #+#             */
-/*   Updated: 2022/02/26 03:53:47 by bledda           ###   ########.fr       */
+/*   Updated: 2022/02/26 15:10:46 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
 #include "utility.hpp"
+#include "iterator.hpp"
 #include <iostream>
 
 namespace ft
@@ -194,11 +195,21 @@ namespace ft
 			NodePtr end() const
 			{
 				NodePtr current = getRoot();
-				
+
 				if (current == 0)
 					return (0);
 				while (current->rightChild)
 					current = current->rightChild;
+				if (current->data != make_pair<Keys, T>(0, 0))
+				{
+					NodePtr ptr = new Node<Keys, T>;
+					ptr->data = make_pair(0, 0);
+					ptr->leftChild = 0;
+					ptr->rightChild = 0;
+					ptr->parent = current;
+					current->leftChild = ptr;
+					current = ptr;
+				}
 				return (current);
 			}
 
@@ -216,9 +227,8 @@ namespace ft
 					{
 						if (this->_ptr->parent == 0)
 						{
-							// this->_ptr = end();
-							// break ;
-							_ptr = NULL;
+							this->_ptr = end();
+							break ;
 						}
 						else
 							this->_ptr = this->_ptr->parent;

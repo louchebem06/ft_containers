@@ -1,59 +1,53 @@
 	-- PART ONE --
-size: 0
-max_size: 0
+size: 7
+max_size: 2305843009213693951
 
 Content is:
-- key: 1 | value: 7
-- key: 2 | value: 14
-- key: 3 | value: 21
-- key: 4 | value: 28
-- key: 5 | value: 2
-- key: 6 | value: 1
 ###############################################
-size: 0
-max_size: 0
+size: 7
+max_size: 2305843009213693951
 
 Content is:
 - key: 1 | value: 6
 - key: 2 | value: 5
 - key: 3 | value: 4
-###############################################
-size: 0
-max_size: 0
-
-Content is:
-- key: 1 | value: 7
-- key: 2 | value: 14
-- key: 3 | value: 21
-- key: 4 | value: 28
+- key: 4 | value: 3
 - key: 5 | value: 2
 - key: 6 | value: 1
+- key: 7 | value: 0
+###############################################
+size: 0
+max_size: 2305843009213693951
+
+Content is:
 ###############################################
 	-- PART TWO --
-size: 0
-max_size: 0
+size: 7
+max_size: 2305843009213693951
 
 Content is:
-- key: 1 | value: 7
-- key: 2 | value: 14
-- key: 3 | value: 21
-- key: 4 | value: 28
+###############################################
+size: 7
+max_size: 2305843009213693951
+
+Content is:
+- key: 1 | value: 6
+- key: 2 | value: 5
+- key: 3 | value: 4
+- key: 4 | value: 3
 - key: 5 | value: 2
 - key: 6 | value: 1
+- key: 7 | value: 0
 ###############################################
 size: 0
-max_size: 0
+max_size: 2305843009213693951
 
 Content is:
 - key: 1 | value: 6
 - key: 2 | value: 5
 - key: 3 | value: 4
-###############################################
-size: 0
-max_size: 0
-
-Content is:
-- key: 1 | value: 6
-- key: 2 | value: 5
-- key: 3 | value: 4
+- key: 4 | value: 3
+- key: 5 | value: 2
+- key: 6 | value: 1
+- key: 7 | value: 0
 ###############################################

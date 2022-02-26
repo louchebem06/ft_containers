@@ -1,16 +1,28 @@
-1,2c1,2
-< size: 5
+2c2
 < max_size: 461168601842738790
 ---
-> size: 0
-> max_size: 0
-9d8
-< - key: 6.5 | value: 5
-16c15
+> max_size: 2305843009213693951
+16c16
 < foo::m const called [5]
 ---
 > foo::m called [5]
-26c25
+21,24c21,24
+< key: 5.5 | value: 4
+< key: 5.5 | value: 4
+< key: 3.5 | value: 2
+< key: 3.5 | value: 2
+---
+> key: 0 | value: 0
+> key: 0 | value: 0
+> key: 2.5 | value: 1
+> key: 2.5 | value: 1
+26,29c26,29
 < foo::m const called [1]
+< key: 5.5 | value: 4
+< key: 5.5 | value: 4
+< key: 4.5 | value: 3
 ---
 > foo::m called [1]
+> key: 0 | value: 0
+> key: 0 | value: 0
+> key: 2.5 | value: 1

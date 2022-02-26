@@ -1,49 +1,44 @@
-1,3c1,3
+1c1
 < is_empty: 0
-< size: 7
-< max_size: 461168601842738790
 ---
 > is_empty: 1
-> size: 0
-> max_size: 0
-12d11
-< - key: g | value: 1
-15,17c14,16
-< is_empty: 0
-< size: 7
+3c3
 < max_size: 461168601842738790
+---
+> max_size: 2305843009213693951
+15c15
+< is_empty: 0
 ---
 > is_empty: 1
-> size: 0
-> max_size: 0
-20,23c19,22
-< - key: a | value: 21
-< - key: b | value: 28
-< - key: c | value: 35
-< - key: d | value: 42
+17c17
+< max_size: 461168601842738790
 ---
-> - key: a | value: 7
-> - key: b | value: 6
-> - key: c | value: 5
-> - key: d | value: 4
-26d24
-< - key: g | value: 1
-28,29c26,27
+> max_size: 2305843009213693951
+28,29c28,29
 < size: 7
 < max_size: 461168601842738790
 ---
 > size: 0
-> max_size: 0
-38d35
-< - key: g | value: 1
-42c39
+> max_size: 2305843009213693951
+32,35c32,35
+< - key: a | value: 7
+< - key: b | value: 6
+< - key: c | value: 5
+< - key: d | value: 4
+---
+> - key: a | value: 21
+> - key: b | value: 28
+> - key: c | value: 35
+> - key: d | value: 42
+42c42
 < max_size: 461168601842738790
 ---
-> max_size: 0
-44a42,47
-> - key: a | value: 7
-> - key: b | value: 6
-> - key: c | value: 5
-> - key: d | value: 4
+> max_size: 2305843009213693951
+44a45,51
+> - key: a | value: 21
+> - key: b | value: 28
+> - key: c | value: 35
+> - key: d | value: 42
 > - key: e | value: 3
 > - key: f | value: 2
+> - key: g | value: 1
