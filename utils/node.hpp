@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 15:27:48 by bledda            #+#    #+#             */
-/*   Updated: 2022/02/07 14:15:12 by bledda           ###   ########.fr       */
+/*   Updated: 2022/02/26 03:53:47 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,11 @@ namespace ft
 		public:
 			typedef Node<Keys, T>						*NodePtr;
 			typedef	B_tree<Keys, T>						*pointer;
-			// typedef typename Node<Keys, T>::value_type	value_type;
 			typedef	typename ft::pair<Keys, T>			value_type;
 			typedef value_type *						pairPtr;
 			typedef value_type &						reference;
+			typedef ptrdiff_t 							difference_type;
+			typedef bidirectional_iterator_tag  		iterator_category;
 		private:
 			NodePtr _ptr;
 		public:
@@ -73,6 +74,12 @@ namespace ft
 			{
 				_ptr = ptr;
 				return (*this);
+			}
+			bool operator==(B_tree bt)
+			{
+				if (_ptr->leftChild == bt._ptr)
+					return (true);
+				return (false);
 			}
 			void	insert(value_type val)
 			{
@@ -112,7 +119,7 @@ namespace ft
 				log(root->leftChild, indent, false);
 				log(root->rightChild, indent, true);
 			}
-			NodePtr find(Keys k)
+			NodePtr find(Keys k) const
 			{
 				if (_ptr == 0)
 					return (0);
@@ -172,14 +179,6 @@ namespace ft
 						return ;
 				}
 			}
-			// NodePtr  begin()
-			// {
-			// 	NodePtr current = getRoot();
-
-			// 	while (current->leftChild)
-			// 		current = current->leftChild;
-			// 	return (current);
-			// }
 
 			NodePtr  begin() const
 			{
@@ -217,8 +216,9 @@ namespace ft
 					{
 						if (this->_ptr->parent == 0)
 						{
-							this->_ptr = end() ;
-							break ;
+							// this->_ptr = end();
+							// break ;
+							_ptr = NULL;
 						}
 						else
 							this->_ptr = this->_ptr->parent;
@@ -247,7 +247,7 @@ namespace ft
 					{
 						if (this->_ptr->parent == 0)
 						{
-							this->_ptr = begin() ;
+							this->_ptr = begin();
 							break ;
 						}
 						else
@@ -267,17 +267,13 @@ namespace ft
 			{
 				return (this->_ptr);
 			}
-
-			bool operator!=(B_tree const & rhs) const {
-				if (_ptr == 0 || rhs._ptr == 0)
-					return (true);
+			
+			bool operator!=(B_tree const & rhs) {
 				if (this->data() != rhs.data())
 					return (true);
 				return (false);
 			};
 
-			
-			
 		private:
 			bool _del(NodePtr ptr, Keys k)
 			{

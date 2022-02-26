@@ -1,0 +1,16 @@
+1,2c1,2
+< size: 5
+< max_size: 461168601842738790
+---
+> size: 0
+> max_size: 0
+9d8
+< - key: 6.5 | value: 5
+16c15
+< foo::m const called [5]
+---
+> foo::m called [5]
+26c25
+< foo::m const called [1]
+---
+> foo::m called [1]

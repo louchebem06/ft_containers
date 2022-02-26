@@ -6,14 +6,15 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 13:27:30 by bledda            #+#    #+#             */
-/*   Updated: 2022/02/07 14:14:27 by bledda           ###   ########.fr       */
+/*   Updated: 2022/02/26 03:56:37 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "map.hpp"
 #include <map>
 #include <iostream>
-#include <string>
+
+#include <list>
 
 #ifndef TESTED_NAMESPACE
 # define TESTED_NAMESPACE ft
@@ -40,9 +41,7 @@ void	printSize(T_MAP const &mp, bool print_content = 1)
 		typename T_MAP::const_iterator it = mp.begin(), ite = mp.end();
 		std::cout << std::endl << "Content is:" << std::endl;
 		for (; it != ite; ++it)
-		{
 			std::cout << "- " << printPair(it, false) << std::endl;
-		}
 	}
 	std::cout << "###############################################" << std::endl;
 }
@@ -111,46 +110,70 @@ T	dec(T it, int n)
 	return (it);
 }
 
-#include <list>
+#define T1 int
+#define T2 foo<int>
+typedef TESTED_NAMESPACE::map<T1, T2>::value_type T3;
+typedef TESTED_NAMESPACE::map<T1, T2>::iterator ft_iterator;
+typedef TESTED_NAMESPACE::map<T1, T2>::const_iterator ft_const_iterator;
 
-#define T1 char
-#define T2 int
-typedef _pair<const T1, T2> T3;
+static int iter = 0;
 
-template <class T>
-void	is_empty(T const &mp)
+template <typename MAP>
+void	ft_bound(MAP &mp, const T1 &param)
 {
-	std::cout << "is_empty: " << mp.empty() << std::endl;
+	ft_iterator ite = mp.end();
+	ft_iterator it[2];
+	_pair<ft_iterator, ft_iterator> ft_range;
+
+	std::cout << "\t-- [" << iter++ << "] --" << std::endl;
+	std::cout << "with key [" << param << "]:" << std::endl;
+	it[0] = mp.lower_bound(param);
+	it[1] = mp.upper_bound(param);
+	ft_range = mp.equal_range(param);
+	std::cout << "lower_bound: " << (it[0] == ite ? "end()" : printPair(it[0], false)) << std::endl;
+	std::cout << "upper_bound: " << (it[1] == ite ? "end()" : printPair(it[1], false)) << std::endl;
+	std::cout << "equal_range: " << (ft_range.first == it[0] && ft_range.second == it[1]) << std::endl;
+}
+
+template <typename MAP>
+void	ft_const_bound(const MAP &mp, const T1 &param)
+{
+	ft_const_iterator ite = mp.end();
+	ft_const_iterator it[2];
+	_pair<ft_const_iterator, ft_const_iterator> ft_range;
+
+	std::cout << "\t-- [" << iter++ << "] (const) --" << std::endl;
+	std::cout << "with key [" << param << "]:" << std::endl;
+	//it[0] = mp.lower_bound(param);
+	// it[1] = mp.upper_bound(param);
+	// ft_range = mp.equal_range(param);
+	// std::cout << "lower_bound: " << (it[0] == ite ? "end()" : printPair(it[0], false)) << std::endl;
+	// std::cout << "upper_bound: " << (it[1] == ite ? "end()" : printPair(it[1], false)) << std::endl;
+	// std::cout << "equal_range: " << (ft_range.first == it[0] && ft_range.second == it[1]) << std::endl;
 }
 
 int		main(void)
 {
 	std::list<T3> lst;
-	unsigned int lst_size = 7;
+	unsigned int lst_size = 10;
 	for (unsigned int i = 0; i < lst_size; ++i)
-		lst.push_back(T3('a' + i, lst_size - i));
-
-	TESTED_NAMESPACE::map<T1, T2> mp(lst.begin(), lst.end()), mp2;
-	TESTED_NAMESPACE::map<T1, T2>::iterator it;
-
-	lst.clear();
-	is_empty(mp);
+		lst.push_back(T3(i + 1, (i + 1) * 3));
+	TESTED_NAMESPACE::map<T1, T2> mp(lst.begin(), lst.end());
 	printSize(mp);
 
-	// is_empty(mp2);
-	// mp2 = mp;
-	// is_empty(mp2);
+	// ft_const_bound(mp, -10);
+	// ft_const_bound(mp, 1);
+	// ft_const_bound(mp, 5);
+	// ft_const_bound(mp, 10);
+	// ft_const_bound(mp, 50);
 
-	// it = mp.begin();
-	// for (unsigned long int i = 3; i < mp.size(); ++i)
-	// 	it++->second = i * 7;
+	printSize(mp);
+
+	// mp.lower_bound(3)->second = 404;
+	// mp.upper_bound(7)->second = 842;
+	// ft_bound(mp, 5);
+	// ft_bound(mp, 7);
 
 	// printSize(mp);
-	// printSize(mp2);
-
-	// mp2.clear();
-	// is_empty(mp2);
-	// printSize(mp2);
 	// return (0);
 }
-

@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 18:04:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/02/07 13:55:59 by bledda           ###   ########.fr       */
+/*   Updated: 2022/02/26 03:55:25 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ namespace ft
 			typedef typename allocator_type::const_reference			const_reference;
 			typedef typename allocator_type::pointer					pointer;
 			typedef typename allocator_type::const_pointer				const_pointer;
-			typedef typename ft::B_tree<Key, T>			iterator;
-			typedef typename ft::B_tree<Key, T>											const_iterator;
+			typedef typename ft::B_tree<Key, T>							iterator;
+			typedef typename ft::B_tree<Key, T>							const_iterator;
 			typedef ft::reverse_iterator<iterator>						reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
-			// typedef typename iterator_traits<iterator>::difference_type	difference_type;
+			typedef typename iterator_traits<iterator>::difference_type	difference_type;
 			typedef typename allocator_type::size_type 					size_type;
 		public:
 			// Official <map> and docs cplusplus.com
@@ -60,14 +60,18 @@ namespace ft
 					};
 			};
 		private:
-			ft::B_tree<Key, T>	test;
+			ft::B_tree<Key, T>	_node;
+			key_compare			_comp;
+			allocator_type		_alloc;
+			size_type			_size;
 		public:
 			explicit map (const key_compare& comp = key_compare(),
 				const allocator_type& alloc = allocator_type())
 			{
-				(void) comp;
-				(void) alloc;
-				test = 0;
+				_size = 0;
+				_node = 0;
+				_comp = comp;
+				_alloc = alloc;
 			};
 
 			template <class InputIterator>
@@ -75,54 +79,58 @@ namespace ft
 				const key_compare& comp = key_compare(),
 				const allocator_type& alloc = allocator_type())
 			{
-				(void) comp;
-				(void) alloc;
-				(void) first;
-				(void) last;
-				test = 0;
+				_size = 0;
+				_alloc = alloc;
+				_comp = comp;
+				_node = 0;
+				for (; first != last; first++)
+				{
+					_size++;
+					_node.insert(*first);
+				}
 			};
 			map (const map& x) {
-				test = 0;
+				_node = 0;
 				*this = x;
 			};
 
 			~map() {};
 
-			map& operator= (const map& x)
+			map& operator=(const map& x)
 			{
-				if (this->test.getRoot() != x.test.getRoot())
+				if (_node.getRoot() != x._node.getRoot())
 				{
-					test = x.test;
+					_node = x._node;
 				}
 				return (*this);
 			};
 
 			iterator begin() {
-				return (this->test.begin());
+				return (_node.begin());
 			};
 			const_iterator begin() const {
-				return (this->test.begin());
+				return (_node.begin());
 			};
 
 			iterator end() {
-				return (this->test.end());
+				return (_node.end());
 			};
 			const_iterator end() const {
-				return (this->test.end());
+				return (_node.end());
 			};
 
 			reverse_iterator rbegin() {
-				return (reverse_iterator(this->test->end()));
+				return (reverse_iterator(_node->end()));
 			};
 			const_reverse_iterator rbegin() const {
-				return (const_reverse_iterator(this->test->end()));
+				return (const_reverse_iterator(_node->end()));
 			};
 
 			reverse_iterator rend() {
-				return (reverse_iterator(this->test->begin()));
+				return (reverse_iterator(_node->begin()));
 			};
 			const_reverse_iterator rend() const {
-				return (const_reverse_iterator(this->test->begin()));
+				return (const_reverse_iterator(_node->begin()));
 			};
 
 			bool empty() const {
@@ -130,7 +138,7 @@ namespace ft
 			};
 
 			size_type size() const {
-				return (0);
+				return (_size);
 			};
 
 			size_type max_size() const {
@@ -139,20 +147,22 @@ namespace ft
 
 			mapped_type& operator[] (const key_type& k)
 			{
-				B_tree<Key, T> t(test.find(k));
+				B_tree<Key, T> t(_node.find(k));
 				mapped_type tmp;
 
 				if (t.getPtr() == 0)
-					test.insert(value_type(k, tmp));
-				return (test.find(k)->data.second);
+					_node.insert(value_type(k, tmp));
+				return (_node.find(k)->data.second);
 			};
 
-			iterator find (const key_type& k) {test.find(k);};
-			const_iterator find (const key_type& k) const {test.find(k);};
+			iterator find (const key_type& k) {_node.find(k);};
+			const_iterator find (const key_type& k) const {
+				return (_node.find(k));
+			};
 
 			ft::pair<iterator, bool> insert (const value_type& val)
 			{
-				test.insert(val);
+				_node.insert(val);
 				return (ft::pair<iterator, bool>(0, false));
 			};
 			
@@ -189,37 +199,43 @@ namespace ft
 
 			value_compare value_comp() const {};
 
-			size_type count (const key_type& k) const {
-				iterator it = this->find(k);
-
-				if (it != this->end())
+			size_type count (const key_type& k) const
+			{
+				if (_node.find(k) != 0)
 					return (1);
 				return (0);
 			};
 
-			iterator lower_bound (const key_type& k) {
-				(void)k;
+			iterator lower_bound(const key_type& k)
+			{
+				map::iterator it = this->begin();
+				for (;it != this->end(); it++)
+				{
+					if (*it->first >= k)
+						return (it);
+				}
+				return (this->end());
 			};
 			const_iterator lower_bound (const key_type& k) const {
-				return (this->lower_bound(k));
+				return (lower_bound(k));
 			};
 
 			iterator upper_bound (const key_type& k) {
-				(void)k;
+				return (_node.find(k));
 			};
 			const_iterator upper_bound (const key_type& k) const {
 				return (this->upper_bound(k));
 			};
 
-			pair<iterator,iterator> equal_range (const key_type& k) {
-				(void)k;
+			pair<iterator, iterator> equal_range (const key_type& k) {
+				return (ft::make_pair(_node.find(k),_node.find(k)));
 			};
-			pair<const_iterator,const_iterator> equal_range (const key_type& k) const {
+			pair<const_iterator, const_iterator> equal_range (const key_type& k) const {
 				return (equal_range(k));
 			};
 
 			allocator_type get_allocator() const {
-				return (this->_alloc);
+				return (_alloc);
 			};
 	};
 }
