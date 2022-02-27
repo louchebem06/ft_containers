@@ -6,23 +6,7 @@
 < foo::m const called [5]
 ---
 > foo::m called [5]
-21,24c21,24
-< key: 5.5 | value: 4
-< key: 5.5 | value: 4
-< key: 3.5 | value: 2
-< key: 3.5 | value: 2
----
-> key: 0 | value: 0
-> key: 0 | value: 0
-> key: 2.5 | value: 1
-> key: 2.5 | value: 1
-26,29c26,29
+26c26
 < foo::m const called [1]
-< key: 5.5 | value: 4
-< key: 5.5 | value: 4
-< key: 4.5 | value: 3
 ---
 > foo::m called [1]
-> key: 0 | value: 0
-> key: 0 | value: 0
-> key: 2.5 | value: 1

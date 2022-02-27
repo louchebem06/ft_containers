@@ -1,0 +1,13 @@
+List contains:
+key: 42 | value: lol
+key: 50 | value: mdr
+key: 35 | value: funny
+key: 45 | value: bunny
+key: 21 | value: fizz
+key: 38 | value: buzz
+key: 55 | value: fuzzy
+	-- [0] --
+size: 0
+max_size: 2305843009213693951
+
+Content is:

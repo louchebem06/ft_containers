@@ -1,12 +1,18 @@
-1,11d0
+1,2c1,2
 < size: 6
 < max_size: 288230376151711743
-< 
-< Content is:
+---
+> size: 0
+> max_size: 2305843009213693951
+5,9d4
 < - key: 90 | value: 8
 < - key: 80 | value: hey
 < - key: 42 | value: fgzgxfn
 < - key: 27 | value: bee
 < - key: 25 | value: funny
-< - key: 12 | value: no
-< ###############################################
+10a6,10
+> - key: 25 | value: funny
+> - key: 27 | value: bee
+> - key: 42 | value: fgzgxfn
+> - key: 80 | value: hey
+> - key: 90 | value: 8

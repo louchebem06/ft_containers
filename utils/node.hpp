@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 15:27:48 by bledda            #+#    #+#             */
-/*   Updated: 2022/02/27 08:04:47 by bledda           ###   ########.fr       */
+/*   Updated: 2022/02/27 13:33:20 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ namespace ft
 		Node 		*rightChild;
 		Node 		*parent;
 		value_type 	data;
+		bool		isEnd;
+		bool		isBegin;
 	};
 }
 
@@ -48,14 +50,12 @@ namespace ft
 		public:
 			pairPtr operator->() const
 			{
-				//std::cout << "Fleche" << std::endl;
 				pairPtr tmp = (pairPtr)&_ptr->data;
 				return (tmp);
 			};
 			
 			value_type operator*() const
 			{
-				//std::cout << "Coucou" << std::endl;
 				return (*(this->operator->()));
 			};
 
@@ -78,7 +78,7 @@ namespace ft
 			}
 			bool operator==(B_tree bt)
 			{
-				if (_ptr->leftChild == bt._ptr)
+				if (_ptr == bt._ptr)
 					return (true);
 				return (false);
 			}
@@ -188,7 +188,11 @@ namespace ft
 				if (current == 0)
 					return (0);
 				while (current->leftChild)
+				{
+					current->isBegin = false;
 					current = current->leftChild;
+				}
+				current->isBegin = true;
 				return (current);
 			}
 			
@@ -199,12 +203,17 @@ namespace ft
 				if (current == 0)
 					return (0);
 				while (current->rightChild)
+				{
+					current->isEnd = false;
 					current = current->rightChild;
-				if (current->data != make_pair<Keys, T>(0, 0))
+				}
+				if (!current->isEnd)
 				{
 					NodePtr ptr = new Node<Keys, T>;
 					ptr->parent = current;
-					current = ptr;
+					current->rightChild = ptr;
+					current = current->rightChild;
+					current->isEnd = true;
 				}
 				return (current);
 			}

@@ -2,44 +2,10 @@
 < max_size: 461168601842738790
 ---
 > max_size: 2305843009213693951
-20c20
-< equal_range: 1
----
-> equal_range: 0
-25c25
-< equal_range: 1
----
-> equal_range: 0
-30c30
-< equal_range: 1
----
-> equal_range: 0
-34,35c34,35
-< upper_bound: end()
-< equal_range: 1
----
-> upper_bound: key: 0 | value: 0
-> equal_range: 0
-38,40c38,40
-< lower_bound: end()
-< upper_bound: end()
-< equal_range: 1
----
-> lower_bound: key: 0 | value: 0
-> upper_bound: key: 0 | value: 0
-> equal_range: 0
 42c42
 < max_size: 461168601842738790
 ---
 > max_size: 2305843009213693951
-60c60
-< equal_range: 1
----
-> equal_range: 0
-65c65
-< equal_range: 1
----
-> equal_range: 0
 67c67
 < max_size: 461168601842738790
 ---

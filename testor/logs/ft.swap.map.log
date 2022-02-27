@@ -41,6 +41,10 @@ size: 4
 max_size: 2305843009213693951
 
 Content is:
+- key: w | value: 15
+- key: x | value: 10
+- key: y | value: 5
+- key: z | value: 0
 ###############################################
 Iterator validity:
 0
