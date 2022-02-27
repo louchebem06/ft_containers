@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 15:27:48 by bledda            #+#    #+#             */
-/*   Updated: 2022/02/26 15:10:46 by bledda           ###   ########.fr       */
+/*   Updated: 2022/02/27 08:04:47 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,11 +203,7 @@ namespace ft
 				if (current->data != make_pair<Keys, T>(0, 0))
 				{
 					NodePtr ptr = new Node<Keys, T>;
-					ptr->data = make_pair(0, 0);
-					ptr->leftChild = 0;
-					ptr->rightChild = 0;
 					ptr->parent = current;
-					current->leftChild = ptr;
 					current = ptr;
 				}
 				return (current);
