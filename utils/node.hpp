@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 15:27:48 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/07 06:02:54 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/07 08:21:49 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ namespace ft
 			}
 			
 			B_tree() {
-				_ptr = 0;
+				_ptr = new Node<Keys, T>;
+				_ptr->isEnd = true;
 			};
 			~B_tree() {};
 			B_tree(NodePtr ptr) {
@@ -94,7 +95,10 @@ namespace ft
 			void	insert(value_type val)
 			{
 				if (find(val.first))
+				{
+					find(val.first)->data.second = val.second;
 					return ;
+				}
 				NodePtr ptr = new Node<Keys, T>;
 				ptr->data = val;
 				ptr->leftChild = 0;
@@ -105,7 +109,7 @@ namespace ft
 			{
 				NodePtr root = _ptr;
 
-				while (root && root->parent != 0)
+				while (root && root->parent)
 					root = root->parent;
 				return (root);
 			}
