@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 18:04:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/02/26 15:34:45 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/07 04:49:05 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,12 @@ namespace ft
 			{
 				if (_node.getRoot() != x._node.getRoot())
 				{
-					_node = x._node;
+					iterator it = x.begin();
+					for (; it != x.end(); it++)
+					{
+						insert(*it);
+						_size++;
+					}
 				}
 				return (*this);
 			};
@@ -134,7 +139,7 @@ namespace ft
 			};
 
 			bool empty() const {
-				return (true);
+				return (_size == 0);
 			};
 
 			size_type size() const {
@@ -193,7 +198,15 @@ namespace ft
 				(void)x;
 			};
 
-			void clear() {};
+			void clear() {
+				while (_size)
+				{
+					iterator it = end();
+					it--;
+					_node.remove((*it).first);
+					_size--;
+				}
+			};
 
 			key_compare key_comp() const {};
 
@@ -201,9 +214,9 @@ namespace ft
 
 			size_type count (const key_type& k) const
 			{
-				if (_node.find(k) != 0)
-					return (1);
-				return (0);
+				// if (_node.find(k) != 0)
+				// 	return (1);
+				return (_node.find(k) != 0);
 			};
 
 			iterator lower_bound(const key_type& k)
