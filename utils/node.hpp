@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 15:27:48 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/07 04:33:08 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/07 06:02:54 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,15 @@ namespace ft
 		private:
 			NodePtr _ptr;
 		public:
+			void clear()
+			{
+				_ptr->leftChild = 0;
+				_ptr->rightChild = 0;
+				_ptr->parent = 0;
+				_ptr = new Node<Keys, T>;
+				_ptr->isEnd = true;
+			}
+			
 			pairPtr operator->() const
 			{
 				pairPtr tmp = (pairPtr)&_ptr->data;
@@ -147,7 +156,6 @@ namespace ft
 				NodePtr current = getRoot();
 				while (current->parent)
 					current = current->parent;
-
 				if (current->data.first == k)
 				{
 					NodePtr left, right;
@@ -173,11 +181,17 @@ namespace ft
 				while (true)
 				{
 					if (k < current->data.first && !_del(current, k))
+					{
 						current = current->leftChild;
+					}
 					else if (k > current->data.first && !_del(current, k))
+					{
 						current = current->rightChild;
+					}
 					else
+					{
 						return ;
+					}
 				}
 			}
 
@@ -201,7 +215,9 @@ namespace ft
 				NodePtr current = getRoot();
 
 				if (current == 0)
+				{
 					return (0);
+				}
 				while (current->rightChild)
 				{
 					current->isEnd = false;
@@ -250,6 +266,13 @@ namespace ft
 
 			B_tree & operator--() {
 				Keys tmp = this->_ptr->data.first;
+				if (_ptr == end())
+				{
+					_ptr = getRoot();
+					while (!_ptr->rightChild->isEnd)
+						_ptr = _ptr->rightChild;
+					return (*this);
+				}
 				if (this->_ptr->leftChild)
 				{
 					this->_ptr = this->_ptr->leftChild;
