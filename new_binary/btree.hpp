@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 23:32:58 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/08 22:24:23 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/08 22:37:58 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <string>
 #include <iostream>
 #include <cstddef>
+#include "btree_iterator.hpp"
 #include "../utils/utility.hpp"
 
 #define TEMPLATE			template <class Key, class T, class Alloc>
@@ -53,6 +54,7 @@ namespace ft
 			typedef typename allocator_type::size_type 			size_type;
 		public:
 			typedef typename node<Key, T>::type_value			type_value;
+			typedef	btree_iterator<node<Key, T> *>				iterator;
 		private:
 			pointer			_root;
 			allocator_type	_alloc;
