@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 23:40:38 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/08 20:44:18 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/08 21:47:12 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,11 @@ int main(void)
 	test.tree();
 
 	std::cout << std::endl;
+	test.remove(2);
+	test.tree();
+
+	std::cout << std::endl;
 	test.remove(3);
-	test.remove(11);
 	test.tree();
 
 	std::cout << "Size : " << test.size() << std::endl;

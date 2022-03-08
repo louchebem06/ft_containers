@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 23:32:58 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/08 20:39:30 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/08 22:08:14 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,7 @@ CLASS_TYPE(void)::remove(Key key)
 
 			_alloc.deallocate(_root, 1);
 			_root = ((left != NULL) ? left : right);
+			std::cout << "Remove 1" << std::endl;
 			insert(_root, (left != NULL) ? right : left);
 		}
 		else if (key < _root->value.first)
@@ -216,8 +217,8 @@ CLASS_TYPE(void)::remove(Key key, node<Key, T> *&leaf)
 		{
 			_size--;
 			node<Key, T>	*left = leaf->left,
-					*right = leaf->right,
-					*parent = leaf->parent;
+							*right = leaf->right,
+							*parent = leaf->parent;
 
 			_alloc.deallocate(leaf, 1);
 			leaf = ((left != NULL) ? left : right);
@@ -227,6 +228,7 @@ CLASS_TYPE(void)::remove(Key key, node<Key, T> *&leaf)
 				parent->left = leaf;
 			else if (leaf->value.first > parent->value.first)
 				parent->right = leaf;
+			leaf->parent = parent;
 			insert(leaf, (left != NULL) ? right : left);
 		}
 		else if (key < leaf->value.first)
