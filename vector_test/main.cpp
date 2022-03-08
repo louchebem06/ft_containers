@@ -6,11 +6,16 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 01:40:47 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/08 01:51:46 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/08 15:27:57 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "common.hpp"
+
+std::ostream	&operator<<(std::ostream &o, foo const &bar) {
+	o << bar.getValue();
+	return o;
+}
 
 int main(void)
 {

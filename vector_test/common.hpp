@@ -45,10 +45,7 @@ class foo {
 		int	value;
 };
 
-std::ostream	&operator<<(std::ostream &o, foo const &bar) {
-	o << bar.getValue();
-	return o;
-}
+std::ostream	&operator<<(std::ostream &o, foo const &bar);
 
 int		assign(void);
 int		at_const(void);
