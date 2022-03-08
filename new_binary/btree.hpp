@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 23:32:58 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/08 22:08:14 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/08 22:23:01 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,11 @@
 #include <cstddef>
 #include "../utils/utility.hpp"
 
-#define CLASS				template <class Key, class T, class Alloc> ft::btree<Key, T, Alloc>
-#define CLASS_TYPE(type)	template <class Key, class T, class Alloc> type ft::btree<Key, T, Alloc>
-#define CLASS_PTR_NODE		template <class Key, class T, class Alloc> ft::node<Key, T> * ft::btree<Key, T, Alloc>
+#define TEMPLATE			template <class Key, class T, class Alloc>
+#define CLASS_BTREE			ft::btree<Key, T, Alloc>
+#define NODEPTR				ft::node<Key, T> *
+#define CLASS				TEMPLATE CLASS_BTREE
+#define CLASS_TYPE(type)	TEMPLATE type CLASS_BTREE
 
 namespace ft
 {
@@ -49,6 +51,7 @@ namespace ft
 			typedef typename allocator_type::const_pointer 		const_pointer;
 			typedef typename allocator_type::difference_type	difference_type;
 			typedef typename allocator_type::size_type 			size_type;
+		public:
 			typedef typename node<Key, T>::type_value			type_value;
 		private:
 			pointer			_root;
@@ -57,7 +60,6 @@ namespace ft
 		public:
 			btree(const allocator_type& alloc = allocator_type());
 			~btree();
-	
 			void insert(type_value value);
 			void clear();
 			void tree() const;
@@ -88,7 +90,7 @@ CLASS_TYPE(unsigned int)::size() const { return (_size); }
 
 CLASS_TYPE(bool)::exist(Key key) const { return (search(key) != NULL); }
 
-CLASS_PTR_NODE::search(Key key) const
+CLASS_TYPE(NODEPTR)::search(Key key) const
 {
 	if (_root == NULL)
 		return (NULL);
@@ -99,7 +101,7 @@ CLASS_PTR_NODE::search(Key key) const
 	return (search(key, _root->right));
 }
 
-CLASS_PTR_NODE::search(Key key, node<Key, T> *leaf) const
+CLASS_TYPE(NODEPTR)::search(Key key, node<Key, T> *leaf) const
 {
 	if (leaf == NULL)
 		return (NULL);
