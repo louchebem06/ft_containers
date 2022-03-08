@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 23:32:58 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/08 19:45:29 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/08 19:53:24 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ namespace ft
 	
 			void insert(int key);
 			void clear();
-			void tree();
+			void tree() const;
 			void remove(int key);
 			node *search(int key) const;
 			bool exist(int key) const;
@@ -65,7 +65,7 @@ namespace ft
 			void insert(int key, node *leaf);
 			void insert(node *&leaf, node *&placing);
 			void remove(int key, node *&leaf);
-			void tree(node *root, std::string indent = "", bool right = false);
+			void tree(node *root, std::string indent = "", bool right = false) const;
 	};
 }
 
@@ -244,9 +244,9 @@ CLASS_TYPE(void)::destroy_tree(node *&leaf)
 	}
 }
 
-CLASS_TYPE(void)::tree() { tree(_root); }
+CLASS_TYPE(void)::tree() const { tree(_root); }
 
-CLASS_TYPE(void)::tree(node *root, std::string indent, bool right)
+CLASS_TYPE(void)::tree(node *root, std::string indent, bool right) const
 {
 	if (root == NULL)
 		return ;
