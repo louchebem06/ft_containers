@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 23:32:58 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/08 22:23:01 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/08 22:24:23 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ CLASS_TYPE(void)::remove(Key key)
 		{
 			_size--;
 			node<Key, T>	*left = _root->left,
-					*right = _root->right;
+							*right = _root->right;
 
 			_alloc.deallocate(_root, 1);
 			_root = ((left != NULL) ? left : right);
