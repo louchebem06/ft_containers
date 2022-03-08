@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 23:32:58 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/08 19:53:24 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/08 19:56:01 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,6 @@ CLASS_TYPE(void)::insert(node *&leaf, node *&placing)
 		{
 			placing->parent = leaf;
 			leaf->left = placing;
-			_size++;
 		}
 		else
 			insert(leaf->left, placing);
@@ -174,7 +173,6 @@ CLASS_TYPE(void)::insert(node *&leaf, node *&placing)
 		{
 			placing->parent = leaf;
 			leaf->right = placing;
-			_size++;
 		}
 		else
 			insert(leaf->right, placing);
