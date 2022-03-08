@@ -1,22 +1,18 @@
-NAME = ft std
+NAME = std ft
 CC = clang++
 FLAGS = -Wall -Wextra -Werror -std=c++98
+OUTPUT = $(NAME:=.output)
 
-test: all ${NAME} diff clean
-
-all:
-	$(MAKE) std
-	$(MAKE) ft
+all: $(NAME) diff clean
 
 ${NAME}:
 	${CC} ${FLAGS} -DTESTED_NAMESPACE=$@ *.cpp -o $@
+	time ./$@ > $@.output
+
+diff: ${NAME}
+	diff $(OUTPUT)
 
 clean:
-	rm -rf $(NAME)
-	rm -rf ft.output
-	rm -rf std.output
+	rm -rf $(NAME) $(OUTPUT)
 
-diff:
-	time ./ft > ft.output
-	time ./std > std.output
-	diff ft.output std.output
+.PHONY: all $(NAME) diff clean
