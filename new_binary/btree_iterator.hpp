@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 22:32:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/09 20:24:49 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/09 20:41:33 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,14 @@ namespace ft
 			};
 			pointer prev()
 			{
+				if (this->_ptr == NULL)
+					return (NULL);
+				return (NULL);
+			};
+			pointer prev(pointer ptr, Key value)
+			{
+				if (ptr == NULL)
+					return (NULL);
 				return (NULL);
 			};
 	};
