@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 23:32:58 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/08 22:37:58 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/09 18:20:55 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,27 +17,14 @@
 #include <iostream>
 #include <cstddef>
 #include "btree_iterator.hpp"
-#include "../utils/utility.hpp"
+#include "node.hpp"
 
 #define TEMPLATE			template <class Key, class T, class Alloc>
 #define CLASS_BTREE			ft::btree<Key, T, Alloc>
 #define NODEPTR				ft::node<Key, T> *
+#define ITERATOR			ft::btree_iterator<Key, T>
 #define CLASS				TEMPLATE CLASS_BTREE
 #define CLASS_TYPE(type)	TEMPLATE type CLASS_BTREE
-
-namespace ft
-{
-	template <class Key, class T>
-	struct node
-	{
-		typedef pair<Key, T> type_value;
-
-		type_value		value;
-		node			*left;
-		node			*right;
-		node			*parent;
-	};
-}
 
 namespace ft
 {
@@ -54,7 +41,7 @@ namespace ft
 			typedef typename allocator_type::size_type 			size_type;
 		public:
 			typedef typename node<Key, T>::type_value			type_value;
-			typedef	btree_iterator<node<Key, T> *>				iterator;
+			typedef	btree_iterator<Key, T>						iterator;
 		private:
 			pointer			_root;
 			allocator_type	_alloc;
@@ -62,20 +49,25 @@ namespace ft
 		public:
 			btree(const allocator_type& alloc = allocator_type());
 			~btree();
-			void insert(type_value value);
-			void clear();
-			void tree() const;
-			void remove(Key key);
-			node<Key, T> *search(Key key) const;
-			bool exist(Key key) const;
-			unsigned int size() const;
+			void			insert(type_value value);
+			void			clear();
+			void			tree() const;
+			void			remove(Key key);
+			node<Key, T>	*search(Key key) const;
+			bool			exist(Key key) const;
+			unsigned int	size() const;
+			node<Key, T>	*begin();
+			node<Key, T>	*end();
 		private:
-			node<Key, T> *search(Key key, node<Key, T> *leaf) const;
-			void destroy_tree(node<Key, T> *&leaf);
-			void insert(type_value value, node<Key, T> *leaf);
-			void insert(node<Key, T> *&leaf, node<Key, T> *&placing);
-			void remove(Key key, node<Key, T> *&leaf);
-			void tree(node<Key, T> *root, std::string indent = "", bool right = false) const;
+			node<Key, T>	*begin(node<Key, T> *leaf);
+			node<Key, T>	*end(node<Key, T> *leaf);
+			node<Key, T>	*search(Key key, node<Key, T> *leaf) const;
+			void 			destroy_tree(node<Key, T> *&leaf);
+			void 			insert(type_value value, node<Key, T> *leaf);
+			void 			insert(node<Key, T> *&leaf, node<Key, T> *&placing);
+			void 			remove(Key key, node<Key, T> *&leaf);
+			void 			tree(node<Key, T> *root, std::string indent = "",
+									bool right = false) const;
 	};
 }
 
@@ -87,6 +79,42 @@ CLASS::btree(const Alloc & alloc)
 }
 
 CLASS::~btree() { clear(); }
+
+CLASS_TYPE(NODEPTR)::begin()
+{
+	if (_root == NULL)
+		return (NULL);
+	if (_root->left == NULL)
+		return (_root);
+	else
+		return (begin(_root->left));
+}
+
+CLASS_TYPE(NODEPTR)::begin(node<Key, T> *leaf)
+{
+	if (leaf->left == NULL)
+		return (leaf);
+	else
+		return (begin(leaf->left));
+}
+
+CLASS_TYPE(NODEPTR)::end()
+{
+	if (_root == NULL)
+		return (NULL);
+	if (_root->right == NULL)
+		return (_root);
+	else
+		return (end(_root->right));
+}
+
+CLASS_TYPE(NODEPTR)::end(node<Key, T> *leaf)
+{
+	if (leaf->right == NULL)
+		return (leaf);
+	else
+		return (end(leaf->right));
+}
 
 CLASS_TYPE(unsigned int)::size() const { return (_size); }
 

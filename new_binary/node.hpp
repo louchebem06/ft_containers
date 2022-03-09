@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   node.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/07 23:40:38 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/09 20:24:22 by bledda           ###   ########.fr       */
+/*   Created: 2022/03/09 17:30:14 by bledda            #+#    #+#             */
+/*   Updated: 2022/03/09 17:32:26 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "btree.hpp"
+#pragma once
 
-int main(void)
+#include "../utils/utility.hpp"
+
+namespace ft
 {
-	ft::btree<int, int> test;
-
-	for (int i = 0; i < 100; i++)
-		test.insert(ft::make_pair(rand() % 100, 12));
-
-	test.tree();
-
-	ft::btree<int, int>::iterator it = test.end();
-	for (int i = 0; i < test.size(); i++)
+	template <class Key, class T>
+	struct node
 	{
-		it.print();
-		it--;
-	}
+		typedef ft::pair<Key, T> type_value;
+
+		type_value		value;
+		node			*left;
+		node			*right;
+		node			*parent;
+	};
 }
