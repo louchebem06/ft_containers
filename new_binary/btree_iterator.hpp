@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 22:32:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/10 20:57:55 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/10 21:30:05 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,31 @@ namespace ft
 			typedef typename iterator::iterator_category	iterator_category;
 			typedef typename iterator::pointer				pointer;
 			typedef typename iterator::reference 			reference;
+		private:
+			bool	_end;
+			bool	_begin;
+			pointer _save;
 		public:
-			btree_iterator() { this->_ptr = NULL; };
-			btree_iterator(pointer leaf) { this->_ptr = leaf; };
+			btree_iterator() : _end(false), _begin(false)
+			{ this->_ptr = NULL; };
+			btree_iterator(pointer leaf) : _end(false), _begin(false)
+			{ this->_ptr = leaf; };
 			~btree_iterator() {};
 			btree_iterator & operator++()
 			{
-				this->_ptr = next();
-				if (this->_ptr == NULL)
-					std::cout << "Nothing" << std::endl;
+				if (!_end)
+					_save = this->_ptr;
+				if (_begin)
+				{
+					this->_ptr = _save;
+					_begin = false;
+				}
+				else
+				{
+					this->_ptr = next();
+					if (this->_ptr == NULL)
+						_end = true;
+				}
 				return (*this);
 			}
 			btree_iterator operator++(int)
@@ -50,9 +66,19 @@ namespace ft
 			}
 			btree_iterator & operator--()
 			{
-				this->_ptr = prev();
-				if (this->_ptr == NULL)
-					std::cout << "Nothing" << std::endl;
+				if (!_begin)
+					_save = this->_ptr;
+				if (_end)
+				{
+					this->_ptr = _save;
+					_end = false;
+				}
+				else
+				{
+					this->_ptr = prev();
+					if (this->_ptr == NULL)
+						_begin = true;
+				}
 				return (*this);
 			}
 			btree_iterator operator--(int)
@@ -61,7 +87,18 @@ namespace ft
 				--(*this);
 				return (tmp);
 			}
-			void print() { if (this->_ptr) std::cout << this->_ptr->value.first << std::endl; };
+			bool operator!=(btree_iterator const & rhs) const
+			{
+				if (rhs._end)
+					return (this->_end != rhs._end);
+				else if (rhs._begin)
+					return (this->_begin != rhs._begin);
+				return (this->_ptr->value != rhs._ptr->value);
+			}
+			ft::pair<Key, T> const & operator*()
+			{
+				return (this->_ptr->value);
+			}
 		private:
 			pointer next()
 			{

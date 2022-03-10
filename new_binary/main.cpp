@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 23:40:38 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/10 20:13:26 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/10 21:31:07 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,11 @@ int main(void)
 
 	test.tree();
 
-	ft::btree<int, int>::iterator it = test.end();
-	for (int i = 0; i < test.size(); i++)
+	ft::btree<int, int>::iterator begin = test.begin();
+	ft::btree<int, int>::iterator end = test.end();
+	end++;
+	for (; begin != end; begin++)
 	{
-		it.print();
-		it--;
+		std::cout << (*begin).first << std::endl;
 	}
 }
