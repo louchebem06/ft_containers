@@ -6,13 +6,13 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 22:32:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/10 21:30:05 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/10 21:43:47 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include "../utils/iterator.hpp"
+#include "iterator.hpp"
 #include <iostream>
 #include "node.hpp"
 
