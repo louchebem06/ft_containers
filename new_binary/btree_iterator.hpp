@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 22:32:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/09 20:41:33 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/10 20:57:55 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ namespace ft
 			{
 				if (this->_ptr == NULL)
 					return (NULL);
-				pointer			left, right, tmp = this->_ptr;
-				Key				value = tmp->value.first;
+				pointer	left, right, tmp = this->_ptr;
+				Key		value = tmp->value.first;
 
 				while (tmp->parent)
 					tmp = tmp->parent;
@@ -102,13 +102,22 @@ namespace ft
 			{
 				if (this->_ptr == NULL)
 					return (NULL);
-				return (NULL);
-			};
-			pointer prev(pointer ptr, Key value)
-			{
-				if (ptr == NULL)
-					return (NULL);
-				return (NULL);
+				pointer	tmp = this->_ptr;
+				Key		value = tmp->value.first;
+
+				if (tmp->left)
+				{
+					tmp = tmp->left;
+					while (tmp->right && tmp->right->value.first < value)
+						tmp = tmp->right;
+				}
+				else if (tmp->parent)
+				{
+					while (tmp->parent && tmp->parent->value.first > value)
+						tmp = tmp->parent;
+					tmp = tmp->parent;
+				}
+				return (tmp);
 			};
 	};
 }
