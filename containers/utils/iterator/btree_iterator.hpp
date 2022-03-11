@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 22:32:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/11 22:06:39 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/11 22:46:00 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,8 +189,8 @@ namespace ft
 			typedef typename iterator::value_type			value_type;
 			typedef typename iterator::difference_type		difference_type;
 			typedef typename iterator::iterator_category	iterator_category;
-			typedef typename ft::pair<Key, T> *				pointer;
-			typedef typename ft::pair<Key, T> & 			reference;
+			typedef typename ft::pair<Key, T> const *				pointer;
+			typedef typename ft::pair<Key, T> const & 			reference;
 		private:
 			bool	_end;
 			bool	_begin;
