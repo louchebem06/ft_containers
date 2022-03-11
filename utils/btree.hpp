@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 23:32:58 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/11 05:29:08 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/11 18:25:20 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,7 @@ namespace ft
 			unsigned int	size() const;
 			node<Key, T>	*begin() const;
 			node<Key, T>	*end() const;
-			node<Key, T>	*getRoot() const;
-			unsigned int 	&getSize();
+			void			swap(btree & rhs);
 		private:
 			node<Key, T>	*begin(node<Key, T> *leaf) const;
 			node<Key, T>	*end(node<Key, T> *leaf) const;
@@ -76,6 +75,20 @@ namespace ft
 	};
 }
 
+CLASS_TYPE(void)::swap(btree & rhs)
+{
+	unsigned int	tmp_size;
+	node<Key, T>	*tmp_root;
+
+	tmp_size = rhs._size;
+	rhs._size = _size;
+	_size = tmp_size;
+
+	tmp_root = rhs._root;
+	rhs._root = _root;
+	_root = tmp_root;
+}
+
 CLASS::btree(const Alloc & alloc)
 {
 	_alloc = alloc;
@@ -84,10 +97,6 @@ CLASS::btree(const Alloc & alloc)
 }
 
 CLASS::~btree() { clear(); }
-
-CLASS_TYPE(NODEPTR)::getRoot() const { return (_root); }
-
-CLASS_TYPE(unsigned int &)::getSize() { return (_size); }
 
 CLASS_TYPE(REFERENCE)::operator=(ft::btree<Key, T, Alloc> const & rhs)
 {

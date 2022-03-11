@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 18:04:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/11 05:26:36 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/11 18:20:57 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,14 +149,9 @@ namespace ft
 
 			mapped_type & operator[] (const key_type& k)
 			{
-				mapped_type tmp;
-				ft::node<Key, T> *node = _node.search(k);
-				if (node == NULL)
-				{
-					_node.insert(ft::make_pair(k, tmp));
-					return (_node.search(k)->value.second);
-				}
-				return (node->value.second);
+				return (
+					(*((this->insert(ft::make_pair(k,mapped_type())))
+					.first)).second);
 			};
 
 			iterator find (const key_type& k)
@@ -207,24 +202,7 @@ namespace ft
 
 			void swap (map& x)
 			{
-				ft::node<Key, T>	tmp;
-				unsigned int		tmp_size;
-
-				tmp_size = x._node.getSize();
-				x._node.getSize() = _node.getSize();
-				_node.getSize() = tmp_size;
-
-				tmp.value = x._node.getRoot()->value;
-				tmp.left = x._node.getRoot()->left;
-				tmp.right = x._node.getRoot()->right;
-
-				x._node.getRoot()->value = _node.getRoot()->value;
-				x._node.getRoot()->left = _node.getRoot()->left;
-				x._node.getRoot()->right = _node.getRoot()->right;
-
-				_node.getRoot()->value = tmp.value;
-				_node.getRoot()->left = tmp.left;
-				_node.getRoot()->right = tmp.right;
+				_node.swap(x._node);
 			};
 
 			void clear() {
