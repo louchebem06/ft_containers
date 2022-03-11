@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 23:32:58 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/11 04:57:56 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/11 05:29:08 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ namespace ft
 			unsigned int	size() const;
 			node<Key, T>	*begin() const;
 			node<Key, T>	*end() const;
+			node<Key, T>	*getRoot() const;
+			unsigned int 	&getSize();
 		private:
 			node<Key, T>	*begin(node<Key, T> *leaf) const;
 			node<Key, T>	*end(node<Key, T> *leaf) const;
@@ -82,6 +84,10 @@ CLASS::btree(const Alloc & alloc)
 }
 
 CLASS::~btree() { clear(); }
+
+CLASS_TYPE(NODEPTR)::getRoot() const { return (_root); }
+
+CLASS_TYPE(unsigned int &)::getSize() { return (_size); }
 
 CLASS_TYPE(REFERENCE)::operator=(ft::btree<Key, T, Alloc> const & rhs)
 {

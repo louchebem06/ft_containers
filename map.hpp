@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 18:04:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/11 05:03:46 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/11 05:26:36 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,8 +183,8 @@ namespace ft
 			
 			template <class InputIterator>
 			void insert (InputIterator first, InputIterator last) {
-				(void)first;
-				(void)last;
+				for (; first != last; first++)
+					_node.insert(*first);
 			};
 
 			void erase (iterator position) {
@@ -205,8 +205,26 @@ namespace ft
 					_node.remove(tab[i]);
 			};
 
-			void swap (map& x) {
-				(void)x;
+			void swap (map& x)
+			{
+				ft::node<Key, T>	tmp;
+				unsigned int		tmp_size;
+
+				tmp_size = x._node.getSize();
+				x._node.getSize() = _node.getSize();
+				_node.getSize() = tmp_size;
+
+				tmp.value = x._node.getRoot()->value;
+				tmp.left = x._node.getRoot()->left;
+				tmp.right = x._node.getRoot()->right;
+
+				x._node.getRoot()->value = _node.getRoot()->value;
+				x._node.getRoot()->left = _node.getRoot()->left;
+				x._node.getRoot()->right = _node.getRoot()->right;
+
+				_node.getRoot()->value = tmp.value;
+				_node.getRoot()->left = tmp.left;
+				_node.getRoot()->right = tmp.right;
 			};
 
 			void clear() {
