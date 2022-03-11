@@ -4,3 +4,5 @@ testor/deepthought
 *.out
 *.dSYM
 main
+ft
+std
