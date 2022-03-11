@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 23:32:58 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/11 04:29:17 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/11 04:57:56 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,10 +214,6 @@ CLASS_TYPE(void)::insert(type_value value, node<Key, T> *leaf)
 			leaf->right->parent = leaf;
 			_size++;
 		}
-	}
-	else if (value.first == leaf->value.first)
-	{
-		leaf->value.second = value.second;
 	}
 }
 

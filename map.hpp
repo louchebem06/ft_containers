@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 18:04:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/11 04:30:57 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/11 05:03:46 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,21 +159,26 @@ namespace ft
 				return (node->value.second);
 			};
 
-			iterator find (const key_type& k) {_node.search(k);};
+			iterator find (const key_type& k)
+			{ return (iterator(_node.search(k))); };
+
 			const_iterator find (const key_type& k) const {
 				return (_node.search(k));
 			};
 
-			ft::pair<iterator, bool> insert (const value_type& val)
+			ft::pair<iterator, bool> insert(const value_type& val)
 			{
+				size_type len = size();
+				bool exist;
 				_node.insert(val);
-				return (ft::pair<iterator, bool>(0, false));
+				exist = ((len == size()) ? false : true);
+				return (ft::pair<iterator, bool>(find(val.first), exist));
 			};
 			
 			iterator insert (iterator position, const value_type& val) {
 				(void)position;
 				this->insert(val);
-				return (position);
+				return (find(val.first));
 			};
 			
 			template <class InputIterator>
