@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 18:04:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/11 18:20:57 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/11 19:27:13 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ namespace ft
 			typedef typename allocator_type::pointer					pointer;
 			typedef typename allocator_type::const_pointer				const_pointer;
 			typedef typename ft::btree<Key, T>::iterator				iterator;
-			typedef typename ft::btree<Key, T>::iterator				const_iterator;
+			typedef typename ft::btree<Key, T>::const_iterator			const_iterator;
 			typedef ft::reverse_iterator<iterator>						reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 			typedef typename iterator_traits<iterator>::difference_type	difference_type;
@@ -228,7 +228,7 @@ namespace ft
 			};
 			const_iterator lower_bound (const key_type& k) const
 			{
-				map::iterator it = this->begin();
+				map::const_iterator it = this->begin();
 				for (;it != this->end(); it++)
 				{
 					if ((*it).first >= k)
@@ -249,7 +249,7 @@ namespace ft
 			};
 			const_iterator upper_bound (const key_type& k) const
 			{
-				map::iterator it = this->begin();
+				map::const_iterator it = this->begin();
 				for (;it != this->end(); it++)
 				{
 					if ((*it).first > k)

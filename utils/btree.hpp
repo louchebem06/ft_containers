@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 23:32:58 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/11 18:25:20 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/11 19:25:45 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #define CLASS_BTREE			ft::btree<Key, T, Alloc>
 #define NODEPTR				ft::node<Key, T> *
 #define ITERATOR			ft::btree_iterator<Key, T>
+#define CONSTITERATOR		ft::btree_const_iterator<Key, T>
 #define REFERENCE			ft::btree<Key, T, Alloc> &
 #define CLASS				TEMPLATE CLASS_BTREE
 #define CLASS_TYPE(type)	TEMPLATE type CLASS_BTREE
@@ -43,6 +44,7 @@ namespace ft
 		public:
 			typedef typename node<Key, T>::type_value			type_value;
 			typedef	btree_iterator<Key, T>						iterator;
+			typedef	btree_const_iterator<Key, T>				const_iterator;
 		private:
 			pointer			_root;
 			allocator_type	_alloc;
@@ -58,12 +60,16 @@ namespace ft
 			node<Key, T>	*search(Key key) const;
 			bool			exist(Key key) const;
 			unsigned int	size() const;
-			node<Key, T>	*begin() const;
-			node<Key, T>	*end() const;
+			iterator		begin();
+			iterator		end();
+			const_iterator	begin() const;
+			const_iterator	end() const;
 			void			swap(btree & rhs);
 		private:
-			node<Key, T>	*begin(node<Key, T> *leaf) const;
-			node<Key, T>	*end(node<Key, T> *leaf) const;
+			iterator		begin(node<Key, T> *leaf);
+			iterator		end(node<Key, T> *leaf);
+			const_iterator	begin(node<Key, T> *leaf) const;
+			const_iterator	end(node<Key, T> *leaf) const;
 			node<Key, T>	*search(Key key, node<Key, T> *leaf) const;
 			void 			destroy_tree(node<Key, T> *&leaf);
 			void 			insert(type_value value, node<Key, T> *leaf);
@@ -123,38 +129,74 @@ CLASS_TYPE(void)::copy(node<Key, T> *leaf)
 	}
 }
 
-CLASS_TYPE(NODEPTR)::begin() const
+CLASS_TYPE(ITERATOR)::begin()
 {
 	if (_root == NULL)
-		return (NULL);
+		return (ITERATOR(NULL));
 	if (_root->left == NULL)
-		return (_root);
+		return (ITERATOR(_root));
 	else
 		return (begin(_root->left));
 }
 
-CLASS_TYPE(NODEPTR)::begin(node<Key, T> *leaf) const
+CLASS_TYPE(ITERATOR)::begin(node<Key, T> *leaf)
 {
 	if (leaf->left == NULL)
-		return (leaf);
+		return (ITERATOR(leaf));
 	else
 		return (begin(leaf->left));
 }
 
-CLASS_TYPE(NODEPTR)::end() const
+CLASS_TYPE(ITERATOR)::end()
 {
 	if (_root == NULL)
-		return (NULL);
+		return (ITERATOR(NULL));
 	if (_root->right == NULL)
-		return (_root);
+		return (ITERATOR(_root));
 	else
 		return (end(_root->right));
 }
 
-CLASS_TYPE(NODEPTR)::end(node<Key, T> *leaf) const
+CLASS_TYPE(ITERATOR)::end(node<Key, T> *leaf)
 {
 	if (leaf->right == NULL)
-		return (leaf);
+		return (ITERATOR(leaf));
+	else
+		return (end(leaf->right));
+}
+
+CLASS_TYPE(CONSTITERATOR)::begin() const
+{
+	if (_root == NULL)
+		return (CONSTITERATOR(NULL));
+	if (_root->left == NULL)
+		return (CONSTITERATOR(_root));
+	else
+		return (begin(_root->left));
+}
+
+CLASS_TYPE(CONSTITERATOR)::begin(node<Key, T> *leaf) const
+{
+	if (leaf->left == NULL)
+		return (CONSTITERATOR(leaf));
+	else
+		return (begin(leaf->left));
+}
+
+CLASS_TYPE(CONSTITERATOR)::end() const
+{
+	if (_root == NULL)
+		return (CONSTITERATOR(NULL));
+	if (_root->right == NULL)
+		return (CONSTITERATOR(_root));
+	else
+		return (end(_root->right));
+}
+
+CLASS_TYPE(CONSTITERATOR)::end(node<Key, T> *leaf) const
+{
+	if (leaf->right == NULL)
+		return (CONSTITERATOR(leaf));
 	else
 		return (end(leaf->right));
 }
