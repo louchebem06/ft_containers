@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 23:32:58 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/11 03:29:59 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/11 04:29:17 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #define CLASS_BTREE			ft::btree<Key, T, Alloc>
 #define NODEPTR				ft::node<Key, T> *
 #define ITERATOR			ft::btree_iterator<Key, T>
+#define REFERENCE			ft::btree<Key, T, Alloc> &
 #define CLASS				TEMPLATE CLASS_BTREE
 #define CLASS_TYPE(type)	TEMPLATE type CLASS_BTREE
 
@@ -49,6 +50,7 @@ namespace ft
 		public:
 			btree(const allocator_type& alloc = allocator_type());
 			~btree();
+			btree 			& operator=(btree const & rhs);
 			void			insert(type_value value);
 			void			clear();
 			void			tree() const;
@@ -68,6 +70,7 @@ namespace ft
 			int				remove(Key key, node<Key, T> *&leaf);
 			void 			tree(node<Key, T> *root, std::string indent = "",
 									bool right = false) const;
+			void			copy(node<Key, T> *leaf);
 	};
 }
 
@@ -79,6 +82,31 @@ CLASS::btree(const Alloc & alloc)
 }
 
 CLASS::~btree() { clear(); }
+
+CLASS_TYPE(REFERENCE)::operator=(ft::btree<Key, T, Alloc> const & rhs)
+{
+	if (this != &rhs)
+	{
+		clear();
+		if (rhs._root != NULL)
+		{
+			copy(rhs._root);
+			copy(rhs._root->left);
+			copy(rhs._root->right);
+		}
+	}
+	return (*this);
+};
+
+CLASS_TYPE(void)::copy(node<Key, T> *leaf)
+{
+	if (leaf != NULL)
+	{
+		insert(leaf->value);
+		copy(leaf->left);
+		copy(leaf->right);
+	}
+}
 
 CLASS_TYPE(NODEPTR)::begin() const
 {

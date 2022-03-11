@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 18:04:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/11 03:26:36 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/11 04:30:57 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,9 @@ namespace ft
 			{
 				if (this != &x)
 				{
-					_node.clear();
 					_alloc = x._alloc;
 					_comp = x._comp;
-					iterator it = x.begin();
-					for (; it != x.end(); it++)
-						insert(make_pair((*it).first, (*it).second));
+					_node = x._node;
 				}
 				return (*this);
 			};
