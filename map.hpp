@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 18:04:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/11 02:48:44 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/11 03:19:26 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,9 +153,13 @@ namespace ft
 			mapped_type & operator[] (const key_type& k)
 			{
 				mapped_type tmp;
-				if (_node.search(k) == NULL)
+				ft::node<Key, T> *node = _node.search(k);
+				if (node == NULL)
+				{
 					_node.insert(ft::make_pair(k, tmp));
-				return (_node.search(k)->value.second);
+					return (_node.search(k)->value.second);
+				}
+				return (node->value.second);
 			};
 
 			iterator find (const key_type& k) {_node.search(k);};
@@ -212,10 +216,8 @@ namespace ft
 
 			value_compare value_comp() const {};
 
-			size_type count (const key_type& k) const
-			{
-				return (_node.find(k) != 0);
-			};
+			size_type count (const key_type& k) const 
+			{ return (_node.exist(k)); };
 
 			iterator lower_bound(const key_type& k)
 			{
