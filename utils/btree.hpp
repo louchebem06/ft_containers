@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 23:32:58 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/10 23:22:07 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/11 02:48:36 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ namespace ft
 			node<Key, T>	*search(Key key, node<Key, T> *leaf) const;
 			void 			destroy_tree(node<Key, T> *&leaf);
 			void 			insert(type_value value, node<Key, T> *leaf);
-			void 			insert(node<Key, T> *&leaf, node<Key, T> *&placing);
+			void 			insert(node<Key, T> *&leaf, node<Key, T> *placing);
 			void 			remove(Key key, node<Key, T> *&leaf);
 			void 			tree(node<Key, T> *root, std::string indent = "",
 									bool right = false) const;
@@ -193,7 +193,7 @@ CLASS_TYPE(void)::insert(type_value value, node<Key, T> *leaf)
 	}
 }
 
-CLASS_TYPE(void)::insert(node<Key, T> *&leaf, node<Key, T> *&placing)
+CLASS_TYPE(void)::insert(node<Key, T> *&leaf, node<Key, T> *placing)
 {
 	if (leaf == NULL || placing == NULL)
 		return ;
@@ -231,7 +231,8 @@ CLASS_TYPE(void)::remove(Key key)
 
 			_alloc.deallocate(_root, 1);
 			_root = ((left != NULL) ? left : right);
-			std::cout << "Remove 1" << std::endl;
+			if (_root != NULL)
+				_root->parent = NULL;
 			insert(_root, (left != NULL) ? right : left);
 		}
 		else if (key < _root->value.first)
@@ -260,7 +261,8 @@ CLASS_TYPE(void)::remove(Key key, node<Key, T> *&leaf)
 				parent->left = leaf;
 			else if (leaf->value.first > parent->value.first)
 				parent->right = leaf;
-			leaf->parent = parent;
+			if (leaf != NULL)
+				leaf->parent = parent;
 			insert(leaf, (left != NULL) ? right : left);
 		}
 		else if (key < leaf->value.first)

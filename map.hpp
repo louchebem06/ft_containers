@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 18:04:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/11 01:07:59 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/11 02:48:44 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,15 +181,23 @@ namespace ft
 				(void)last;
 			};
 
-			void erase (iterator position) { 
-				(void)position;
+			void erase (iterator position) {
+				erase(position->first);
 			};
 			size_type erase (const key_type& k) {
-				(void)k;
+				_node.remove(k);
+				return (0);
 			};
 			void erase (iterator first, iterator last) {
-				(void)first;
-				(void)last;
+				size_t count = 0;
+				Key tab[size()];
+				for (;first != last; ++first)
+				{
+					tab[count] = first->first;
+					count++;
+				}
+				for (size_t i = 0; i < count; i++)
+					_node.remove(tab[i]);
 			};
 
 			void swap (map& x) {
