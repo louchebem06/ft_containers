@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../stack.hpp"
+#include "../../containers/stack.hpp"
 #include <stack>
 #include <iostream>
 #include <string>

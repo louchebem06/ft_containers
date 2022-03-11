@@ -1,9 +1,0 @@
-.vscode
-testor/logs
-testor/deepthought
-*.out
-*.dSYM
-main
-ft
-std
-*.gch
