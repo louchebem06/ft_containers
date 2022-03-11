@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 23:32:58 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/09 18:20:55 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/10 23:22:07 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <string>
 #include <iostream>
 #include <cstddef>
-#include "btree_iterator.hpp"
+#include "iterator/btree_iterator.hpp"
 #include "node.hpp"
 
 #define TEMPLATE			template <class Key, class T, class Alloc>
@@ -56,11 +56,11 @@ namespace ft
 			node<Key, T>	*search(Key key) const;
 			bool			exist(Key key) const;
 			unsigned int	size() const;
-			node<Key, T>	*begin();
-			node<Key, T>	*end();
+			node<Key, T>	*begin() const;
+			node<Key, T>	*end() const;
 		private:
-			node<Key, T>	*begin(node<Key, T> *leaf);
-			node<Key, T>	*end(node<Key, T> *leaf);
+			node<Key, T>	*begin(node<Key, T> *leaf) const;
+			node<Key, T>	*end(node<Key, T> *leaf) const;
 			node<Key, T>	*search(Key key, node<Key, T> *leaf) const;
 			void 			destroy_tree(node<Key, T> *&leaf);
 			void 			insert(type_value value, node<Key, T> *leaf);
@@ -80,7 +80,7 @@ CLASS::btree(const Alloc & alloc)
 
 CLASS::~btree() { clear(); }
 
-CLASS_TYPE(NODEPTR)::begin()
+CLASS_TYPE(NODEPTR)::begin() const
 {
 	if (_root == NULL)
 		return (NULL);
@@ -90,7 +90,7 @@ CLASS_TYPE(NODEPTR)::begin()
 		return (begin(_root->left));
 }
 
-CLASS_TYPE(NODEPTR)::begin(node<Key, T> *leaf)
+CLASS_TYPE(NODEPTR)::begin(node<Key, T> *leaf) const
 {
 	if (leaf->left == NULL)
 		return (leaf);
@@ -98,7 +98,7 @@ CLASS_TYPE(NODEPTR)::begin(node<Key, T> *leaf)
 		return (begin(leaf->left));
 }
 
-CLASS_TYPE(NODEPTR)::end()
+CLASS_TYPE(NODEPTR)::end() const
 {
 	if (_root == NULL)
 		return (NULL);
@@ -108,7 +108,7 @@ CLASS_TYPE(NODEPTR)::end()
 		return (end(_root->right));
 }
 
-CLASS_TYPE(NODEPTR)::end(node<Key, T> *leaf)
+CLASS_TYPE(NODEPTR)::end(node<Key, T> *leaf) const
 {
 	if (leaf->right == NULL)
 		return (leaf);

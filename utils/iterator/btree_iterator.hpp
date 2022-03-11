@@ -6,15 +6,15 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 22:32:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/10 21:43:47 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/11 01:19:09 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include "iterator.hpp"
+#include "../iterator.hpp"
 #include <iostream>
-#include "node.hpp"
+#include "../node.hpp"
 
 namespace ft
 {
@@ -38,12 +38,19 @@ namespace ft
 		public:
 			btree_iterator() : _end(false), _begin(false)
 			{ this->_ptr = NULL; };
-			btree_iterator(pointer leaf) : _end(false), _begin(false)
-			{ this->_ptr = leaf; };
+			btree_iterator(pointer leaf) : _end(false), _begin(false) {
+				if (leaf == NULL)
+				{
+					_end = true;
+					_begin = true;
+				}
+				else
+					this->_ptr = leaf;
+			};
 			~btree_iterator() {};
 			btree_iterator & operator++()
 			{
-				if (!_end)
+				if (!_end && !_begin)
 					_save = this->_ptr;
 				if (_begin)
 				{
@@ -66,7 +73,7 @@ namespace ft
 			}
 			btree_iterator & operator--()
 			{
-				if (!_begin)
+				if (!_begin && !_end)
 					_save = this->_ptr;
 				if (_end)
 				{
@@ -95,9 +102,17 @@ namespace ft
 					return (this->_begin != rhs._begin);
 				return (this->_ptr->value != rhs._ptr->value);
 			}
-			ft::pair<Key, T> const & operator*()
+			bool operator==(btree_iterator const & rhs) const
 			{
-				return (this->_ptr->value);
+				return (this->_ptr == rhs._ptr);
+			}
+			ft::pair<Key, T> & operator*() const
+			{
+				return (*(operator->()));
+			}
+			ft::pair<Key, T> * operator->() const
+			{
+				return ((ft::pair<Key, T> *)&this->_ptr->value);
 			}
 		private:
 			pointer next()
