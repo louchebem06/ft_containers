@@ -101,46 +101,56 @@ T	dec(T it, int n)
 
 #include <list>
 
-#define T1 char
-#define T2 int
+#define T1 int
+#define T2 std::string
 typedef _pair<const T1, T2> T3;
 
-int main (void)
+static int iter = 0;
+
+template <typename MAP, typename U>
+void	ft_erase(MAP &mp, U param)
+{
+	std::cout << "\t-- [" << iter++ << "] --" << std::endl;
+	mp.erase(param);
+	printSize(mp);
+}
+
+template <typename MAP, typename U, typename V>
+void	ft_erase(MAP &mp, U param, V param2)
+{
+	std::cout << "\t-- [" << iter++ << "] --" << std::endl;
+	mp.erase(param, param2);
+	printSize(mp);
+}
+
+int		main(void)
 {
 	std::list<T3> lst;
-
-	unsigned int lst_size = 7;
+	unsigned int lst_size = 10;
 	for (unsigned int i = 0; i < lst_size; ++i)
-		lst.push_back(T3('a' + i, lst_size - i));
-	TESTED_NAMESPACE::map<T1, T2> foo(lst.begin(), lst.end());
+		lst.push_back(T3(i, std::string((lst_size - i), i + 65)));
+	TESTED_NAMESPACE::map<T1, T2> mp(lst.begin(), lst.end());
+	printSize(mp);
 
-	lst.clear(); lst_size = 4;
-	for (unsigned int i = 0; i < lst_size; ++i)
-		lst.push_back(T3('z' - i, i * 5));
-	TESTED_NAMESPACE::map<T1, T2> bar(lst.begin(), lst.end());
+	ft_erase(mp, ++mp.begin());
 
-	TESTED_NAMESPACE::map<T1, T2>::const_iterator it_foo = foo.begin();
-	TESTED_NAMESPACE::map<T1, T2>::const_iterator it_bar = bar.begin();
+	ft_erase(mp, mp.begin());
+	ft_erase(mp, --mp.end());
 
-	std::cout << "BEFORE SWAP" << std::endl;
+	ft_erase(mp, mp.begin(), ++(++(++mp.begin())));
+	ft_erase(mp, --(--(--mp.end())), --mp.end());
 
-	std::cout << "foo contains:" << std::endl;
-	printSize(foo);
-	std::cout << "bar contains:" << std::endl;
-	printSize(bar);
+	mp[10] = "Hello";
+	mp[11] = "Hi there";
+	printSize(mp);
+	ft_erase(mp, --(--(--mp.end())), mp.end());
 
-	foo.swap(bar);
-
-	std::cout << "AFTER SWAP" << std::endl;
-
-	std::cout << "foo contains:" << std::endl;
-	printSize(foo);
-	std::cout << "bar contains:" << std::endl;
-	printSize(bar);
-
-	std::cout << "Iterator validity:" << std::endl;
-	std::cout << (it_foo == bar.begin()) << std::endl;
-	std::cout << (it_bar == foo.begin()) << std::endl;
+	mp[12] = "ONE";
+	mp[13] = "TWO";
+	mp[14] = "THREE";
+	mp[15] = "FOUR";
+	printSize(mp);
+	ft_erase(mp, mp.begin(), mp.end());
 
 	return (0);
 }
