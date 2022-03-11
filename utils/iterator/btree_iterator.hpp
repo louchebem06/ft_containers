@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 22:32:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/11 19:35:43 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/11 19:47:57 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,11 +275,11 @@ namespace ft
 			{
 				return (this->_ptr == rhs._ptr);
 			}
-			ft::pair<Key, T> & operator*() const
+			ft::pair<Key, T> const & operator*() const
 			{
 				return (*(operator->()));
 			}
-			ft::pair<Key, T> * operator->() const
+			ft::pair<Key, T> const * operator->() const
 			{
 				return ((ft::pair<Key, T> *)&this->_ptr->value);
 			}

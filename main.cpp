@@ -55,8 +55,14 @@ class foo {
 		foo(value_type src, const bool verbose = false) : value(src), _verbose(verbose) { };
 		foo(foo const &src, const bool verbose = false) : value(src.value), _verbose(verbose) { };
 		~foo(void) { if (this->_verbose) std::cout << "~foo::foo()" << std::endl; };
-		void m(void) { std::cout << "foo::m called [" << this->value << "]" << std::endl; };
-		void m(void) const { std::cout << "foo::m const called [" << this->value << "]" << std::endl; };
+		void m(void) {
+			std::cout << "foo::m called [";
+			std::cout << this->value << "]" << std::endl;
+		};
+		void m(void) const {
+			std::cout << "foo::m const called [";
+			std::cout << this->value << "]" << std::endl;
+		};
 		foo &operator=(value_type src) { this->value = src; return *this; };
 		foo &operator=(foo const &src) {
 			if (this->_verbose || src._verbose)
@@ -101,46 +107,47 @@ T	dec(T it, int n)
 
 #include <list>
 
-#define T1 char
-#define T2 int
+#define T1 float
+#define T2 foo<int>
 typedef _pair<const T1, T2> T3;
 
-int main (void)
+int		main(void)
 {
 	std::list<T3> lst;
-
-	unsigned int lst_size = 7;
+	unsigned int lst_size = 5;
 	for (unsigned int i = 0; i < lst_size; ++i)
-		lst.push_back(T3('a' + i, lst_size - i));
-	TESTED_NAMESPACE::map<T1, T2> foo(lst.begin(), lst.end());
+		lst.push_back(T3(2.5 + i, i + 1));
 
-	lst.clear(); lst_size = 4;
-	for (unsigned int i = 0; i < lst_size; ++i)
-		lst.push_back(T3('z' - i, i * 5));
-	TESTED_NAMESPACE::map<T1, T2> bar(lst.begin(), lst.end());
+	TESTED_NAMESPACE::map<T1, T2> mp(lst.begin(), lst.end());
+	TESTED_NAMESPACE::map<T1, T2>::iterator it(mp.begin());
+	TESTED_NAMESPACE::map<T1, T2>::const_iterator ite(mp.begin());
+	printSize(mp);
 
-	TESTED_NAMESPACE::map<T1, T2>::const_iterator it_foo = foo.begin();
-	TESTED_NAMESPACE::map<T1, T2>::const_iterator it_bar = bar.begin();
+	printPair(++ite);
+	printPair(ite++);
+	printPair(ite++);
+	printPair(++ite);
 
-	std::cout << "BEFORE SWAP" << std::endl;
+	it->second.m();
+	ite->second.m();
 
-	std::cout << "foo contains:" << std::endl;
-	printSize(foo);
-	std::cout << "bar contains:" << std::endl;
-	printSize(bar);
+	printPair(++it);
+	printPair(it++);
+	printPair(it++);
+	printPair(++it);
 
-	foo.swap(bar);
+	printPair(--ite);
+	printPair(ite--);
+	printPair(--ite);
+	printPair(ite--);
 
-	std::cout << "AFTER SWAP" << std::endl;
+	(*it).second.m();
+	(*ite).second.m();
 
-	std::cout << "foo contains:" << std::endl;
-	printSize(foo);
-	std::cout << "bar contains:" << std::endl;
-	printSize(bar);
-
-	std::cout << "Iterator validity:" << std::endl;
-	std::cout << (it_foo == bar.begin()) << std::endl;
-	std::cout << (it_bar == foo.begin()) << std::endl;
+	printPair(--it);
+	printPair(it--);
+	printPair(it--);
+	printPair(--it);
 
 	return (0);
 }
