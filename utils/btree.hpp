@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 23:32:58 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/11 20:30:10 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/11 20:34:58 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 #define ITERATOR			ft::btree_iterator<Key, T>
 #define CONSTITERATOR		ft::btree_const_iterator<Key, T>
 #define REFERENCE			ft::btree<Key, T, Alloc> &
+#define REBIND				template rebind<node<Key, T> >::other
 #define CLASS				TEMPLATE CLASS_BTREE
 #define CLASS_TYPE(type)	TEMPLATE type CLASS_BTREE
 
@@ -34,13 +35,13 @@ namespace ft
 	class btree
 	{
 		public:
-			typedef typename Alloc::template rebind<node<Key, T> >::other	allocator_type;
-			typedef typename allocator_type::reference				reference;
-			typedef typename allocator_type::const_reference 		const_reference;
-			typedef typename allocator_type::pointer 				pointer;
-			typedef typename allocator_type::const_pointer 			const_pointer;
-			typedef typename allocator_type::difference_type		difference_type;
-			typedef typename allocator_type::size_type 				size_type;
+			typedef typename Alloc::REBIND						allocator_type;
+			typedef typename allocator_type::reference			reference;
+			typedef typename allocator_type::const_reference 	const_reference;
+			typedef typename allocator_type::pointer 			pointer;
+			typedef typename allocator_type::const_pointer		const_pointer;
+			typedef typename allocator_type::difference_type	difference_type;
+			typedef typename allocator_type::size_type 			size_type;
 		public:
 			typedef typename node<Key, T>::type_value			type_value;
 			typedef	btree_iterator<Key, T>						iterator;
