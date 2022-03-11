@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 15:39:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/11 21:21:39 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/11 21:58:40 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,10 @@ namespace ft
             explicit reverse_iterator (iterator_type it) : _it(it) {}
 			
             template <class Iter>
-            reverse_iterator (const reverse_iterator<Iter>& rev_it) : _it(rev_it.base()) {}
-			
-            virtual ~reverse_iterator() {}
+            reverse_iterator (const reverse_iterator<Iter>& rev_it)
+				: _it(rev_it.base()) {}
 
             iterator_type base() const { return (_it); }
-			
-            reference operator*() const
-            {
-                iterator_type tmp = _it;
-                return (*(--tmp));
-            }
 
             reverse_iterator operator+ (difference_type n) const
 			{ return (reverse_iterator(_it - n)); }
@@ -87,9 +80,22 @@ namespace ft
                 return (*this);
             }
 
-            pointer operator->() const { return &(operator*()); }
+            pointer operator->() const
+			{
+				iterator_type tmp = _it;
+                --tmp;
+				return (tmp.operator->());
+			}
 
-            reference operator[] (difference_type n) const { return (this->base()[-n - 1]); }
+			reference operator*() const
+            {
+                iterator_type tmp = _it;
+				--tmp;
+				return (tmp.operator*());
+            }
+
+            reference operator[] (difference_type n) const
+			{ return (this->base()[-n - 1]); }
     };
 
 	template <class Iterator_>

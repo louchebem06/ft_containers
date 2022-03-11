@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 22:52:54 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/17 18:01:16 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/11 21:39:54 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,4 @@
 #include "iterator/iterator_traits.hpp"
 #include "iterator/iterator_class.hpp"
 #include "iterator/random_access_iterator.hpp"
-#include "iterator/bidirectional_iterator.hpp"
 #include "iterator/reverse iterator.hpp"

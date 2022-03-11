@@ -105,28 +105,39 @@ T	dec(T it, int n)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#define T1 int
+#include <list>
+
+#define T1 char
 #define T2 int
+typedef _pair<const T1, T2> T3;
 
 int		main(void)
 {
-	TESTED_NAMESPACE::map<T1, T2> mp;
-	TESTED_NAMESPACE::map<T1, T2>::iterator it = mp.begin();
-	TESTED_NAMESPACE::map<T1, T2>::const_iterator cit = mp.begin();
+	std::list<T3> lst;
+	unsigned int lst_size = 5;
+	for (unsigned int i = 0; i < lst_size; ++i)
+		lst.push_back(T3('a' + i, (i + 1) * 7));
 
-	TESTED_NAMESPACE::map<T1, T2>::reverse_iterator rit(it);
+	TESTED_NAMESPACE::map<T1, T2> mp(lst.begin(), lst.end());
+	TESTED_NAMESPACE::map<T1, T2>::iterator it_ = mp.begin();
+	TESTED_NAMESPACE::map<T1, T2>::reverse_iterator it(it_), ite;
+	printSize(mp);
 
-	TESTED_NAMESPACE::map<T1, T2>::const_reverse_iterator crit(rit);
-	TESTED_NAMESPACE::map<T1, T2>::const_reverse_iterator crit_(it);
-	TESTED_NAMESPACE::map<T1, T2>::const_reverse_iterator crit_2(cit);
+	std::cout << (it_ == it.base()) << std::endl;
+	std::cout << (it_ == dec(it, 3).base()) << std::endl;
 
+	printPair(it.base());
+	printPair(inc(it.base(), 1));
 
-	// TESTED_NAMESPACE::map<T1, T2>::reverse_iterator rit_(crit);
-	// TESTED_NAMESPACE::map<T1, T2>::reverse_iterator rit2(cit);
-	// TESTED_NAMESPACE::map<T1, T2>::iterator it2(rit);
-	// TESTED_NAMESPACE::map<T1, T2>::const_iterator cit2(crit);
-	
+	std::cout << "TEST OFFSET" << std::endl;
+	--it;
+	printPair(it);
+	printPair(it.base());
 
-	std::cout << "OK" << std::endl;
+	it = mp.rbegin(); ite = mp.rend();
+	while (it != ite)
+		std::cout << "[rev] " << printPair(it++, false) << std::endl;
+	printReverse(mp);
+
 	return (0);
 }

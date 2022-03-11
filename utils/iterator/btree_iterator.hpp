@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 22:32:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/11 19:47:57 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/11 22:06:39 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,18 @@ namespace ft
 			typedef typename iterator::value_type			value_type;
 			typedef typename iterator::difference_type		difference_type;
 			typedef typename iterator::iterator_category	iterator_category;
-			typedef typename iterator::pointer				pointer;
-			typedef typename iterator::reference 			reference;
+			typedef typename ft::pair<Key, T> *				pointer;
+			typedef typename ft::pair<Key, T> &				reference;
 		private:
 			bool	_end;
 			bool	_begin;
-			pointer _save;
+			ft::node<Key, T> * _save;
 		public:
-			pointer base() { return (this->_ptr); }
+			ft::node<Key, T> * base() { return (this->_ptr); }
 		public:
 			btree_iterator() : _end(false), _begin(false)
 			{ this->_ptr = NULL; };
-			btree_iterator(pointer leaf) : _end(false), _begin(false) {
+			btree_iterator(ft::node<Key, T> * leaf) : _end(false), _begin(false) {
 				if (leaf == NULL)
 				{
 					_end = true;
@@ -117,11 +117,11 @@ namespace ft
 				return ((ft::pair<Key, T> *)&this->_ptr->value);
 			}
 		private:
-			pointer next()
+			ft::node<Key, T> * next()
 			{
 				if (this->_ptr == NULL)
 					return (NULL);
-				pointer	left, right, tmp = this->_ptr;
+				ft::node<Key, T> *	left, *right, *tmp = this->_ptr;
 				Key		value = tmp->value.first;
 
 				while (tmp->parent)
@@ -136,11 +136,11 @@ namespace ft
 					return (right);
 				return (NULL);
 			};
-			pointer next(pointer ptr, Key value)
+			ft::node<Key, T> * next(ft::node<Key, T> * ptr, Key value)
 			{
 				if (ptr == NULL)
 					return (NULL);
-				pointer	left, right;
+				ft::node<Key, T> *	left, *right;
 
 				left = next(ptr->left, value);
 				right = next(ptr->right, value);
@@ -152,11 +152,11 @@ namespace ft
 					return (right);
 				return (NULL);
 			};
-			pointer prev()
+			ft::node<Key, T> * prev()
 			{
 				if (this->_ptr == NULL)
 					return (NULL);
-				pointer	tmp = this->_ptr;
+				ft::node<Key, T> *	tmp = this->_ptr;
 				Key		value = tmp->value.first;
 
 				if (tmp->left)
@@ -189,16 +189,16 @@ namespace ft
 			typedef typename iterator::value_type			value_type;
 			typedef typename iterator::difference_type		difference_type;
 			typedef typename iterator::iterator_category	iterator_category;
-			typedef typename iterator::pointer				pointer;
-			typedef typename iterator::reference 			reference;
+			typedef typename ft::pair<Key, T> *				pointer;
+			typedef typename ft::pair<Key, T> & 			reference;
 		private:
 			bool	_end;
 			bool	_begin;
-			pointer _save;
+			ft::node<Key, T> * _save;
 		public:
 			btree_const_iterator() : _end(false), _begin(false)
 			{ this->_ptr = NULL; };
-			btree_const_iterator(pointer leaf) : _end(false), _begin(false) {
+			btree_const_iterator(ft::node<Key, T> * leaf) : _end(false), _begin(false) {
 				if (leaf == NULL)
 				{
 					_end = true;
@@ -284,11 +284,11 @@ namespace ft
 				return ((ft::pair<Key, T> *)&this->_ptr->value);
 			}
 		private:
-			pointer next()
+			ft::node<Key, T> * next()
 			{
 				if (this->_ptr == NULL)
 					return (NULL);
-				pointer	left, right, tmp = this->_ptr;
+				ft::node<Key, T> *	left, *right, *tmp = this->_ptr;
 				Key		value = tmp->value.first;
 
 				while (tmp->parent)
@@ -303,11 +303,11 @@ namespace ft
 					return (right);
 				return (NULL);
 			};
-			pointer next(pointer ptr, Key value)
+			ft::node<Key, T> * next(ft::node<Key, T> * ptr, Key value)
 			{
 				if (ptr == NULL)
 					return (NULL);
-				pointer	left, right;
+				ft::node<Key, T> *	left, *right;
 
 				left = next(ptr->left, value);
 				right = next(ptr->right, value);
@@ -319,11 +319,11 @@ namespace ft
 					return (right);
 				return (NULL);
 			};
-			pointer prev()
+			ft::node<Key, T> * prev()
 			{
 				if (this->_ptr == NULL)
 					return (NULL);
-				pointer	tmp = this->_ptr;
+				ft::node<Key, T> *	tmp = this->_ptr;
 				Key		value = tmp->value.first;
 
 				if (tmp->left)
