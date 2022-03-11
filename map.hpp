@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 18:04:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/11 19:27:13 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/11 20:31:20 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ namespace ft
 			typedef typename allocator_type::const_reference			const_reference;
 			typedef typename allocator_type::pointer					pointer;
 			typedef typename allocator_type::const_pointer				const_pointer;
-			typedef typename ft::btree<Key, T>::iterator				iterator;
-			typedef typename ft::btree<Key, T>::const_iterator			const_iterator;
+			typedef typename ft::btree<Key, T, Alloc>::iterator				iterator;
+			typedef typename ft::btree<Key, T, Alloc>::const_iterator			const_iterator;
 			typedef ft::reverse_iterator<iterator>						reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 			typedef typename iterator_traits<iterator>::difference_type	difference_type;
@@ -60,9 +60,9 @@ namespace ft
 					};
 			};
 		private:
-			ft::btree<Key, T>	_node;
-			allocator_type		_alloc;
-			key_compare			_comp;
+			ft::btree<Key, T, Alloc>	_node;
+			allocator_type				_alloc;
+			key_compare					_comp;
 		public:
 			explicit map (const key_compare& comp = key_compare(),
 				const allocator_type& alloc = allocator_type())
