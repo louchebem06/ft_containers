@@ -105,58 +105,28 @@ T	dec(T it, int n)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <list>
-
 #define T1 int
-#define T2 std::string
-typedef _pair<const T1, T2> T3;
-
-static int iter = 0;
-
-template <typename MAP, typename U>
-void	ft_erase(MAP &mp, U param)
-{
-	std::cout << "\t-- [" << iter++ << "] --" << std::endl;
-	mp.erase(param);
-	printSize(mp);
-}
-
-template <typename MAP, typename U, typename V>
-void	ft_erase(MAP &mp, U param, V param2)
-{
-	std::cout << "\t-- [" << iter++ << "] --" << std::endl;
-	mp.erase(param, param2);
-	printSize(mp);
-}
+#define T2 int
 
 int		main(void)
 {
-	std::list<T3> lst;
-	unsigned int lst_size = 10;
-	for (unsigned int i = 0; i < lst_size; ++i)
-		lst.push_back(T3(i, std::string((lst_size - i), i + 65)));
-	TESTED_NAMESPACE::map<T1, T2> mp(lst.begin(), lst.end());
-	printSize(mp);
+	TESTED_NAMESPACE::map<T1, T2> mp;
+	TESTED_NAMESPACE::map<T1, T2>::iterator it = mp.begin();
+	TESTED_NAMESPACE::map<T1, T2>::const_iterator cit = mp.begin();
 
-	ft_erase(mp, ++mp.begin());
+	TESTED_NAMESPACE::map<T1, T2>::reverse_iterator rit(it);
 
-	ft_erase(mp, mp.begin());
-	ft_erase(mp, --mp.end());
+	TESTED_NAMESPACE::map<T1, T2>::const_reverse_iterator crit(rit);
+	TESTED_NAMESPACE::map<T1, T2>::const_reverse_iterator crit_(it);
+	TESTED_NAMESPACE::map<T1, T2>::const_reverse_iterator crit_2(cit);
 
-	ft_erase(mp, mp.begin(), ++(++(++mp.begin())));
-	ft_erase(mp, --(--(--mp.end())), --mp.end());
 
-	mp[10] = "Hello";
-	mp[11] = "Hi there";
-	printSize(mp);
-	ft_erase(mp, --(--(--mp.end())), mp.end());
+	// TESTED_NAMESPACE::map<T1, T2>::reverse_iterator rit_(crit);
+	// TESTED_NAMESPACE::map<T1, T2>::reverse_iterator rit2(cit);
+	// TESTED_NAMESPACE::map<T1, T2>::iterator it2(rit);
+	// TESTED_NAMESPACE::map<T1, T2>::const_iterator cit2(crit);
+	
 
-	mp[12] = "ONE";
-	mp[13] = "TWO";
-	mp[14] = "THREE";
-	mp[15] = "FOUR";
-	printSize(mp);
-	ft_erase(mp, mp.begin(), mp.end());
-
+	std::cout << "OK" << std::endl;
 	return (0);
 }
