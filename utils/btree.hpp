@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 23:32:58 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/11 02:48:36 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/11 03:29:59 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ namespace ft
 			void			insert(type_value value);
 			void			clear();
 			void			tree() const;
-			void			remove(Key key);
+			int				remove(Key key);
 			node<Key, T>	*search(Key key) const;
 			bool			exist(Key key) const;
 			unsigned int	size() const;
@@ -65,7 +65,7 @@ namespace ft
 			void 			destroy_tree(node<Key, T> *&leaf);
 			void 			insert(type_value value, node<Key, T> *leaf);
 			void 			insert(node<Key, T> *&leaf, node<Key, T> *placing);
-			void 			remove(Key key, node<Key, T> *&leaf);
+			int				remove(Key key, node<Key, T> *&leaf);
 			void 			tree(node<Key, T> *root, std::string indent = "",
 									bool right = false) const;
 	};
@@ -219,7 +219,7 @@ CLASS_TYPE(void)::insert(node<Key, T> *&leaf, node<Key, T> *placing)
 	}
 }
 
-CLASS_TYPE(void)::remove(Key key)
+CLASS_TYPE(int)::remove(Key key)
 {
 	if (_root != NULL)
 	{
@@ -234,15 +234,17 @@ CLASS_TYPE(void)::remove(Key key)
 			if (_root != NULL)
 				_root->parent = NULL;
 			insert(_root, (left != NULL) ? right : left);
+			return (1);
 		}
 		else if (key < _root->value.first)
-			remove(key, _root->left);
+			return (remove(key, _root->left));
 		else if (key > _root->value.first)
-			remove(key, _root->right);
+			return (remove(key, _root->right));
 	}
+	return (0);
 }
 
-CLASS_TYPE(void)::remove(Key key, node<Key, T> *&leaf)
+CLASS_TYPE(int)::remove(Key key, node<Key, T> *&leaf)
 {
 	if (leaf != NULL)
 	{
@@ -256,7 +258,7 @@ CLASS_TYPE(void)::remove(Key key, node<Key, T> *&leaf)
 			_alloc.deallocate(leaf, 1);
 			leaf = ((left != NULL) ? left : right);
 			if (leaf == NULL)
-				return ;
+				return (1);
 			if (leaf->value.first < parent->value.first)
 				parent->left = leaf;
 			else if (leaf->value.first > parent->value.first)
@@ -264,12 +266,14 @@ CLASS_TYPE(void)::remove(Key key, node<Key, T> *&leaf)
 			if (leaf != NULL)
 				leaf->parent = parent;
 			insert(leaf, (left != NULL) ? right : left);
+			return (1);
 		}
 		else if (key < leaf->value.first)
-			remove(key, leaf->left);
+			return (remove(key, leaf->left));
 		else if (key > leaf->value.first)
-			remove(key, leaf->right);
+			return (remove(key, leaf->right));
 	}
+	return (0);
 }
 
 CLASS_TYPE(void)::clear() { destroy_tree(_root); }
