@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 23:32:58 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/12 19:02:56 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/12 23:31:33 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ namespace ft
 			typedef typename allocator_type::size_type 			size_type;
 		public:
 			typedef typename node<Key, T>::type_value			type_value;
-			typedef	btree_iterator<Key, T, Compare>						iterator;
-			typedef	btree_const_iterator<Key, T, Compare>				const_iterator;
+			typedef	btree_iterator<Key, T, Compare>				iterator;
+			typedef	btree_const_iterator<Key, T, Compare>		const_iterator;
 		public:
 			typedef Compare										key_compare;
 		private:
@@ -55,7 +55,8 @@ namespace ft
 			unsigned int	_size;
 			key_compare		_comp;
 		public:
-			btree(key_compare const & comp = key_compare(), allocator_type const & alloc = allocator_type());
+			btree(key_compare const & comp = key_compare(),
+					allocator_type const & alloc = allocator_type());
 			~btree();
 			btree 			& operator=(btree const & rhs);
 			void			insert(type_value const & value);

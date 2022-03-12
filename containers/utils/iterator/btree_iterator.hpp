@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 22:32:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/12 20:13:52 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/12 23:37:10 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ namespace ft
 		public:
 			btree_iterator() : _end(false), _begin(false)
 			{ this->_ptr = NULL; };
-			btree_iterator(ft::node<Key, T> * leaf) : _end(false), _begin(false) {
+			btree_iterator(ft::node<Key, T> *leaf) : _end(false), _begin(false) {
 				if (leaf == NULL)
 				{
 					_end = true;
@@ -213,7 +213,7 @@ namespace ft
 		public:
 			btree_const_iterator() : _end(false), _begin(false)
 			{ this->_ptr = NULL; };
-			btree_const_iterator(ft::node<Key, T> * leaf) : _end(false), _begin(false) {
+			btree_const_iterator(ft::node<Key, T> *leaf) : _end(false), _begin(false) {
 				if (leaf == NULL)
 				{
 					_end = true;
