@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 22:32:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/12 05:25:16 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/12 19:36:03 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,43 +29,47 @@ namespace ft
 			{
 				if (this->_ptr == NULL)
 					return (NULL);
-				ft::node<Key, T> *	left, *right, *tmp = this->_ptr;
-				Key		value = tmp->value.first;
+				ft::node<Key, T>	*tmp = this->_ptr;
+				Key					value = tmp->value.first;
 
-				while (tmp->parent)
-					tmp = tmp->parent;
-				left = next(tmp->left, value);
-				right = next(tmp->right, value);
-				if (left && _comp(value, left->value.first))
-					return (left);
-				else if (_comp(value, tmp->value.first))
-					return (tmp);
-				else if (right && _comp(value, right->value.first))
-					return (right);
-				return (NULL);
-			}
-			ft::node<Key, T> * next(ft::node<Key, T> * ptr, Key value)
-			{
-				if (ptr == NULL)
+				if (tmp->right)
+				{
+					tmp = tmp->right;
+					while (tmp->left && _comp(value, tmp->left->value.first))
+						tmp = tmp->left;
+				}
+				else if (tmp->parent && _comp(value, tmp->parent->value.first))
+				{
+					while (tmp->parent && _comp(value, tmp->parent->value.first))
+					{
+						tmp = tmp->parent;
+						if (tmp->parent
+							&& _comp(tmp->value.first, tmp->parent->value.first))
+							break;
+					}
+				}
+				else if (tmp->parent && !_comp(value, tmp->parent->value.first))
+				{
+					Key tmp_key = tmp->value.first;
+
+					while (tmp->parent && !_comp(value, tmp->parent->value.first))
+						tmp = tmp->parent;
+					if (tmp->parent)
+						tmp = tmp->parent;
+					if (_comp(tmp->value.first, tmp_key))
+						return (NULL);
+				}
+				else
 					return (NULL);
-				ft::node<Key, T> *	left, *right;
-
-				left = next(ptr->left, value);
-				right = next(ptr->right, value);
-				if (left && _comp(value, left->value.first))
-					return (left);
-				else if (value < ptr->value.first)
-					return (ptr);
-				else if (right && _comp(value, right->value.first))
-					return (right);
-				return (NULL);
+				return (tmp);
 			}
+			
 			ft::node<Key, T> * prev()
 			{
 				if (this->_ptr == NULL)
 					return (NULL);
-				ft::node<Key, T> *	tmp = this->_ptr;
-				Key		value = tmp->value.first;
+				ft::node<Key, T> 	*tmp = this->_ptr;
+				Key					value = tmp->value.first;
 
 				if (tmp->left)
 				{

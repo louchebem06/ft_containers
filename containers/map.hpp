@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 18:04:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/12 04:37:06 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/12 19:04:43 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ namespace ft
 			allocator_type						_alloc;
 			key_compare							_comp;
 		public:
+			void tree() const { _node.tree(); } // a remove
 			explicit map (const key_compare& comp = key_compare(),
 				const allocator_type& alloc = allocator_type())
 			{
