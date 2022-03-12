@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 22:32:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/12 19:36:03 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/12 20:13:52 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ namespace ft
 					return (this->_end != rhs._end);
 				else if (rhs._begin)
 					return (this->_begin != rhs._begin);
-				return (this->_ptr->value != rhs._ptr->value);
+				return (this->_ptr->value.first != rhs._ptr->value.first);
 			}
 			bool operator==(btree_iterator const & rhs) const
 			{
@@ -284,7 +284,7 @@ namespace ft
 					return (this->_end != rhs._end);
 				else if (rhs._begin)
 					return (this->_begin != rhs._begin);
-				return (this->_ptr->value != rhs._ptr->value);
+				return (this->_ptr->value.first != rhs._ptr->value.first);
 			}
 			bool operator==(btree_const_iterator const & rhs) const
 			{
