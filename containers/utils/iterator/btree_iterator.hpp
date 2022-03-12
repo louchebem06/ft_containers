@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 22:32:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/11 22:46:00 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/12 05:25:16 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,76 @@
 
 namespace ft
 {
-	template <class Key, class T>
-	class btree_iterator :
-		public iterator<bidirectional_iterator_tag, ft::node<Key, T> >
+	template <class Key, class T, class Compare>
+	class move : public iterator<bidirectional_iterator_tag, ft::node<Key, T> >
+	{
+		protected:
+			typedef Compare		key_compare;
+			key_compare			_comp;
+		protected:
+			ft::node<Key, T> * next()
+			{
+				if (this->_ptr == NULL)
+					return (NULL);
+				ft::node<Key, T> *	left, *right, *tmp = this->_ptr;
+				Key		value = tmp->value.first;
+
+				while (tmp->parent)
+					tmp = tmp->parent;
+				left = next(tmp->left, value);
+				right = next(tmp->right, value);
+				if (left && _comp(value, left->value.first))
+					return (left);
+				else if (_comp(value, tmp->value.first))
+					return (tmp);
+				else if (right && _comp(value, right->value.first))
+					return (right);
+				return (NULL);
+			}
+			ft::node<Key, T> * next(ft::node<Key, T> * ptr, Key value)
+			{
+				if (ptr == NULL)
+					return (NULL);
+				ft::node<Key, T> *	left, *right;
+
+				left = next(ptr->left, value);
+				right = next(ptr->right, value);
+				if (left && _comp(value, left->value.first))
+					return (left);
+				else if (value < ptr->value.first)
+					return (ptr);
+				else if (right && _comp(value, right->value.first))
+					return (right);
+				return (NULL);
+			}
+			ft::node<Key, T> * prev()
+			{
+				if (this->_ptr == NULL)
+					return (NULL);
+				ft::node<Key, T> *	tmp = this->_ptr;
+				Key		value = tmp->value.first;
+
+				if (tmp->left)
+				{
+					tmp = tmp->left;
+					while (tmp->right && _comp(tmp->right->value.first, value))
+						tmp = tmp->right;
+				}
+				else if (tmp->parent)
+				{
+					while (tmp->parent && _comp(value, tmp->parent->value.first))
+						tmp = tmp->parent;
+					tmp = tmp->parent;
+				}
+				return (tmp);
+			}
+	};
+}
+
+namespace ft
+{
+	template <class Key, class T, class Compare>
+	class btree_iterator : public move<Key, T, Compare>
 	{
 		protected:
 			typedef iterator<bidirectional_iterator_tag,
@@ -31,10 +98,11 @@ namespace ft
 			typedef typename iterator::iterator_category	iterator_category;
 			typedef typename ft::pair<Key, T> *				pointer;
 			typedef typename ft::pair<Key, T> &				reference;
+			typedef Compare									key_compare;
 		private:
-			bool	_end;
-			bool	_begin;
-			ft::node<Key, T> * _save;
+			bool				_end;
+			bool				_begin;
+			ft::node<Key, T> *	_save;
 		public:
 			ft::node<Key, T> * base() { return (this->_ptr); }
 		public:
@@ -61,7 +129,7 @@ namespace ft
 				}
 				else
 				{
-					this->_ptr = next();
+					this->_ptr = this->next();
 					if (this->_ptr == NULL)
 						_end = true;
 				}
@@ -84,7 +152,7 @@ namespace ft
 				}
 				else
 				{
-					this->_ptr = prev();
+					this->_ptr = this->prev();
 					if (this->_ptr == NULL)
 						_begin = true;
 				}
@@ -116,71 +184,13 @@ namespace ft
 			{
 				return ((ft::pair<Key, T> *)&this->_ptr->value);
 			}
-		private:
-			ft::node<Key, T> * next()
-			{
-				if (this->_ptr == NULL)
-					return (NULL);
-				ft::node<Key, T> *	left, *right, *tmp = this->_ptr;
-				Key		value = tmp->value.first;
-
-				while (tmp->parent)
-					tmp = tmp->parent;
-				left = next(tmp->left, value);
-				right = next(tmp->right, value);
-				if (left && left->value.first > value)
-					return (left);
-				else if (tmp->value.first > value)
-					return (tmp);
-				else if (right && right->value.first > value)
-					return (right);
-				return (NULL);
-			};
-			ft::node<Key, T> * next(ft::node<Key, T> * ptr, Key value)
-			{
-				if (ptr == NULL)
-					return (NULL);
-				ft::node<Key, T> *	left, *right;
-
-				left = next(ptr->left, value);
-				right = next(ptr->right, value);
-				if (left && left->value.first > value)
-					return (left);
-				else if (ptr->value.first > value)
-					return (ptr);
-				else if (right && right->value.first > value)
-					return (right);
-				return (NULL);
-			};
-			ft::node<Key, T> * prev()
-			{
-				if (this->_ptr == NULL)
-					return (NULL);
-				ft::node<Key, T> *	tmp = this->_ptr;
-				Key		value = tmp->value.first;
-
-				if (tmp->left)
-				{
-					tmp = tmp->left;
-					while (tmp->right && tmp->right->value.first < value)
-						tmp = tmp->right;
-				}
-				else if (tmp->parent)
-				{
-					while (tmp->parent && tmp->parent->value.first > value)
-						tmp = tmp->parent;
-					tmp = tmp->parent;
-				}
-				return (tmp);
-			};
 	};
 }
 
 namespace ft
 {
-	template <class Key, class T>
-	class btree_const_iterator :
-		public iterator<bidirectional_iterator_tag, ft::node<Key, T> >
+	template <class Key, class T, class Compare>
+	class btree_const_iterator : public move<Key, T, Compare>
 	{
 		protected:
 			typedef iterator<bidirectional_iterator_tag,
@@ -189,12 +199,13 @@ namespace ft
 			typedef typename iterator::value_type			value_type;
 			typedef typename iterator::difference_type		difference_type;
 			typedef typename iterator::iterator_category	iterator_category;
-			typedef typename ft::pair<Key, T> const *				pointer;
-			typedef typename ft::pair<Key, T> const & 			reference;
+			typedef typename ft::pair<Key, T> const *		pointer;
+			typedef typename ft::pair<Key, T> const & 		reference;
+			typedef Compare									key_compare;
 		private:
-			bool	_end;
-			bool	_begin;
-			ft::node<Key, T> * _save;
+			bool				_end;
+			bool				_begin;
+			ft::node<Key, T> *	_save;
 		public:
 			btree_const_iterator() : _end(false), _begin(false)
 			{ this->_ptr = NULL; };
@@ -207,7 +218,7 @@ namespace ft
 				else
 					this->_ptr = leaf;
 			};
-			btree_const_iterator(btree_iterator<Key, T> it) : _end(false), _begin(false) {
+			btree_const_iterator(btree_iterator<Key, T, Compare> it) : _end(false), _begin(false) {
 				if (it.base() == NULL)
 				{
 					_end = true;
@@ -228,7 +239,7 @@ namespace ft
 				}
 				else
 				{
-					this->_ptr = next();
+					this->_ptr = this->next();
 					if (this->_ptr == NULL)
 						_end = true;
 				}
@@ -251,7 +262,7 @@ namespace ft
 				}
 				else
 				{
-					this->_ptr = prev();
+					this->_ptr = this->prev();
 					if (this->_ptr == NULL)
 						_begin = true;
 				}
@@ -283,62 +294,5 @@ namespace ft
 			{
 				return ((ft::pair<Key, T> *)&this->_ptr->value);
 			}
-		private:
-			ft::node<Key, T> * next()
-			{
-				if (this->_ptr == NULL)
-					return (NULL);
-				ft::node<Key, T> *	left, *right, *tmp = this->_ptr;
-				Key		value = tmp->value.first;
-
-				while (tmp->parent)
-					tmp = tmp->parent;
-				left = next(tmp->left, value);
-				right = next(tmp->right, value);
-				if (left && left->value.first > value)
-					return (left);
-				else if (tmp->value.first > value)
-					return (tmp);
-				else if (right && right->value.first > value)
-					return (right);
-				return (NULL);
-			};
-			ft::node<Key, T> * next(ft::node<Key, T> * ptr, Key value)
-			{
-				if (ptr == NULL)
-					return (NULL);
-				ft::node<Key, T> *	left, *right;
-
-				left = next(ptr->left, value);
-				right = next(ptr->right, value);
-				if (left && left->value.first > value)
-					return (left);
-				else if (ptr->value.first > value)
-					return (ptr);
-				else if (right && right->value.first > value)
-					return (right);
-				return (NULL);
-			};
-			ft::node<Key, T> * prev()
-			{
-				if (this->_ptr == NULL)
-					return (NULL);
-				ft::node<Key, T> *	tmp = this->_ptr;
-				Key		value = tmp->value.first;
-
-				if (tmp->left)
-				{
-					tmp = tmp->left;
-					while (tmp->right && tmp->right->value.first < value)
-						tmp = tmp->right;
-				}
-				else if (tmp->parent)
-				{
-					while (tmp->parent && tmp->parent->value.first > value)
-						tmp = tmp->parent;
-					tmp = tmp->parent;
-				}
-				return (tmp);
-			};
 	};
 }
