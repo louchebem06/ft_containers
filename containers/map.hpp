@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 18:04:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/11 21:39:28 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/12 01:10:15 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,13 @@
 #include <iostream>
 #include "utils/type_traits.hpp"
 #include "utils/iterator.hpp"
-#include "utils/functional.hpp"
 #include "utils/utility.hpp"
 #include "utils/btree.hpp"
 
 namespace ft
 {
-	template <class Key, class T, class Compare = ft::less<Key>,
-		class Alloc = std::allocator<ft::pair<const Key,T> > >
+	template <class Key, class T, class Compare = std::less<Key>,
+		class Alloc = std::allocator<ft::pair<const Key, T> > >
 	class map
 	{
 		public:
@@ -44,7 +43,7 @@ namespace ft
 			typedef typename allocator_type::size_type 					size_type;
 		public:
 			// Official <map> and docs cplusplus.com
-			class value_compare : public ft::binary_function<value_type, value_type, bool>
+			class value_compare : public std::binary_function<value_type, value_type, bool>
 			{
 				friend class map;
 				protected:
@@ -149,9 +148,14 @@ namespace ft
 
 			mapped_type & operator[] (const key_type& k)
 			{
-				return (
-					(*((this->insert(ft::make_pair(k,mapped_type())))
-					.first)).second);
+				node<Key, T> *tmp = _node.search(k);
+				if (tmp == NULL)
+				{
+					_node.insert(ft::make_pair(k, mapped_type()));
+					node<Key, T> *tmp2 = _node.search(k);
+					return (tmp2->value.second);
+				}
+				return (tmp->value.second);
 			};
 
 			iterator find (const key_type& k)
@@ -209,9 +213,10 @@ namespace ft
 				_node.clear();
 			};
 
-			key_compare key_comp() const {};
+			key_compare key_comp() const { return (key_compare()); };
 
-			value_compare value_comp() const {};
+			value_compare value_comp() const
+			{ return (value_compare(key_comp())); };
 
 			size_type count (const key_type& k) const 
 			{ return (_node.exist(k)); };
