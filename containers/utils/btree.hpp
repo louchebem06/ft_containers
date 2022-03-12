@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 23:32:58 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/12 00:56:57 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/12 04:24:24 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 #define CONSTITERATOR		ft::btree_const_iterator<Key, T>
 #define REFERENCE			ft::btree<Key, T, Alloc> &
 #define REBIND				template rebind<node<Key, T> >::other
+#define ALLOCATOR_TYPE		typename CLASS_BTREE::allocator_type
 #define CLASS				TEMPLATE CLASS_BTREE
 #define CLASS_TYPE(type)	TEMPLATE type CLASS_BTREE
 
@@ -51,29 +52,30 @@ namespace ft
 			allocator_type	_alloc;
 			unsigned int	_size;
 		public:
-			btree(const allocator_type& alloc = allocator_type());
+			btree(allocator_type const & alloc = allocator_type());
 			~btree();
 			btree 			& operator=(btree const & rhs);
-			void			insert(type_value value);
+			void			insert(type_value const & value);
 			void			clear();
 			void			tree() const;
-			int				remove(Key key);
-			node<Key, T>	*search(Key key) const;
-			bool			exist(Key key) const;
+			int				remove(Key const & key);
+			node<Key, T>	*search(Key const & key) const;
+			bool			exist(Key const & key) const;
 			unsigned int	size() const;
 			iterator		begin();
 			iterator		end();
 			const_iterator	begin() const;
 			const_iterator	end() const;
 			void			swap(btree & rhs);
+			allocator_type	get_allocator() const;
 		private:
 			iterator		begin(node<Key, T> *leaf);
 			iterator		end(node<Key, T> *leaf);
 			const_iterator	begin(node<Key, T> *leaf) const;
 			const_iterator	end(node<Key, T> *leaf) const;
-			node<Key, T>	*search(Key key, node<Key, T> *leaf) const;
+			node<Key, T>	*search(Key const & key, node<Key, T> *leaf) const;
 			void 			destroy_tree(node<Key, T> *&leaf);
-			void 			insert(type_value value, node<Key, T> *leaf);
+			void 			insert(type_value const & value, node<Key, T> *&leaf);
 			void 			insert(node<Key, T> *&leaf, node<Key, T> *placing);
 			int				remove(Key key, node<Key, T> *&leaf);
 			void 			tree(node<Key, T> *root, std::string indent = "",
@@ -86,6 +88,7 @@ CLASS_TYPE(void)::swap(btree & rhs)
 {
 	unsigned int	tmp_size;
 	node<Key, T>	*tmp_root;
+	allocator_type	tmp_alloc;
 
 	tmp_size = rhs._size;
 	rhs._size = _size;
@@ -94,9 +97,13 @@ CLASS_TYPE(void)::swap(btree & rhs)
 	tmp_root = rhs._root;
 	rhs._root = _root;
 	_root = tmp_root;
+
+	tmp_alloc = rhs._alloc;
+	rhs._alloc = _alloc;
+	_alloc = tmp_alloc;
 }
 
-CLASS::btree(const allocator_type & alloc)
+CLASS::btree(allocator_type const & alloc)
 {
 	_alloc = alloc;
 	_root = NULL;
@@ -104,6 +111,8 @@ CLASS::btree(const allocator_type & alloc)
 }
 
 CLASS::~btree() { clear(); }
+
+CLASS_TYPE(ALLOCATOR_TYPE)::get_allocator() const { return (_alloc); }
 
 CLASS_TYPE(REFERENCE)::operator=(ft::btree<Key, T, Alloc> const & rhs)
 {
@@ -115,6 +124,8 @@ CLASS_TYPE(REFERENCE)::operator=(ft::btree<Key, T, Alloc> const & rhs)
 			copy(rhs._root);
 			copy(rhs._root->left);
 			copy(rhs._root->right);
+			_size = rhs._size;
+			_alloc = rhs._alloc;
 		}
 	}
 	return (*this);
@@ -204,9 +215,10 @@ CLASS_TYPE(CONSTITERATOR)::end(node<Key, T> *leaf) const
 
 CLASS_TYPE(unsigned int)::size() const { return (_size); }
 
-CLASS_TYPE(bool)::exist(Key key) const { return (search(key) != NULL); }
+CLASS_TYPE(bool)::exist(Key const & key) const
+{ return (search(key) != NULL); }
 
-CLASS_TYPE(NODEPTR)::search(Key key) const
+CLASS_TYPE(NODEPTR)::search(Key const & key) const
 {
 	if (_root == NULL)
 		return (NULL);
@@ -217,7 +229,7 @@ CLASS_TYPE(NODEPTR)::search(Key key) const
 	return (search(key, _root->right));
 }
 
-CLASS_TYPE(NODEPTR)::search(Key key, node<Key, T> *leaf) const
+CLASS_TYPE(NODEPTR)::search(Key const & key, node<Key, T> *leaf) const
 {
 	if (leaf == NULL)
 		return (NULL);
@@ -228,7 +240,7 @@ CLASS_TYPE(NODEPTR)::search(Key key, node<Key, T> *leaf) const
 	return (search(key, leaf->right));
 }
 
-CLASS_TYPE(void)::insert(type_value value)
+CLASS_TYPE(void)::insert(type_value const & value)
 {
 	if(_root != NULL)
 		insert(value, _root);
@@ -243,9 +255,9 @@ CLASS_TYPE(void)::insert(type_value value)
 	}
 }
 
-CLASS_TYPE(void)::insert(type_value value, node<Key, T> *leaf)
+CLASS_TYPE(void)::insert(type_value const & value, node<Key, T> *&leaf)
 {
-	if(value.first < leaf->value.first)
+	if (value.first < leaf->value.first)
 	{
 		if(leaf->left != NULL)
 			insert(value, leaf->left);
@@ -259,7 +271,7 @@ CLASS_TYPE(void)::insert(type_value value, node<Key, T> *leaf)
 			_size++;
 		}  
 	}
-	else if(value.first > leaf->value.first)
+	else if (value.first > leaf->value.first)
 	{
 		if(leaf->right != NULL)
 			insert(value, leaf->right);
@@ -301,7 +313,7 @@ CLASS_TYPE(void)::insert(node<Key, T> *&leaf, node<Key, T> *placing)
 	}
 }
 
-CLASS_TYPE(int)::remove(Key key)
+CLASS_TYPE(int)::remove(Key const & key)
 {
 	if (_root != NULL)
 	{
@@ -311,11 +323,14 @@ CLASS_TYPE(int)::remove(Key key)
 			node<Key, T>	*left = _root->left,
 							*right = _root->right;
 
+			_alloc.destroy(_root);
 			_alloc.deallocate(_root, 1);
 			_root = ((left != NULL) ? left : right);
 			if (_root != NULL)
+			{
 				_root->parent = NULL;
-			insert(_root, (left != NULL) ? right : left);
+				insert(_root, (left != NULL) ? right : left);
+			}
 			return (1);
 		}
 		else if (key < _root->value.first)
@@ -337,17 +352,18 @@ CLASS_TYPE(int)::remove(Key key, node<Key, T> *&leaf)
 							*right = leaf->right,
 							*parent = leaf->parent;
 
+			_alloc.destroy(leaf);
 			_alloc.deallocate(leaf, 1);
 			leaf = ((left != NULL) ? left : right);
-			if (leaf == NULL)
-				return (1);
-			if (leaf->value.first < parent->value.first)
-				parent->left = leaf;
-			else if (leaf->value.first > parent->value.first)
-				parent->right = leaf;
 			if (leaf != NULL)
+			{
+				if (leaf->value.first < parent->value.first)
+					parent->left = leaf;
+				else if (leaf->value.first > parent->value.first)
+					parent->right = leaf;
 				leaf->parent = parent;
-			insert(leaf, (left != NULL) ? right : left);
+				insert(leaf, (left != NULL) ? right : left);
+			}
 			return (1);
 		}
 		else if (key < leaf->value.first)
@@ -367,6 +383,7 @@ CLASS_TYPE(void)::destroy_tree(node<Key, T> *&leaf)
 		_size--;
 		destroy_tree(leaf->left);
 		destroy_tree(leaf->right);
+		_alloc.destroy(leaf);
 		_alloc.deallocate(leaf, 1);
 		leaf = NULL;
 	}

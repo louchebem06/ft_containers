@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 18:04:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/12 01:10:15 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/12 03:59:56 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,27 +143,21 @@ namespace ft
 			};
 
 			size_type max_size() const {
-				return (this->_alloc.max_size());
+				return (get_allocator().max_size());
 			};
 
 			mapped_type & operator[] (const key_type& k)
 			{
-				node<Key, T> *tmp = _node.search(k);
-				if (tmp == NULL)
-				{
-					_node.insert(ft::make_pair(k, mapped_type()));
-					node<Key, T> *tmp2 = _node.search(k);
-					return (tmp2->value.second);
-				}
-				return (tmp->value.second);
+				return (
+					(*((this->insert(ft::make_pair(k, mapped_type())))
+					.first)).second);
 			};
 
 			iterator find (const key_type& k)
 			{ return (iterator(_node.search(k))); };
 
-			const_iterator find (const key_type& k) const {
-				return (_node.search(k));
-			};
+			const_iterator find (const key_type& k) const
+			{ return (_node.search(k)); };
 
 			ft::pair<iterator, bool> insert(const value_type& val)
 			{
@@ -192,16 +186,16 @@ namespace ft
 			size_type erase (const key_type& k) {
 				return (_node.remove(k));
 			};
-			void erase (iterator first, iterator last) {
-				size_t count = 0;
-				Key tab[size()];
-				for (;first != last; ++first)
+			void erase (iterator first, iterator last)
+			{
+				iterator next = first;
+				while (first != last)
 				{
-					tab[count] = first->first;
-					count++;
+					next = first;
+					next++;
+					erase((first->first));
+					first = next;
 				}
-				for (size_t i = 0; i < count; i++)
-					_node.remove(tab[i]);
 			};
 
 			void swap (map& x)
@@ -272,7 +266,7 @@ namespace ft
 			};
 
 			allocator_type get_allocator() const {
-				return (_alloc);
+				return (_node.get_allocator());
 			};
 	};
 }

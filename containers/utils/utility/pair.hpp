@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 15:10:59 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/12 00:59:48 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/12 02:11:52 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ namespace ft
 		
 		pair (const first_type& a, const second_type& b) : first(a), second(b) {};
 
-		pair & operator= (const pair & pr)
+		pair & operator=(const pair & pr)
 		{
 			if (this != &pr)
 			{
-				this->first = pr.first;
-				this->second = pr.second;
+				first = pr.first;
+				second = pr.second;
 			}
 			return (*this);
 		};
