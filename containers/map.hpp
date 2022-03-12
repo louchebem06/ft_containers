@@ -159,7 +159,7 @@ namespace ft
 			{ return (iterator(_node.search(k))); };
 
 			const_iterator find (const key_type& k) const
-			{ return (_node.search(k)); };
+			{ return (const_iterator(_node.search(k))); };
 
 			ft::pair<iterator, bool> insert(const value_type& val)
 			{
@@ -173,7 +173,7 @@ namespace ft
 			iterator insert (iterator position, const value_type& val) {
 				(void)position;
 				this->insert(val);
-				return (find(val.first));
+				return (iterator(find(val.first)));
 			};
 			
 			template <class InputIterator>

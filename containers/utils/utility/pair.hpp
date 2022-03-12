@@ -35,7 +35,7 @@ namespace ft
 			if (this != &pr)
 			{
 				first = pr.first;
-				second = pr.second;
+				//second = pr.second;
 			}
 			return (*this);
 		};

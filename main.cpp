@@ -106,58 +106,59 @@ T	dec(T it, int n)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <list>
 
 #define T1 int
 #define T2 std::string
-typedef _pair<const T1, T2> T3;
 
-static int iter = 0;
+TESTED_NAMESPACE::map<T1, T2> mp;
+TESTED_NAMESPACE::map<T1, T2>::iterator it = mp.end();
 
-template <typename MAP, typename U>
-void	ft_erase(MAP &mp, U param)
+void	ft_find(T1 const &k)
 {
-	std::cout << "\t-- [" << iter++ << "] --" << std::endl;
-	mp.erase(param);
-	printSize(mp);
+	TESTED_NAMESPACE::map<T1, T2>::iterator ret = mp.find(k);
+
+	if (ret != it)
+		printPair(ret);
+	else
+		std::cout << "map::find(" << k << ") returned end()" << std::endl;
 }
 
-template <typename MAP, typename U, typename V>
-void	ft_erase(MAP &mp, U param, V param2)
+void	ft_count(T1 const &k)
 {
-	std::cout << "\t-- [" << iter++ << "] --" << std::endl;
-	mp.erase(param, param2);
-	printSize(mp);
+	std::cout << "map::count(" << k << ")\treturned [" << mp.count(k) << "]" << std::endl;
 }
 
 int		main(void)
 {
-	std::list<T3> lst;
-	unsigned int lst_size = 10;
-	for (unsigned int i = 0; i < lst_size; ++i)
-		lst.push_back(T3(i, std::string((lst_size - i), i + 65)));
-	TESTED_NAMESPACE::map<T1, T2> mp(lst.begin(), lst.end());
+	mp[42] = "fgzgxfn";
+	mp[25] = "funny";
+	mp[80] = "hey";
+	mp[12] = "no";
+	mp[27] = "bee";
+	mp[90] = "8";
 	printSize(mp);
 
-	ft_erase(mp, ++mp.begin());
+	std::cout << "\t-- FIND --" << std::endl;
+	ft_find(12);
+	ft_find(3);
+	ft_find(35);
+	ft_find(90);
+	ft_find(100);
 
-	ft_erase(mp, mp.begin());
-	ft_erase(mp, --mp.end());
+	std::cout << "\t-- COUNT --" << std::endl;
+	ft_count(-3);
+	ft_count(12);
+	ft_count(3);
+	ft_count(35);
+	ft_count(90);
+	ft_count(100);
 
-	ft_erase(mp, mp.begin(), ++(++(++mp.begin())));
-	ft_erase(mp, --(--(--mp.end())), --mp.end());
+	mp.find(27)->second = "newly inserted mapped_value";
 
-	mp[10] = "Hello";
-	mp[11] = "Hi there";
 	printSize(mp);
-	ft_erase(mp, --(--(--mp.end())), mp.end());
 
-	mp[12] = "ONE";
-	mp[13] = "TWO";
-	mp[14] = "THREE";
-	mp[15] = "FOUR";
-	printSize(mp);
-	ft_erase(mp, mp.begin(), mp.end());
-
+	TESTED_NAMESPACE::map<T1, T2> const c_map(mp.begin(), mp.end());
+	std::cout << "const map.find(" << 42 << ")->second: [" << c_map.find(42)->second << "]" << std::endl;
+	std::cout << "const map.count(" << 80 << "): [" << c_map.count(80) << "]" << std::endl;
 	return (0);
 }
