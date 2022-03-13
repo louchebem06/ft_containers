@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 18:04:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/13 10:10:14 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/13 10:21:07 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,11 +275,13 @@ namespace ft
 				return (ft::make_pair(lower_bound(k), upper_bound(k)));
 			};
 
-			allocator_type get_allocator() const {
-				return (_node.get_allocator());
-			};
+			allocator_type get_allocator() const;
 	};
 }
+
+template <TEMPLATE_MAP>
+typename MAP_TYPE::allocator_type MAP_TYPE::get_allocator() const
+{ return (_node.get_allocator()); }
 
 template <TEMPLATE_MAP>
 bool operator==(const MAP_TYPE & lhs, const MAP_TYPE& rhs)
@@ -290,22 +292,22 @@ bool operator==(const MAP_TYPE & lhs, const MAP_TYPE& rhs)
 }
 
 template <TEMPLATE_MAP>
-bool operator<(const MAP_TYPE & lhs, const MAP_TYPE& rhs)
+bool operator<(const MAP_TYPE & lhs, const MAP_TYPE & rhs)
 {
 	return (ft::lexicographical_compare(
 			lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 }
 
 template <TEMPLATE_MAP>
-bool operator!=(const MAP_TYPE & lhs, const MAP_TYPE& rhs)
+bool operator!=(const MAP_TYPE & lhs, const MAP_TYPE & rhs)
 { return !(lhs == rhs); }
 
 template <TEMPLATE_MAP>
-bool operator<=(const MAP_TYPE & lhs, const MAP_TYPE& rhs)
+bool operator<=(const MAP_TYPE & lhs, const MAP_TYPE & rhs)
 { return (lhs < rhs || rhs == lhs); }
 
 template <TEMPLATE_MAP>
-bool operator>(const MAP_TYPE & lhs, const MAP_TYPE& rhs)
+bool operator>(const MAP_TYPE & lhs, const MAP_TYPE & rhs)
 {
 	if (lhs < rhs || lhs == rhs)
 		return (false);
@@ -313,7 +315,7 @@ bool operator>(const MAP_TYPE & lhs, const MAP_TYPE& rhs)
 }
 
 template <TEMPLATE_MAP>
-bool operator>=(const MAP_TYPE & lhs, const MAP_TYPE& rhs)
+bool operator>=(const MAP_TYPE & lhs, const MAP_TYPE & rhs)
 {
 	if (lhs == rhs || lhs > rhs)
 		return (true);
