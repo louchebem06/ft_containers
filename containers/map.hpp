@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 18:04:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/12 20:50:29 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/13 00:57:19 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ namespace ft
 			{ return (iterator(_node.search(k))); };
 
 			const_iterator find (const key_type& k) const
-			{ return (_node.search(k)); };
+			{ return (const_iterator(_node.search(k))); };
 
 			ft::pair<iterator, bool> insert(const value_type& val)
 			{
