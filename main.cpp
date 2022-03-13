@@ -121,8 +121,7 @@ void	ft_comp(const _map &mp, const const_it &it1, const const_it &it2)
 	res[0] = mp.key_comp()(it1->first, it2->first);
 	res[1] = mp.value_comp()(*it1, *it2);
 	std::cout << "with [" << it1->first << " and " << it2->first << "]: ";
-	std::cout << "key_comp: " << res[0] << " | " << "value_comp: ";
-	std::cout << res[1] << std::endl;
+	std::cout << "key_comp: " << res[0] << " | " << "value_comp: " << res[1] << std::endl;
 }
 
 int		main(void)
@@ -139,6 +138,6 @@ int		main(void)
 		for (const_it it2 = mp.begin(); it2 != mp.end(); ++it2)
 			ft_comp(mp, it1, it2);
 
-	// printSize(mp);
+	printSize(mp);
 	return (0);
 }
