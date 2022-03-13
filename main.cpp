@@ -123,5 +123,6 @@ int		main(void)
 	std::cout << "insert a new element via operator[]: " << mp['d'] << std::endl;
 
 	printSize(mp);
+
 	return (0);
 }

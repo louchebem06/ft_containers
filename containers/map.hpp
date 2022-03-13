@@ -173,7 +173,7 @@ namespace ft
 			iterator insert (iterator position, const value_type& val) {
 				(void)position;
 				this->insert(val);
-				return (find(val.first));
+				return (iterator(find(val.first)));
 			};
 			
 			template <class InputIterator>
