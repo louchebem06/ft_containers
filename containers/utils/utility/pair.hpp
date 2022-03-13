@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 15:10:59 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/12 19:59:34 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/13 01:08:37 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ namespace ft
 			if (this != &pr)
 			{
 				first = pr.first;
-				//second = pr.second;
+				second = pr.second;
 			}
 			return (*this);
 		};

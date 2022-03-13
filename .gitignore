@@ -1,0 +1,6 @@
+test/testor/deepthought
+test/testor/logs
+*.dSYM
+main
+*.out
+*.gch
