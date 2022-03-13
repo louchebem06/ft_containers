@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 22:32:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/12 23:37:10 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/13 01:45:17 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,12 @@ namespace ft
 				else
 					this->_ptr = leaf;
 			};
+			btree_iterator(btree_iterator const & x) {
+				this->_ptr = x._ptr;
+				_end = x._end;
+				_begin = x._begin;
+				_save = x._save;
+			};
 			~btree_iterator() {};
 			btree_iterator & operator++()
 			{
@@ -174,6 +180,12 @@ namespace ft
 					return (this->_end != rhs._end);
 				else if (rhs._begin)
 					return (this->_begin != rhs._begin);
+				else if (this->_ptr == NULL)
+				{
+					if (rhs._ptr == NULL)
+					 	return (false);
+					return (true);
+				}
 				return (this->_ptr->value.first != rhs._ptr->value.first);
 			}
 			bool operator==(btree_iterator const & rhs) const
@@ -221,6 +233,12 @@ namespace ft
 				}
 				else
 					this->_ptr = leaf;
+			};
+			btree_const_iterator(btree_const_iterator const & x) {
+				this->_ptr = x._ptr;
+				_end = x._end;
+				_begin = x._begin;
+				_save = x._save;
 			};
 			btree_const_iterator(btree_iterator<Key, T, Compare> it) : _end(false), _begin(false) {
 				if (it.base() == NULL)
@@ -279,11 +297,17 @@ namespace ft
 				return (tmp);
 			}
 			bool operator!=(btree_const_iterator const & rhs) const
-			{
+			{	
 				if (rhs._end)
 					return (this->_end != rhs._end);
 				else if (rhs._begin)
 					return (this->_begin != rhs._begin);
+				else if (this->_ptr == NULL)
+				{
+					if (rhs._ptr == NULL)
+					 	return (false);
+					return (true);
+				}
 				return (this->_ptr->value.first != rhs._ptr->value.first);
 			}
 			bool operator==(btree_const_iterator const & rhs) const
