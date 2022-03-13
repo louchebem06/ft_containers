@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 22:32:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/13 06:26:21 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/13 06:40:37 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,13 +120,31 @@ namespace ft
 			ft::pair<Key, T> const * operator->() const;
 	};
 }
-
+////////////////////////////////////////////////////////////////////////////////
+CLASS_IT::btree_iterator()
+{
+	_end = _begin = false;
+	this->_ptr = NULL;
+}
 
 CLASS_C_IT::btree_const_iterator()
 {
 	_end = _begin = false;
 	this->_ptr = NULL;
 }
+////////////////////////////////////////////////////////////////////////////////
+CLASS_IT::btree_iterator(NODEPTR leaf)
+{
+	_end = _begin = false;
+	if (leaf == NULL)
+	{
+		_end = true;
+		_begin = true;
+	}
+	else
+		this->_ptr = leaf;
+}
+
 CLASS_C_IT::btree_const_iterator(NODEPTR leaf)
 {
 	_end = _begin = false;
@@ -138,12 +156,22 @@ CLASS_C_IT::btree_const_iterator(NODEPTR leaf)
 	else
 		this->_ptr = leaf;
 }
+////////////////////////////////////////////////////////////////////////////////
+CLASS_IT::btree_iterator(btree_iterator const & x)
+{
+	this->_ptr = x._ptr;
+	_end = x._end;
+	_begin = x._begin;
+	_save = x._save;
+}
+
 CLASS_C_IT::btree_const_iterator(btree_const_iterator const & x) {
 	this->_ptr = x._ptr;
 	_end = x._end;
 	_begin = x._begin;
 	_save = x._save;
 }
+////////////////////////////////////////////////////////////////////////////////
 CLASS_C_IT::btree_const_iterator(IT it)
 {
 	_end = _begin = false;
@@ -155,6 +183,25 @@ CLASS_C_IT::btree_const_iterator(IT it)
 	else
 		this->_ptr = it.base();
 }
+////////////////////////////////////////////////////////////////////////////////
+CLASS_IT_TYPE(REFERENCE_IT)::operator++()
+{
+	if (!_end && !_begin)
+		_save = this->_ptr;
+	if (_begin)
+	{
+		this->_ptr = _save;
+		_begin = false;
+	}
+	else
+	{
+		this->_ptr = this->next();
+		if (this->_ptr == NULL)
+			_end = true;
+	}
+	return (*this);
+}
+
 CLASS_C_IT_TYPE(REFERENCE_C_IT)::operator++()
 {
 	if (!_end && !_begin)
@@ -172,12 +219,25 @@ CLASS_C_IT_TYPE(REFERENCE_C_IT)::operator++()
 	}
 	return (*this);
 }
-CLASS_C_IT_TYPE(C_IT)::operator++(int)
+////////////////////////////////////////////////////////////////////////////////
+CLASS_IT_TYPE(REFERENCE_IT)::operator--()
 {
-	btree_const_iterator tmp(this->_ptr);
-	++(*this);
-	return (tmp);
+	if (!_begin && !_end)
+		_save = this->_ptr;
+	if (_end)
+	{
+		this->_ptr = _save;
+		_end = false;
+	}
+	else
+	{
+		this->_ptr = this->prev();
+		if (this->_ptr == NULL)
+			_begin = true;
+	}
+	return (*this);
 }
+
 CLASS_C_IT_TYPE(REFERENCE_C_IT)::operator--()
 {
 	if (!_begin && !_end)
@@ -195,12 +255,22 @@ CLASS_C_IT_TYPE(REFERENCE_C_IT)::operator--()
 	}
 	return (*this);
 }
-CLASS_C_IT_TYPE(C_IT)::operator--(int)
+////////////////////////////////////////////////////////////////////////////////
+CLASS_IT_TYPE(bool)::operator!=(btree_iterator const & rhs) const
 {
-	btree_const_iterator tmp(this->_ptr);
-	--(*this);
-	return (tmp);
+	if (rhs._end)
+		return (this->_end != rhs._end);
+	else if (rhs._begin)
+		return (this->_begin != rhs._begin);
+	else if (this->_ptr == NULL)
+	{
+		if (rhs._ptr == NULL)
+			return (false);
+		return (true);
+	}
+	return (this->_ptr->value.first != rhs._ptr->value.first);
 }
+
 CLASS_C_IT_TYPE(bool)::operator!=(btree_const_iterator const & rhs) const
 {	
 	if (rhs._end)
@@ -215,21 +285,7 @@ CLASS_C_IT_TYPE(bool)::operator!=(btree_const_iterator const & rhs) const
 	}
 	return (this->_ptr->value.first != rhs._ptr->value.first);
 }
-CLASS_C_IT_TYPE(bool)::operator==(btree_const_iterator const & rhs) const
-{
-	return (this->_ptr == rhs._ptr);
-}
-CLASS_C_IT_TYPE(REFERENCE_C_PAIR)::operator*() const
-{
-	return (*(operator->()));
-}
-CLASS_C_IT_TYPE(POINTER_C_PAIR)::operator->() const
-{
-	return ((ft::pair<Key, T> *)&this->_ptr->value);
-}
-
-
-
+////////////////////////////////////////////////////////////////////////////////
 CLASSMOVE_TYPE(NODEPTR)::next()
 {
 	if (this->_ptr == NULL)
@@ -290,53 +346,27 @@ CLASSMOVE_TYPE(NODEPTR)::prev()
 	}
 	return (tmp);
 }
-
+////////////////////////////////////////////////////////////////////////////////
 CLASS_IT_TYPE(NODEPTR)::base() { return (this->_ptr); }
+////////////////////////////////////////////////////////////////////////////////
+CLASS_IT_TYPE(bool)::operator==(btree_iterator const & rhs) const
+{ return (this->_ptr == rhs._ptr); }
 
-CLASS_IT::btree_iterator()
-{
-	_end = _begin = false;
-	this->_ptr = NULL;
-}
+CLASS_C_IT_TYPE(bool)::operator==(btree_const_iterator const & rhs) const
+{ return (this->_ptr == rhs._ptr); }
+////////////////////////////////////////////////////////////////////////////////
+CLASS_IT_TYPE(REFERENCE_PAIR)::operator*() const
+{ return (*(operator->())); }
 
-CLASS_IT::btree_iterator(NODEPTR leaf)
-{
-	_end = _begin = false;
-	if (leaf == NULL)
-	{
-		_end = true;
-		_begin = true;
-	}
-	else
-		this->_ptr = leaf;
-}
+CLASS_C_IT_TYPE(REFERENCE_C_PAIR)::operator*() const
+{ return (*(operator->())); }
+////////////////////////////////////////////////////////////////////////////////
+CLASS_IT_TYPE(POINTER_PAIR)::operator->() const
+{ return ((ft::pair<Key, T> *)&this->_ptr->value); }
 
-CLASS_IT::btree_iterator(btree_iterator const & x)
-{
-	this->_ptr = x._ptr;
-	_end = x._end;
-	_begin = x._begin;
-	_save = x._save;
-}
-
-CLASS_IT_TYPE(REFERENCE_IT)::operator++()
-{
-	if (!_end && !_begin)
-		_save = this->_ptr;
-	if (_begin)
-	{
-		this->_ptr = _save;
-		_begin = false;
-	}
-	else
-	{
-		this->_ptr = this->next();
-		if (this->_ptr == NULL)
-			_end = true;
-	}
-	return (*this);
-}
-
+CLASS_C_IT_TYPE(POINTER_C_PAIR)::operator->() const
+{ return ((ft::pair<Key, T> *)&this->_ptr->value); }
+////////////////////////////////////////////////////////////////////////////////
 CLASS_IT_TYPE(IT)::operator++(int)
 {
 	btree_iterator tmp(this->_ptr);
@@ -344,54 +374,24 @@ CLASS_IT_TYPE(IT)::operator++(int)
 	return (tmp);
 }
 
-CLASS_IT_TYPE(REFERENCE_IT)::operator--()
+CLASS_C_IT_TYPE(C_IT)::operator++(int)
 {
-	if (!_begin && !_end)
-		_save = this->_ptr;
-	if (_end)
-	{
-		this->_ptr = _save;
-		_end = false;
-	}
-	else
-	{
-		this->_ptr = this->prev();
-		if (this->_ptr == NULL)
-			_begin = true;
-	}
-	return (*this);
+	btree_const_iterator tmp(this->_ptr);
+	++(*this);
+	return (tmp);
 }
+////////////////////////////////////////////////////////////////////////////////
 CLASS_IT_TYPE(IT)::operator--(int)
 {
 	btree_iterator tmp(this->_ptr);
 	--(*this);
 	return (tmp);
 }
-CLASS_IT_TYPE(bool)::operator!=(btree_iterator const & rhs) const
-{
-	if (rhs._end)
-		return (this->_end != rhs._end);
-	else if (rhs._begin)
-		return (this->_begin != rhs._begin);
-	else if (this->_ptr == NULL)
-	{
-		if (rhs._ptr == NULL)
-			return (false);
-		return (true);
-	}
-	return (this->_ptr->value.first != rhs._ptr->value.first);
-}
-CLASS_IT_TYPE(bool)::operator==(btree_iterator const & rhs) const
-{
-	return (this->_ptr == rhs._ptr);
-}
 
-CLASS_IT_TYPE(REFERENCE_PAIR)::operator*() const
+CLASS_C_IT_TYPE(C_IT)::operator--(int)
 {
-	return (*(operator->()));
+	btree_const_iterator tmp(this->_ptr);
+	--(*this);
+	return (tmp);
 }
-
-CLASS_IT_TYPE(POINTER_PAIR)::operator->() const
-{
-	return ((ft::pair<Key, T> *)&this->_ptr->value);
-}
+////////////////////////////////////////////////////////////////////////////////
