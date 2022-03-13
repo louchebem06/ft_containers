@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 15:10:59 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/13 01:08:37 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/13 08:13:43 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ namespace ft
 				second = pr.second;
 			}
 			return (*this);
-		};
+		}
 	};
 
 	// https://www.cplusplus.com/reference/utility/pair/operators/

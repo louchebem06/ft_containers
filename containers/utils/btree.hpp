@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 23:32:58 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/13 01:04:17 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/13 08:33:45 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ namespace ft
 			const_iterator	end(node<Key, T> *leaf) const;
 			node<Key, T>	*search(Key const & key, node<Key, T> *leaf) const;
 			void 			destroy_tree(node<Key, T> *&leaf);
-			void 			insert(type_value const & value, node<Key, T> *&leaf);
+			void 			insert(type_value const & value, node<Key, T> *leaf);
 			void 			insert(node<Key, T> *&leaf, node<Key, T> *placing);
 			int				remove(Key key, node<Key, T> *&leaf);
 			void 			tree(node<Key, T> *root, std::string indent = "",
@@ -257,15 +257,12 @@ CLASS_TYPE(void)::insert(type_value const & value)
 	else
 	{
 		_root = _alloc.allocate(1);
-		_root->value = value;
-		_root->left = NULL;
-		_root->right = NULL;
-		_root->parent = NULL;
+		_alloc.construct(_root, ft::node<Key, T>(value, NULL, NULL, NULL));
 		_size++;
 	}
 }
 
-CLASS_TYPE(void)::insert(type_value const & value, node<Key, T> *&leaf)
+CLASS_TYPE(void)::insert(type_value const & value, node<Key, T> *leaf)
 {
 	if (_comp(value.first, leaf->value.first))
 	{
@@ -274,10 +271,7 @@ CLASS_TYPE(void)::insert(type_value const & value, node<Key, T> *&leaf)
 		else
 		{
 			leaf->left = _alloc.allocate(1);
-			leaf->left->value = value;
-			leaf->left->left = NULL;
-			leaf->left->right = NULL;
-			leaf->left->parent = leaf;
+			_alloc.construct(leaf->left, ft::node<Key, T>(value, NULL, NULL, leaf));
 			_size++;
 		}  
 	}
@@ -288,10 +282,7 @@ CLASS_TYPE(void)::insert(type_value const & value, node<Key, T> *&leaf)
 		else
 		{
 			leaf->right = _alloc.allocate(1);
-			leaf->right->value = value;
-			leaf->right->left = NULL;
-			leaf->right->right = NULL;
-			leaf->right->parent = leaf;
+			_alloc.construct(leaf->right, ft::node<Key, T>(value, NULL, NULL, leaf));
 			_size++;
 		}
 	}

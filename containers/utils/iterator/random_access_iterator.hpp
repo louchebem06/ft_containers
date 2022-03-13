@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 15:38:10 by bledda            #+#    #+#             */
-/*   Updated: 2022/01/18 13:57:41 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/13 07:40:34 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,20 @@
 
 #include "iterator_class.hpp"
 
+#define RAIT	iterator<random_access_iterator_tag, T>
+
 namespace ft
 {
 	template <class T>
 	class random_access_iterator :
 		public iterator<random_access_iterator_tag, T>
 	{
-		protected:
-			typedef iterator<random_access_iterator_tag, T>	iterator;
 		public:
-			typedef typename iterator::value_type			value_type;
-			typedef typename iterator::difference_type		difference_type;
-			typedef typename iterator::iterator_category	iterator_category;
-			typedef typename iterator::reference 			reference;
-			typedef typename iterator::pointer				pointer;
+			typedef typename RAIT::value_type			value_type;
+			typedef typename RAIT::difference_type		difference_type;
+			typedef typename RAIT::iterator_category	iterator_category;
+			typedef typename RAIT::reference 			reference;
+			typedef typename RAIT::pointer				pointer;
 		public:
 			pointer base() const { return (this->_ptr); };
 		public:

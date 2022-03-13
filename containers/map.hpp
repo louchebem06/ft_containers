@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 18:04:33 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/13 00:57:19 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/13 08:01:19 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,8 +182,9 @@ namespace ft
 					_node.insert(*first);
 			};
 
-			void erase (iterator position) {
-				erase(position->first);
+			void erase (iterator position) {;
+				if (position != NULL)
+					erase(position->first);
 			};
 			size_type erase (const key_type& k) {
 				return (_node.remove(k));
@@ -195,7 +196,7 @@ namespace ft
 				{
 					next = first;
 					next++;
-					erase((first->first));
+					erase(first);
 					first = next;
 				}
 			};

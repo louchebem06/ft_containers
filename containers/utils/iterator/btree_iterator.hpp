@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 22:32:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/13 06:57:31 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/13 07:42:29 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@
 #define REFERENCE_C_PAIR		ft::pair<Key, T> const &
 #define POINTER_C_PAIR			ft::pair<Key, T> const *
 
+#define BIT	ft::iterator<bidirectional_iterator_tag, ft::node<Key, T> >
+
 namespace ft
 {
 	template <class Key, class T, class Compare>
@@ -56,13 +58,10 @@ namespace ft
 	template <class Key, class T, class Compare>
 	class btree_iterator : public move<Key, T, Compare>
 	{
-		protected:
-			typedef iterator<bidirectional_iterator_tag,
-					ft::node<Key, T> >						iterator;
 		public:
-			typedef typename iterator::value_type			value_type;
-			typedef typename iterator::difference_type		difference_type;
-			typedef typename iterator::iterator_category	iterator_category;
+			typedef typename BIT::value_type			value_type;
+			typedef typename BIT::difference_type		difference_type;
+			typedef typename BIT::iterator_category	iterator_category;
 			typedef typename ft::pair<Key, T> *				pointer;
 			typedef typename ft::pair<Key, T> &				reference;
 		private:
@@ -92,13 +91,10 @@ namespace ft
 	template <class Key, class T, class Compare>
 	class btree_const_iterator : public move<Key, T, Compare>
 	{
-		protected:
-			typedef iterator<bidirectional_iterator_tag,
-					ft::node<Key, T> >						iterator;
 		public:
-			typedef typename iterator::value_type			value_type;
-			typedef typename iterator::difference_type		difference_type;
-			typedef typename iterator::iterator_category	iterator_category;
+			typedef typename BIT::value_type			value_type;
+			typedef typename BIT::difference_type		difference_type;
+			typedef typename BIT::iterator_category	iterator_category;
 			typedef typename ft::pair<Key, T> const *		pointer;
 			typedef typename ft::pair<Key, T> const & 		reference;
 		private:

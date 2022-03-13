@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 17:30:14 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/12 02:15:45 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/13 08:30:18 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,13 @@ namespace ft
 		node			*left;
 		node			*right;
 		node			*parent;
+
+		node(type_value const & value, node *left, node *right, node *parent)
+		{
+			this->value = value;
+			this->left = left;
+			this->right = right;
+			this->parent = parent;
+		}
 	};
 }
