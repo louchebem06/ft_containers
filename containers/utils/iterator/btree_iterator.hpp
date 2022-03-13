@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 22:32:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/13 01:45:17 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/13 02:59:21 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,18 @@
 #include "../iterator.hpp"
 #include <iostream>
 #include "../node.hpp"
+
+#define TEMPLATE_BTREE_ITERATOR	template <class Key, class T, class Compare>
+#define NODEPTR					ft::node<Key, T> *
+
+#define CLASSMOVE				ft::move<Key, T, Compare>
+#define CLASSMOVE_TYPE(type)	TEMPLATE_BTREE_ITERATOR type CLASSMOVE
+
+#define CLASS_IT				ft::btree_iterator
+#define CLASS_IT_TYPE(type)		TEMPLATE_BTREE_ITERATOR type CLASS_IT
+
+#define CLASS_C_IT				ft::btree_const_iterator
+#define CLASS_C_IT_TYPE(type)	TEMPLATE_BTREE_ITERATOR type CLASS_C_IT
 
 namespace ft
 {
@@ -25,66 +37,8 @@ namespace ft
 			typedef Compare		key_compare;
 			key_compare			_comp;
 		protected:
-			ft::node<Key, T> * next()
-			{
-				if (this->_ptr == NULL)
-					return (NULL);
-				ft::node<Key, T>	*tmp = this->_ptr;
-				Key					value = tmp->value.first;
-
-				if (tmp->right)
-				{
-					tmp = tmp->right;
-					while (tmp->left && _comp(value, tmp->left->value.first))
-						tmp = tmp->left;
-				}
-				else if (tmp->parent && _comp(value, tmp->parent->value.first))
-				{
-					while (tmp->parent && _comp(value, tmp->parent->value.first))
-					{
-						tmp = tmp->parent;
-						if (tmp->parent
-							&& _comp(tmp->value.first, tmp->parent->value.first))
-							break;
-					}
-				}
-				else if (tmp->parent && !_comp(value, tmp->parent->value.first))
-				{
-					Key tmp_key = tmp->value.first;
-
-					while (tmp->parent && !_comp(value, tmp->parent->value.first))
-						tmp = tmp->parent;
-					if (tmp->parent)
-						tmp = tmp->parent;
-					if (_comp(tmp->value.first, tmp_key))
-						return (NULL);
-				}
-				else
-					return (NULL);
-				return (tmp);
-			}
-			
-			ft::node<Key, T> * prev()
-			{
-				if (this->_ptr == NULL)
-					return (NULL);
-				ft::node<Key, T> 	*tmp = this->_ptr;
-				Key					value = tmp->value.first;
-
-				if (tmp->left)
-				{
-					tmp = tmp->left;
-					while (tmp->right && _comp(tmp->right->value.first, value))
-						tmp = tmp->right;
-				}
-				else if (tmp->parent)
-				{
-					while (tmp->parent && _comp(value, tmp->parent->value.first))
-						tmp = tmp->parent;
-					tmp = tmp->parent;
-				}
-				return (tmp);
-			}
+			ft::node<Key, T> * next();
+			ft::node<Key, T> * prev();
 	};
 }
 
@@ -109,7 +63,6 @@ namespace ft
 			ft::node<Key, T> *	_save;
 		public:
 			ft::node<Key, T> * base() { return (this->_ptr); }
-		public:
 			btree_iterator() : _end(false), _begin(false)
 			{ this->_ptr = NULL; };
 			btree_iterator(ft::node<Key, T> *leaf) : _end(false), _begin(false) {
@@ -323,4 +276,65 @@ namespace ft
 				return ((ft::pair<Key, T> *)&this->_ptr->value);
 			}
 	};
+}
+
+CLASSMOVE_TYPE(NODEPTR)::next()
+{
+	if (this->_ptr == NULL)
+		return (NULL);
+	ft::node<Key, T>	*tmp = this->_ptr;
+	Key					value = tmp->value.first;
+
+	if (tmp->right)
+	{
+		tmp = tmp->right;
+		while (tmp->left && _comp(value, tmp->left->value.first))
+			tmp = tmp->left;
+	}
+	else if (tmp->parent && _comp(value, tmp->parent->value.first))
+	{
+		while (tmp->parent && _comp(value, tmp->parent->value.first))
+		{
+			tmp = tmp->parent;
+			if (tmp->parent
+				&& _comp(tmp->value.first, tmp->parent->value.first))
+				break;
+		}
+	}
+	else if (tmp->parent && !_comp(value, tmp->parent->value.first))
+	{
+		Key tmp_key = tmp->value.first;
+
+		while (tmp->parent && !_comp(value, tmp->parent->value.first))
+			tmp = tmp->parent;
+		if (tmp->parent)
+			tmp = tmp->parent;
+		if (_comp(tmp->value.first, tmp_key))
+			return (NULL);
+	}
+	else
+		return (NULL);
+	return (tmp);
+}
+
+CLASSMOVE_TYPE(NODEPTR)::prev()
+{
+	if (this->_ptr == NULL)
+		return (NULL);
+	ft::node<Key, T> 	*tmp = this->_ptr;
+	Key					value = tmp->value.first;
+
+	if (tmp->left)
+	{
+		tmp = tmp->left;
+		while (tmp->right && _comp(tmp->right->value.first, value))
+			tmp = tmp->right;
+	}
+	else if (tmp->parent)
+	{
+		while (tmp->parent && _comp(value, tmp->parent->value.first))
+			tmp = tmp->parent;
+		tmp = tmp->parent;
+	}
+	return (tmp);
 }
