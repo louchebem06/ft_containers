@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 22:32:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/13 02:59:21 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/13 06:26:21 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,30 @@
 #define CLASSMOVE				ft::move<Key, T, Compare>
 #define CLASSMOVE_TYPE(type)	TEMPLATE_BTREE_ITERATOR type CLASSMOVE
 
-#define CLASS_IT				ft::btree_iterator
-#define CLASS_IT_TYPE(type)		TEMPLATE_BTREE_ITERATOR type CLASS_IT
+#define IT						ft::btree_iterator<Key, T, Compare>
+#define CLASS_IT				TEMPLATE_BTREE_ITERATOR IT
+#define CLASS_IT_TYPE(type)		TEMPLATE_BTREE_ITERATOR type IT
+#define REFERENCE_IT			IT &
 
-#define CLASS_C_IT				ft::btree_const_iterator
-#define CLASS_C_IT_TYPE(type)	TEMPLATE_BTREE_ITERATOR type CLASS_C_IT
+#define C_IT					ft::btree_const_iterator<Key, T, Compare>
+#define CLASS_C_IT				TEMPLATE_BTREE_ITERATOR C_IT
+#define CLASS_C_IT_TYPE(type)	TEMPLATE_BTREE_ITERATOR type C_IT
+#define REFERENCE_C_IT			C_IT &
+
+#define REFERENCE_PAIR			ft::pair<Key, T> &
+#define POINTER_PAIR			ft::pair<Key, T> *
+#define REFERENCE_C_PAIR		ft::pair<Key, T> const &
+#define POINTER_C_PAIR			ft::pair<Key, T> const *
 
 namespace ft
 {
 	template <class Key, class T, class Compare>
 	class move : public iterator<bidirectional_iterator_tag, ft::node<Key, T> >
 	{
-		protected:
+		public:
 			typedef Compare		key_compare;
-			key_compare			_comp;
 		protected:
+			key_compare			_comp;
 			ft::node<Key, T> * next();
 			ft::node<Key, T> * prev();
 	};
@@ -56,103 +65,24 @@ namespace ft
 			typedef typename iterator::iterator_category	iterator_category;
 			typedef typename ft::pair<Key, T> *				pointer;
 			typedef typename ft::pair<Key, T> &				reference;
-			typedef Compare									key_compare;
 		private:
 			bool				_end;
 			bool				_begin;
 			ft::node<Key, T> *	_save;
 		public:
-			ft::node<Key, T> * base() { return (this->_ptr); }
-			btree_iterator() : _end(false), _begin(false)
-			{ this->_ptr = NULL; };
-			btree_iterator(ft::node<Key, T> *leaf) : _end(false), _begin(false) {
-				if (leaf == NULL)
-				{
-					_end = true;
-					_begin = true;
-				}
-				else
-					this->_ptr = leaf;
-			};
-			btree_iterator(btree_iterator const & x) {
-				this->_ptr = x._ptr;
-				_end = x._end;
-				_begin = x._begin;
-				_save = x._save;
-			};
+			btree_iterator();
+			btree_iterator(ft::node<Key, T> *leaf);
+			btree_iterator(btree_iterator const & x);
 			~btree_iterator() {};
-			btree_iterator & operator++()
-			{
-				if (!_end && !_begin)
-					_save = this->_ptr;
-				if (_begin)
-				{
-					this->_ptr = _save;
-					_begin = false;
-				}
-				else
-				{
-					this->_ptr = this->next();
-					if (this->_ptr == NULL)
-						_end = true;
-				}
-				return (*this);
-			}
-			btree_iterator operator++(int)
-			{
-				btree_iterator tmp(this->_ptr);
-				++(*this);
-				return (tmp);
-			}
-			btree_iterator & operator--()
-			{
-				if (!_begin && !_end)
-					_save = this->_ptr;
-				if (_end)
-				{
-					this->_ptr = _save;
-					_end = false;
-				}
-				else
-				{
-					this->_ptr = this->prev();
-					if (this->_ptr == NULL)
-						_begin = true;
-				}
-				return (*this);
-			}
-			btree_iterator operator--(int)
-			{
-				btree_iterator tmp(this->_ptr);
-				--(*this);
-				return (tmp);
-			}
-			bool operator!=(btree_iterator const & rhs) const
-			{
-				if (rhs._end)
-					return (this->_end != rhs._end);
-				else if (rhs._begin)
-					return (this->_begin != rhs._begin);
-				else if (this->_ptr == NULL)
-				{
-					if (rhs._ptr == NULL)
-					 	return (false);
-					return (true);
-				}
-				return (this->_ptr->value.first != rhs._ptr->value.first);
-			}
-			bool operator==(btree_iterator const & rhs) const
-			{
-				return (this->_ptr == rhs._ptr);
-			}
-			ft::pair<Key, T> & operator*() const
-			{
-				return (*(operator->()));
-			}
-			ft::pair<Key, T> * operator->() const
-			{
-				return ((ft::pair<Key, T> *)&this->_ptr->value);
-			}
+			btree_iterator & operator++();
+			btree_iterator operator++(int);
+			btree_iterator & operator--();
+			btree_iterator operator--(int);
+			bool operator!=(btree_iterator const & rhs) const;
+			bool operator==(btree_iterator const & rhs) const;
+			ft::pair<Key, T> & operator*() const;
+			ft::pair<Key, T> * operator->() const;
+			ft::node<Key, T> * base();
 	};
 }
 
@@ -170,113 +100,135 @@ namespace ft
 			typedef typename iterator::iterator_category	iterator_category;
 			typedef typename ft::pair<Key, T> const *		pointer;
 			typedef typename ft::pair<Key, T> const & 		reference;
-			typedef Compare									key_compare;
 		private:
 			bool				_end;
 			bool				_begin;
 			ft::node<Key, T> *	_save;
 		public:
-			btree_const_iterator() : _end(false), _begin(false)
-			{ this->_ptr = NULL; };
-			btree_const_iterator(ft::node<Key, T> *leaf) : _end(false), _begin(false) {
-				if (leaf == NULL)
-				{
-					_end = true;
-					_begin = true;
-				}
-				else
-					this->_ptr = leaf;
-			};
-			btree_const_iterator(btree_const_iterator const & x) {
-				this->_ptr = x._ptr;
-				_end = x._end;
-				_begin = x._begin;
-				_save = x._save;
-			};
-			btree_const_iterator(btree_iterator<Key, T, Compare> it) : _end(false), _begin(false) {
-				if (it.base() == NULL)
-				{
-					_end = true;
-					_begin = true;
-				}
-				else
-					this->_ptr = it.base();
-			};
+			btree_const_iterator();
+			btree_const_iterator(ft::node<Key, T> *leaf);
+			btree_const_iterator(btree_const_iterator const & x);
+			btree_const_iterator(btree_iterator<Key, T, Compare> it);
 			~btree_const_iterator() {};
-			btree_const_iterator & operator++()
-			{
-				if (!_end && !_begin)
-					_save = this->_ptr;
-				if (_begin)
-				{
-					this->_ptr = _save;
-					_begin = false;
-				}
-				else
-				{
-					this->_ptr = this->next();
-					if (this->_ptr == NULL)
-						_end = true;
-				}
-				return (*this);
-			}
-			btree_const_iterator operator++(int)
-			{
-				btree_const_iterator tmp(this->_ptr);
-				++(*this);
-				return (tmp);
-			}
-			btree_const_iterator & operator--()
-			{
-				if (!_begin && !_end)
-					_save = this->_ptr;
-				if (_end)
-				{
-					this->_ptr = _save;
-					_end = false;
-				}
-				else
-				{
-					this->_ptr = this->prev();
-					if (this->_ptr == NULL)
-						_begin = true;
-				}
-				return (*this);
-			}
-			btree_const_iterator operator--(int)
-			{
-				btree_const_iterator tmp(this->_ptr);
-				--(*this);
-				return (tmp);
-			}
-			bool operator!=(btree_const_iterator const & rhs) const
-			{	
-				if (rhs._end)
-					return (this->_end != rhs._end);
-				else if (rhs._begin)
-					return (this->_begin != rhs._begin);
-				else if (this->_ptr == NULL)
-				{
-					if (rhs._ptr == NULL)
-					 	return (false);
-					return (true);
-				}
-				return (this->_ptr->value.first != rhs._ptr->value.first);
-			}
-			bool operator==(btree_const_iterator const & rhs) const
-			{
-				return (this->_ptr == rhs._ptr);
-			}
-			ft::pair<Key, T> const & operator*() const
-			{
-				return (*(operator->()));
-			}
-			ft::pair<Key, T> const * operator->() const
-			{
-				return ((ft::pair<Key, T> *)&this->_ptr->value);
-			}
+			btree_const_iterator & operator++();
+			btree_const_iterator operator++(int);
+			btree_const_iterator & operator--();
+			btree_const_iterator operator--(int);
+			bool operator!=(btree_const_iterator const & rhs) const;
+			bool operator==(btree_const_iterator const & rhs) const;
+			ft::pair<Key, T> const & operator*() const;
+			ft::pair<Key, T> const * operator->() const;
 	};
 }
+
+
+CLASS_C_IT::btree_const_iterator()
+{
+	_end = _begin = false;
+	this->_ptr = NULL;
+}
+CLASS_C_IT::btree_const_iterator(NODEPTR leaf)
+{
+	_end = _begin = false;
+	if (leaf == NULL)
+	{
+		_end = true;
+		_begin = true;
+	}
+	else
+		this->_ptr = leaf;
+}
+CLASS_C_IT::btree_const_iterator(btree_const_iterator const & x) {
+	this->_ptr = x._ptr;
+	_end = x._end;
+	_begin = x._begin;
+	_save = x._save;
+}
+CLASS_C_IT::btree_const_iterator(IT it)
+{
+	_end = _begin = false;
+	if (it.base() == NULL)
+	{
+		_end = true;
+		_begin = true;
+	}
+	else
+		this->_ptr = it.base();
+}
+CLASS_C_IT_TYPE(REFERENCE_C_IT)::operator++()
+{
+	if (!_end && !_begin)
+		_save = this->_ptr;
+	if (_begin)
+	{
+		this->_ptr = _save;
+		_begin = false;
+	}
+	else
+	{
+		this->_ptr = this->next();
+		if (this->_ptr == NULL)
+			_end = true;
+	}
+	return (*this);
+}
+CLASS_C_IT_TYPE(C_IT)::operator++(int)
+{
+	btree_const_iterator tmp(this->_ptr);
+	++(*this);
+	return (tmp);
+}
+CLASS_C_IT_TYPE(REFERENCE_C_IT)::operator--()
+{
+	if (!_begin && !_end)
+		_save = this->_ptr;
+	if (_end)
+	{
+		this->_ptr = _save;
+		_end = false;
+	}
+	else
+	{
+		this->_ptr = this->prev();
+		if (this->_ptr == NULL)
+			_begin = true;
+	}
+	return (*this);
+}
+CLASS_C_IT_TYPE(C_IT)::operator--(int)
+{
+	btree_const_iterator tmp(this->_ptr);
+	--(*this);
+	return (tmp);
+}
+CLASS_C_IT_TYPE(bool)::operator!=(btree_const_iterator const & rhs) const
+{	
+	if (rhs._end)
+		return (this->_end != rhs._end);
+	else if (rhs._begin)
+		return (this->_begin != rhs._begin);
+	else if (this->_ptr == NULL)
+	{
+		if (rhs._ptr == NULL)
+			return (false);
+		return (true);
+	}
+	return (this->_ptr->value.first != rhs._ptr->value.first);
+}
+CLASS_C_IT_TYPE(bool)::operator==(btree_const_iterator const & rhs) const
+{
+	return (this->_ptr == rhs._ptr);
+}
+CLASS_C_IT_TYPE(REFERENCE_C_PAIR)::operator*() const
+{
+	return (*(operator->()));
+}
+CLASS_C_IT_TYPE(POINTER_C_PAIR)::operator->() const
+{
+	return ((ft::pair<Key, T> *)&this->_ptr->value);
+}
+
+
 
 CLASSMOVE_TYPE(NODEPTR)::next()
 {
@@ -337,4 +289,109 @@ CLASSMOVE_TYPE(NODEPTR)::prev()
 		tmp = tmp->parent;
 	}
 	return (tmp);
+}
+
+CLASS_IT_TYPE(NODEPTR)::base() { return (this->_ptr); }
+
+CLASS_IT::btree_iterator()
+{
+	_end = _begin = false;
+	this->_ptr = NULL;
+}
+
+CLASS_IT::btree_iterator(NODEPTR leaf)
+{
+	_end = _begin = false;
+	if (leaf == NULL)
+	{
+		_end = true;
+		_begin = true;
+	}
+	else
+		this->_ptr = leaf;
+}
+
+CLASS_IT::btree_iterator(btree_iterator const & x)
+{
+	this->_ptr = x._ptr;
+	_end = x._end;
+	_begin = x._begin;
+	_save = x._save;
+}
+
+CLASS_IT_TYPE(REFERENCE_IT)::operator++()
+{
+	if (!_end && !_begin)
+		_save = this->_ptr;
+	if (_begin)
+	{
+		this->_ptr = _save;
+		_begin = false;
+	}
+	else
+	{
+		this->_ptr = this->next();
+		if (this->_ptr == NULL)
+			_end = true;
+	}
+	return (*this);
+}
+
+CLASS_IT_TYPE(IT)::operator++(int)
+{
+	btree_iterator tmp(this->_ptr);
+	++(*this);
+	return (tmp);
+}
+
+CLASS_IT_TYPE(REFERENCE_IT)::operator--()
+{
+	if (!_begin && !_end)
+		_save = this->_ptr;
+	if (_end)
+	{
+		this->_ptr = _save;
+		_end = false;
+	}
+	else
+	{
+		this->_ptr = this->prev();
+		if (this->_ptr == NULL)
+			_begin = true;
+	}
+	return (*this);
+}
+CLASS_IT_TYPE(IT)::operator--(int)
+{
+	btree_iterator tmp(this->_ptr);
+	--(*this);
+	return (tmp);
+}
+CLASS_IT_TYPE(bool)::operator!=(btree_iterator const & rhs) const
+{
+	if (rhs._end)
+		return (this->_end != rhs._end);
+	else if (rhs._begin)
+		return (this->_begin != rhs._begin);
+	else if (this->_ptr == NULL)
+	{
+		if (rhs._ptr == NULL)
+			return (false);
+		return (true);
+	}
+	return (this->_ptr->value.first != rhs._ptr->value.first);
+}
+CLASS_IT_TYPE(bool)::operator==(btree_iterator const & rhs) const
+{
+	return (this->_ptr == rhs._ptr);
+}
+
+CLASS_IT_TYPE(REFERENCE_PAIR)::operator*() const
+{
+	return (*(operator->()));
+}
+
+CLASS_IT_TYPE(POINTER_PAIR)::operator->() const
+{
+	return ((ft::pair<Key, T> *)&this->_ptr->value);
 }
