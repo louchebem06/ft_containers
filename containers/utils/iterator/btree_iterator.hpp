@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 22:32:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/13 06:53:24 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/13 06:57:31 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ namespace ft
 			bool operator==(btree_iterator const & rhs) const;
 			ft::pair<Key, T> & operator*() const;
 			ft::pair<Key, T> * operator->() const;
-			ft::node<Key, T> * base();
-			ft::node<Key, T> * save();
+			ft::node<Key, T> * base() const;
+			ft::node<Key, T> * save() const;
 	};
 }
 
@@ -354,8 +354,8 @@ CLASSMOVE_TYPE(NODEPTR)::prev()
 	return (tmp);
 }
 ////////////////////////////////////////////////////////////////////////////////
-CLASS_IT_TYPE(NODEPTR)::base() { return (this->_ptr); }
-CLASS_IT_TYPE(NODEPTR)::save() { return (this->_save); }
+CLASS_IT_TYPE(NODEPTR)::base() const { return (this->_ptr); }
+CLASS_IT_TYPE(NODEPTR)::save() const { return (this->_save); }
 ////////////////////////////////////////////////////////////////////////////////
 CLASS_IT_TYPE(bool)::operator==(btree_iterator const & rhs) const
 { return (this->_ptr == rhs._ptr); }
