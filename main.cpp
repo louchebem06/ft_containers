@@ -108,60 +108,49 @@ T	dec(T it, int n)
 
 #include <list>
 
-#define T1 int
-#define T2 std::string
+#define T1 float
+#define T2 foo<int>
 typedef _pair<const T1, T2> T3;
-
-static int iter = 0;
-
-template <typename MAP, typename U>
-void	ft_erase(MAP &mp, U param)
-{
-	std::cout << "\t-- [" << iter++ << "] --" << std::endl;
-	mp.erase(param);
-	printSize(mp);
-}
-
-template <typename MAP, typename U, typename V>
-void	ft_erase(MAP &mp, U param, V param2)
-{
-	std::cout << "\t-- [" << iter++ << "] --" << std::endl;
-	mp.erase(param, param2);
-	printSize(mp);
-}
 
 int		main(void)
 {
 	std::list<T3> lst;
-	unsigned int lst_size = 10;
+	unsigned int lst_size = 5;
 	for (unsigned int i = 0; i < lst_size; ++i)
-		lst.push_back(T3(i, std::string((lst_size - i), i + 65)));
+		lst.push_back(T3(2.5 - i, (i + 1) * 7));
+
 	TESTED_NAMESPACE::map<T1, T2> mp(lst.begin(), lst.end());
+	TESTED_NAMESPACE::map<T1, T2>::reverse_iterator it(mp.rbegin());
+	TESTED_NAMESPACE::map<T1, T2>::const_reverse_iterator ite(mp.rbegin());
 	printSize(mp);
 
-	ft_erase(mp, ++mp.begin());
+	printPair(++ite);
 
-	ft_erase(mp, mp.begin());
-	ft_erase(mp, --mp.end());
+	
+	printPair(ite++);
+	printPair(ite++);
+	printPair(++ite);
 
-	ft_erase(mp, mp.begin(), ++(++(++mp.begin())));
-	ft_erase(mp, --(--(--mp.end())), --mp.end());
+	it->second.m();
+	ite->second.m();
 
-	mp[10] = "Hello";
-	mp[11] = "Hi there";
-	printSize(mp);
-	ft_erase(mp, --(--(--mp.end())), mp.end());
+	printPair(++it);
+	printPair(it++);
+	printPair(it++);
+	printPair(++it);
 
-	mp[12] = "ONE";
-	mp[13] = "TWO";
-	mp[14] = "THREE";
-	mp[15] = "FOUR";
-	printSize(mp);
-	ft_erase(mp, mp.begin(), mp.end());
+	printPair(--ite);
+	printPair(ite--);
+	printPair(--ite);
+	printPair(ite--);
 
-	// ft::map<int, std::string> mp;
-	// mp[0] = "ssdfsd";
-	// printSize(mp);
+	(*it).second.m();
+	(*ite).second.m();
+
+	printPair(--it);
+	printPair(it--);
+	printPair(it--);
+	printPair(--it);
 
 	return (0);
 }

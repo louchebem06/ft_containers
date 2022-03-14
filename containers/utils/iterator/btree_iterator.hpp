@@ -6,7 +6,7 @@
 /*   By: bledda <bledda@student.42nice.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 22:32:55 by bledda            #+#    #+#             */
-/*   Updated: 2022/03/13 07:42:29 by bledda           ###   ########.fr       */
+/*   Updated: 2022/03/14 06:18:38 by bledda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ namespace ft
 			ft::pair<Key, T> * operator->() const;
 			ft::node<Key, T> * base() const;
 			ft::node<Key, T> * save() const;
+			bool	begin() const;
+			bool	end() const;
 	};
 }
 
@@ -173,18 +175,10 @@ CLASS_C_IT::btree_const_iterator(btree_const_iterator const & x) {
 ////////////////////////////////////////////////////////////////////////////////
 CLASS_C_IT::btree_const_iterator(IT it)
 {
-	_end = _begin = false;
-	if (it.base() == NULL)
-	{
-		_end = true;
-		_begin = true;
-		_save = NULL;
-	}
-	else
-	{
-		this->_ptr = it.base();
-		_save = it.save();
-	}
+	_end = it.end();
+	_begin = it.begin();
+	this->_ptr = it.base();
+	_save = it.save();
 }
 ////////////////////////////////////////////////////////////////////////////////
 CLASS_IT_TYPE(REFERENCE_IT)::operator++()
@@ -352,6 +346,8 @@ CLASSMOVE_TYPE(NODEPTR)::prev()
 ////////////////////////////////////////////////////////////////////////////////
 CLASS_IT_TYPE(NODEPTR)::base() const { return (this->_ptr); }
 CLASS_IT_TYPE(NODEPTR)::save() const { return (this->_save); }
+CLASS_IT_TYPE(bool)::end() const { return (this->_end); }
+CLASS_IT_TYPE(bool)::begin() const { return (this->_begin); }
 ////////////////////////////////////////////////////////////////////////////////
 CLASS_IT_TYPE(bool)::operator==(btree_iterator const & rhs) const
 { return (this->_ptr == rhs._ptr); }
