@@ -1,4 +1,4 @@
-#include "containers/map.hpp"
+#include "../../containers/map.hpp"
 #include <map>
 #include <iostream>
 #include <string>
@@ -26,7 +26,6 @@ void	printSize(T_MAP const &mp, bool print_content = 1)
 	if (print_content)
 	{
 		typename T_MAP::const_iterator it = mp.begin(), ite = mp.end();
-		//mp.tree();
 		std::cout << std::endl << "Content is:" << std::endl;
 		for (; it != ite; ++it)
 			std::cout << "- " << printPair(it, false) << std::endl;
@@ -56,14 +55,8 @@ class foo {
 		foo(value_type src, const bool verbose = false) : value(src), _verbose(verbose) { };
 		foo(foo const &src, const bool verbose = false) : value(src.value), _verbose(verbose) { };
 		~foo(void) { if (this->_verbose) std::cout << "~foo::foo()" << std::endl; };
-		void m(void) {
-			std::cout << "foo::m called [";
-			std::cout << this->value << "]" << std::endl;
-		};
-		void m(void) const {
-			std::cout << "foo::m const called [";
-			std::cout << this->value << "]" << std::endl;
-		};
+		void m(void) { std::cout << "foo::m called [" << this->value << "]" << std::endl; };
+		void m(void) const { std::cout << "foo::m const called [" << this->value << "]" << std::endl; };
 		foo &operator=(value_type src) { this->value = src; return *this; };
 		foo &operator=(foo const &src) {
 			if (this->_verbose || src._verbose)
@@ -104,53 +97,23 @@ T	dec(T it, int n)
 	return (it);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-
-#include <list>
-
-#define T1 float
-#define T2 foo<int>
-typedef _pair<const T1, T2> T3;
-
-int		main(void)
-{
-	std::list<T3> lst;
-	unsigned int lst_size = 5;
-	for (unsigned int i = 0; i < lst_size; ++i)
-		lst.push_back(T3(2.5 - i, (i + 1) * 7));
-
-	TESTED_NAMESPACE::map<T1, T2> mp(lst.begin(), lst.end());
-	TESTED_NAMESPACE::map<T1, T2>::reverse_iterator it(mp.rbegin());
-	TESTED_NAMESPACE::map<T1, T2>::const_reverse_iterator ite(mp.rbegin());
-	printSize(mp);
-
-	printPair(++ite);
-
-	
-	printPair(ite++);
-	printPair(ite++);
-	printPair(++ite);
-
-	it->second.m();
-	ite->second.m();
-
-	printPair(++it);
-	printPair(it++);
-	printPair(it++);
-	printPair(++it);
-
-	printPair(--ite);
-	printPair(ite--);
-	printPair(--ite);
-	printPair(ite--);
-
-	(*it).second.m();
-	(*ite).second.m();
-
-	printPair(--it);
-	printPair(it--);
-	printPair(it--);
-	printPair(--it);
-
-	return (0);
-}
+int		bounds(void);
+int		comp(void);
+int		copy_construct(void);
+int		empty(void);
+int		erase(void);
+int		erase2(void);
+int		find_count(void);
+int		insert(void);
+int		insert2(void);
+int		ite_arrow(void);
+int		ite_type(void);
+int		more(void);
+int		op_sqbr(void);
+int		relational_ope(void);
+int		rev_it_construct(void);
+int		rite_arrow(void);
+int		rite(void);
+int		swap(void);
+int		tricky_construct(void);
+int		tricky_erase(void);
